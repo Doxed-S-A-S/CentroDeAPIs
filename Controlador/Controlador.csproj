@@ -45,5 +45,11 @@
     <Compile Include="ControlPosts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Modelo\Modelos.csproj">
+      <Project>{12bd6a2e-27ea-430a-baa2-d47d3a40864e}</Project>
+      <Name>Modelos</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
