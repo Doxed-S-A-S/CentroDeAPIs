@@ -11,7 +11,7 @@ namespace Controlador
 {
     public class ControlComentarios
     {
-        public static void CrearComentario(string idPost,string comentario,string reacciones)
+        public static void CrearComentario(string idPost, string comentario, string reacciones)
         {
             ModeloComentario coment = new ModeloComentario();
             coment.IdPost = Int32.Parse(idPost);
@@ -28,17 +28,17 @@ namespace Controlador
             coment.EliminarComentario();
         }
 
-        public static void ModificarComentario(string idcoment,string comentario)
+        public static void ModificarComentario(string idcoment, string comentario)
         {
             ModeloComentario coment = new ModeloComentario();
             coment.IdComentario = Int32.Parse(idcoment);
             coment.Comentario = comentario;
-            coment.AcualizarComentario();
+            coment.GuardarComentario();
         }
 
 
         public static DataTable ListarComentarios(string idPost)
-        { 
+        {
             DataTable tabla = new DataTable();
             tabla.Columns.Add("IdComentario", typeof(int));
             tabla.Columns.Add("IdPost", typeof(int));
@@ -62,4 +62,3 @@ namespace Controlador
         }
     }
 }
-//test

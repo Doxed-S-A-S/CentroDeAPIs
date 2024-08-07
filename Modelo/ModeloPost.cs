@@ -14,6 +14,12 @@ namespace Modelos
 
         public void GuardarPost()
         {
+            if (this.Id_Post == 0) InsertarPost();
+            if (this.Id_Post > 0) AcutalizarPost();
+        }
+
+        private void InsertarPost()
+        {
             string sql = $"insert into Posts (Contenido,Reacciones) values('{this.Contenido}',{this.Reacciones})";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
@@ -33,7 +39,7 @@ namespace Modelos
             this.Comando.ExecuteNonQuery();
         }
 
-        public List<ModeloPost> ObtenerPosts()
+        public List<ModeloPost> ObtenerPosts() // Modificar en el futuro cuando tegamos creada la bd y la clase de usr, para que busque post por usr
         {
             List<ModeloPost> posts = new List<ModeloPost>();
 
@@ -49,6 +55,7 @@ namespace Modelos
                 post.Reacciones = Int32.Parse(this.Lector["Reacciones"].ToString());
                 posts.Add(post);
             }
+            this.Lector.Close();
             return posts;
         }
     }

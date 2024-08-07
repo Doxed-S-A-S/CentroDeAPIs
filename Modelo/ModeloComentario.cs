@@ -15,10 +15,17 @@ namespace Modelos
 
         public void GuardarComentario()
         {
+            if (this.IdComentario == 0) InsertarComentario();
+            if (this.IdComentario > 0) AcualizarComentario();
+        }
+
+        private void InsertarComentario()
+        {
             string sql = $"insert into Comentarios (ID_post,Comentario,C_Reacciones) values({this.IdPost},'{this.Comentario}',{this.ReaccionesCom})";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }
+
 
         public void EliminarComentario()
         {
@@ -52,6 +59,7 @@ namespace Modelos
                 coment.ReaccionesCom = Int32.Parse(this.Lector["C_reacciones"].ToString());
                 comentarios.Add(coment);
             }
+            this.Lector.Close();
             return comentarios;
         }
     }
