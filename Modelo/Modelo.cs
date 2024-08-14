@@ -21,7 +21,7 @@ namespace Modelos
         public Modelo()
         {
             this.IP = "127.0.0.1";
-            this.NombreBase = "BackT";
+            this.NombreBase = "LinguaLinkDB";
             this.Password = "1234";
             this.NombreDeUsuario = "root";
 
@@ -40,6 +40,19 @@ namespace Modelos
         }
 
 
+        // Funcion que agarra la salida de sql desde el programa y la guarda en un .txt en el escritorio,
+        // crea el archivo de forma automatica en el escritorio, y se puede activar o desactivar cambiando el bool de abajo
+
+        public void PrintDesktop(string sql) 
+        {
+            if (true) // cambiar a false para desactivar
+            {
+                string Ruta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                Ruta += "/SalidaSQL.txt";
+                sql += ";";
+                System.IO.File.AppendAllText(Ruta, sql + Environment.NewLine);
+            }
+        }
+
     }
 }
-//coso

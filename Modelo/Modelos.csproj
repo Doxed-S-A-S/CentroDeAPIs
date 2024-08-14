@@ -93,6 +93,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModeloCuenta.cs" />
     <Compile Include="ModeloComentario.cs" />
     <Compile Include="Modelo.cs" />
     <Compile Include="ModeloPost.cs" />
