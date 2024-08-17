@@ -13,8 +13,7 @@ namespace ApiGrupos.Controllers
     public class GrupoController : ApiController
     {
 
-        [Route("LinguaLink/grupo")]
-
+        [Route("ApiGrupos/grupo")]
         public List<GrupoModel> Get()
         {
             DataTable grupos = ControlGrupo.ObtenerGrupos();
