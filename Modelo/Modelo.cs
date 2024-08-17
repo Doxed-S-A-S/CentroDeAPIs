@@ -21,8 +21,8 @@ namespace Modelos
         public Modelo()
         {
             this.IP = "127.0.0.1";
-            this.NombreBase = "BackT";
-            this.Password = "1234";
+            this.NombreBase = "LinguaLinkDB";
+            this.Password = "1562";
             this.NombreDeUsuario = "root";
 
             this.Conexion = new MySqlConnection(

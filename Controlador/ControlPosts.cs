@@ -20,7 +20,7 @@ namespace Controlador
             post.GuardarPost();
         }
 
-        public static void ElimiarPost(string id)
+        public static void EliminarPost(string id)
         {
             ModeloPost post = new ModeloPost();
             post.Id_Post = Int32.Parse(id);
