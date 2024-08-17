@@ -85,7 +85,7 @@ namespace Controlador
 
         public static Dictionary<string, string> BuscarGrupo(int id_grupo)
         {
-            Dictionary<string, string> resultado = new Dictionary<string, string>;
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
             ModeloGrupo grupo = new ModeloGrupo();
             if (grupo.BuscarGrupo(id_grupo))
             {
