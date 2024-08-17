@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Modelos
 {
-    class ModeloGrupo : Modelo
+    public class ModeloGrupo : Modelo
     {
         public int id_grupo;
         public string nombre;
         public string descripcion;
         public string banner; //placeholder
+
 
         public void CrearGrupo()
         {
@@ -46,6 +47,7 @@ namespace Modelos
             string sql = $"update grupos set eliminado = true where id_grupo ='{this.id_grupo}'";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
+ 
         }
 
         public List<ModeloGrupo> ObtenerGrupos()
@@ -67,5 +69,30 @@ namespace Modelos
             this.Lector.Close();   
             return grupos;
         }
+
+        public bool BuscarGrupo(int id)
+        {
+            string sql = $"SELECT * FROM grupos WHERE eliminado = false and id = {id}";
+            this.Comando.CommandText = sql;
+            this.Lector = this.Comando.ExecuteReader();
+
+            if (this.Lector.HasRows)
+            {
+                this.Lector.Read();
+                this.id_grupo = Int32.Parse(this.Lector["Id"].ToString());
+                this.nombre = this.Lector["nombre"].ToString();
+                this.descripcion = this.Lector["descripcion"].ToString();
+                this.banner = this.Lector["banner"].ToString();
+                this.Lector.Close();
+                return true;
+
+            }
+            this.Lector.Close();
+            return false;
+
+        }
+
+
+
     }
 }

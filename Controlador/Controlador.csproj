@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlGrupo.cs" />
     <Compile Include="ControlCuenta.cs" />
     <Compile Include="ControlComentarios.cs" />
     <Compile Include="ControlPosts.cs" />
