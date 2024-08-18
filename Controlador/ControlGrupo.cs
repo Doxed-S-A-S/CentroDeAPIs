@@ -12,7 +12,7 @@ namespace Controlador
     {
         public static void CrearGrupo(string nombreGrupo, string descripcion, string banner)
         {
-            ModeloGrupo grupo = new Modelos.ModeloGrupo();
+            ModeloGrupo grupo = new ModeloGrupo();
             grupo.nombre = nombreGrupo;
             grupo.descripcion = descripcion;
             grupo.banner = banner;
