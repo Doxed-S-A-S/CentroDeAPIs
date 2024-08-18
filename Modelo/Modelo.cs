@@ -22,7 +22,7 @@ namespace Modelos
         {
             this.IP = "127.0.0.1";
             this.NombreBase = "LinguaLinkDB";
-            this.Password = "1562";
+            this.Password = "1234";
             this.NombreDeUsuario = "root";
 
             this.Conexion = new MySqlConnection(
