@@ -31,6 +31,19 @@ namespace ApiGrupos.Controllers
             return ListaDeGrupos;
         }
 
+        [Route("ApiGrupos/grupo/")]
+        public IHttpActionResult Post(GrupoModel grupo)
+        {
+            GrupoModel g = new GrupoModel();
+            g.nombre = grupo.nombre;
+            g.descripcion = grupo.descripcion;
+            g.banner = grupo.banner;
+            ControlGrupo.CrearGrupo(g.nombre, g.descripcion, g.banner);
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            resultado.Add("mensaje", "grupo creado");
+            return Ok(resultado);
+        }
+
 
 
 
