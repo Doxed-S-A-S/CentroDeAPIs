@@ -41,9 +41,21 @@ namespace ApiGrupos.Controllers
             return Ok(resultado);
         }
 
+        [Route("ApiGrupos/grupo/{id_grupo:int}")]
+        public IHttpActionResult Put(int id_grupo, GrupoModel grupo)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            bool existe = ControlGrupo.ModificarGrupo(id_grupo.ToString(), grupo.nombre, grupo.descripcion, grupo.banner);
 
+            if (existe)
+            {
+                resultado.Add("mensaje", "grupo creado");
+                return Ok(resultado);
+            }
 
+            return NotFound();
 
+        }
 
 
     }

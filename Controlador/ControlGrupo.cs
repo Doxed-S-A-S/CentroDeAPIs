@@ -20,6 +20,22 @@ namespace Controlador
             grupo.CrearGrupo();
         }
 
+        public static bool ModificarGrupo(string id, string nombre, string descripcion, string banner)
+        {
+            ModeloGrupo grupo = new Modelos.ModeloGrupo();
+            if (grupo.BuscarGrupo(Int32.Parse(id)))
+            {
+                grupo.nombre = nombre;
+                grupo.descripcion = descripcion;
+                grupo.banner = banner;
+
+                grupo.Guardar();
+                return true;
+            }
+
+            return false;
+        }
+
         public static void ModificarNombreGrupo(string id, string nombre)
         {
             ModeloGrupo grupo = new Modelos.ModeloGrupo();
