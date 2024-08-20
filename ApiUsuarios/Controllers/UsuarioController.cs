@@ -24,11 +24,11 @@ namespace ApiUsuario.Controllers
             {
                 UsuarioModel u = new UsuarioModel();
    
-                u.nombre_usuario = usuario["nombre_usuario"].ToString();
-                u.email = usuario["email"].ToString();
+                u.nombre_usuario = usuario["Usuario"].ToString();
+                u.email = usuario["Correo"].ToString();
                 
 
-                ListaDeGrupos.Add(g);
+                ListaDeGrupos.Add(u);
             }
             return ListaDeGrupos;
         }

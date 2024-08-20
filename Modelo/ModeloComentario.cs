@@ -9,9 +9,9 @@ namespace Modelos
     public class ModeloComentario : Modelo
     {
         public int IdPost;
-        public int IdComentario;
-        public string Comentario;
-        public int ReaccionesCom;
+        public int idCuenta;
+        public long IdComentario;
+        public string Contenido;
 
         public void GuardarComentario()
         {
@@ -21,7 +21,12 @@ namespace Modelos
 
         private void InsertarComentario()
         {
-            string sql = $"insert into Comentarios (ID_post,Comentario,C_Reacciones) values({this.IdPost},'{this.Comentario}',{this.ReaccionesCom})";
+            string sql = $"insert into comentarios (id_post,contenido) values({this.IdPost},'{this.Contenido}')";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+            IdComentario = this.Comando.LastInsertedId;
+
+            sql = $"insert into hace (id_comentario,id_cuenta) values('{this.IdComentario}','{this.idCuenta}')";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }
@@ -29,34 +34,32 @@ namespace Modelos
 
         public void EliminarComentario()
         {
-            string sql = $"update Comentarios set Eliminado = true where ID_comentario ='{this.IdComentario}'";
+            string sql = $"update comentarios set eliminado = true where id_comentario ='{this.IdComentario}'";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }
 
         public void AcualizarComentario()
         {
-            string sql = $"update Comentarios set Comentario ='{this.Comentario}'where ID_comentario ='{this.IdComentario}'";
+            string sql = $"update comentarios set contenido ='{this.Contenido}'where id_comentario ='{this.IdComentario}'";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }
 
         public List<ModeloComentario> ObtenerComentarios(string idPost)
         {
-            string idP = idPost;
             List<ModeloComentario> comentarios = new List<ModeloComentario>();
 
-            string sql = $"select * from Comentarios where ID_post = '{idP}' and Eliminado = false";
+            string sql = $"select * from comentarios where id_post = '{Int32.Parse(idPost)}' and eliminado = false";
             this.Comando.CommandText = sql;
             this.Lector = this.Comando.ExecuteReader();
 
             while (this.Lector.Read())
             {
                 ModeloComentario coment = new ModeloComentario();
-                coment.IdComentario = Int32.Parse(this.Lector["ID_comentario"].ToString());
-                coment.IdPost = Int32.Parse(this.Lector["ID_post"].ToString());
-                coment.Comentario = this.Lector["Comentario"].ToString();
-                coment.ReaccionesCom = Int32.Parse(this.Lector["C_reacciones"].ToString());
+                coment.IdComentario = Int32.Parse(this.Lector["id_comentario"].ToString());
+                coment.IdPost = Int32.Parse(this.Lector["id_post"].ToString());
+                coment.Contenido = this.Lector["contenido"].ToString();
                 comentarios.Add(coment);
             }
             this.Lector.Close();

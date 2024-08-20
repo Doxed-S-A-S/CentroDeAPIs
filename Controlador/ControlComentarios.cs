@@ -11,12 +11,12 @@ namespace Controlador
 {
     public class ControlComentarios
     {
-        public static void CrearComentario(string idPost, string comentario, string reacciones)
+        public static void CrearComentario(string idCuenta, string idPost,string comentario)
         {
             ModeloComentario coment = new ModeloComentario();
+            coment.idCuenta = Int32.Parse(idCuenta);
             coment.IdPost = Int32.Parse(idPost);
-            coment.Comentario = comentario;
-            coment.ReaccionesCom = Int32.Parse(reacciones);
+            coment.Contenido = comentario;
 
             coment.GuardarComentario();
         }
@@ -28,22 +28,21 @@ namespace Controlador
             coment.EliminarComentario();
         }
 
-        public static void ModificarComentario(string idcoment, string comentario)
+        public static void ModificarComentario(string idcoment,string comentario)
         {
             ModeloComentario coment = new ModeloComentario();
             coment.IdComentario = Int32.Parse(idcoment);
-            coment.Comentario = comentario;
+            coment.Contenido = comentario;
             coment.GuardarComentario();
         }
 
 
         public static DataTable ListarComentarios(string idPost)
-        {
+        { 
             DataTable tabla = new DataTable();
             tabla.Columns.Add("IdComentario", typeof(int));
             tabla.Columns.Add("IdPost", typeof(int));
             tabla.Columns.Add("Comentario", typeof(string));
-            tabla.Columns.Add("Reacciones", typeof(int));
 
 
             ModeloComentario coment = new ModeloComentario();
@@ -52,8 +51,7 @@ namespace Controlador
                 DataRow fila = tabla.NewRow();
                 fila["IdComentario"] = p.IdComentario;
                 fila["IdPost"] = p.IdPost;
-                fila["Comentario"] = p.Comentario;
-                fila["Reacciones"] = p.ReaccionesCom;
+                fila["Comentario"] = p.Contenido;
                 tabla.Rows.Add(fila);
             }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using System.Data;
 using Modelos;
 
@@ -44,7 +45,7 @@ namespace Controlador
 
             Dictionary<string, string> usuario = new Dictionary<string, string>();
             ModeloCuenta u = new ModeloCuenta();
-            if (u.ObtenerDatosUsuario(Int32.Parse(id)))
+            if (u.ObtenerDatosDeCuenta(Int32.Parse(id)))
             {
                 usuario.Add("resultado", "true");
                 usuario.Add("id_usuario", u.id_cuenta.ToString());
@@ -61,7 +62,7 @@ namespace Controlador
             return usuario;
         }
 
-        public static DataTable ListarCuentas()
+            public static DataTable ListarCuentas()
         {
             DataTable tabla = new DataTable();
             tabla.Columns.Add("id_cuenta", typeof(int));
@@ -79,5 +80,24 @@ namespace Controlador
             }
             return tabla;
         }
+
+        public static bool ModificarPreferencias(string idCuenta,string idioma, Boolean recordarContraseña, string preferenciaContenido,
+            Boolean notificacionPush, Boolean privacidad, string apariencia)
+        {
+            ModeloCuenta cuenta = new ModeloCuenta();
+            if (cuenta.ObtenerDatosDeCuenta(Int32.Parse(idCuenta)))
+            {
+                cuenta.idioma_app = idioma;
+                cuenta.recordar_contraseña = recordarContraseña;
+                cuenta.preferencias_contenido = preferenciaContenido;
+                cuenta.notificaciones_push = notificacionPush;
+                cuenta.muro_privado = privacidad;
+                cuenta.tema_de_apariencia = apariencia;
+                cuenta.ModificarPreferencias();
+            }
+            return false;
+        }
     }
 }
+
+

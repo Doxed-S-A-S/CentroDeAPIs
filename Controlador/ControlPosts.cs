@@ -11,16 +11,16 @@ namespace Controlador
 {
     public class ControlPosts
     {
-        public static void CrearPost(string contenido, string reacciones)
+        public static void CrearPost(string contenido, string idCuenta)
         {
             ModeloPost post = new ModeloPost();
             post.Contenido = contenido;
-            post.Reacciones = Int32.Parse(reacciones);
+            post.Id_Cuenta = Int32.Parse(idCuenta);
 
             post.GuardarPost();
         }
 
-        public static void EliminarPost(string id)
+        public static void ElimiarPost(string id)
         {
             ModeloPost post = new ModeloPost();
             post.Id_Post = Int32.Parse(id);
@@ -35,21 +35,19 @@ namespace Controlador
             post.GuardarPost();
         }
 
-        public static DataTable Listar()
+        public static DataTable Listar(string idCuenta)  
         {
             DataTable tabla = new DataTable();
             tabla.Columns.Add("Id_Post", typeof(int));
             tabla.Columns.Add("Contenido", typeof(string));
-            tabla.Columns.Add("Reacciones", typeof(int));
 
 
             ModeloPost pizza = new ModeloPost();
-            foreach (ModeloPost p in pizza.ObtenerPosts())
+            foreach (ModeloPost p in pizza.ObtenerPosts(Int32.Parse(idCuenta))) 
             {
                 DataRow fila = tabla.NewRow();
                 fila["Id_post"] = p.Id_Post;
                 fila["Contenido"] = p.Contenido;
-                fila["Reacciones"] = p.Reacciones;
                 tabla.Rows.Add(fila);
             }
 
