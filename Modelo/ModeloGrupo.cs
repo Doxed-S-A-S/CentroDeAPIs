@@ -98,6 +98,19 @@ namespace Modelos
 
         }
 
+        public void AgregarCuentaEnGrupo(ModeloCuenta cuenta, string rol)
+        {
+            string sql = $"insert into conforma (id_cuenta,id_grupo,rol) values('{cuenta.id_cuenta}','{this.id_grupo}','{rol}')";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+        }
+
+        public void EliminarCuentaDeGrupo(ModeloCuenta cuenta, ModeloGrupo grupo)
+        {
+            string sql = $"DELETE FROM conforma WHERE id_cuenta = {cuenta.id_cuenta} and id_grupo ={grupo.id_grupo};";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+        }
 
 
     }
