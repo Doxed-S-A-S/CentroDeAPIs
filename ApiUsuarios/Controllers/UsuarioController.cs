@@ -33,10 +33,9 @@ namespace ApiUsuario.Controllers
             return ListaDeGrupos;
         }
 
-        [Route("ApiGrupos/usuarios/")]
+        [Route("LinguaLink/usuarios/")]
         public IHttpActionResult Post(UsuarioModel usuario)
         {
-
             ControlCuenta.CrearCuenta(usuario.nombre_usuario, usuario.email);
             Dictionary<string, string> resultado = new Dictionary<string, string>();
             resultado.Add("mensaje", "usuario creado");
