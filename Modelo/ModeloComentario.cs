@@ -9,7 +9,8 @@ namespace Modelos
     public class ModeloComentario : Modelo
     {
         public int IdPost;
-        public int IdComentario;
+        public int idCuenta;
+        public long IdComentario;
         public string Contenido;
 
         public void GuardarComentario()
@@ -20,7 +21,12 @@ namespace Modelos
 
         private void InsertarComentario()
         {
-            string sql = $"insert into comentarios (id_post,contenido) values({this.IdPost},'{this.Contenido})";
+            string sql = $"insert into comentarios (id_post,contenido) values({this.IdPost},'{this.Contenido}')";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+            IdComentario = this.Comando.LastInsertedId;
+
+            sql = $"insert into hace (id_comentario,id_cuenta) values('{this.IdComentario}','{this.idCuenta}')";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }
@@ -42,10 +48,9 @@ namespace Modelos
 
         public List<ModeloComentario> ObtenerComentarios(string idPost)
         {
-            string idP = idPost;
             List<ModeloComentario> comentarios = new List<ModeloComentario>();
 
-            string sql = $"select * from comentarios where id_post = '{idP}' and eliminado = false";
+            string sql = $"select * from comentarios where id_post = '{Int32.Parse(idPost)}' and eliminado = false";
             this.Comando.CommandText = sql;
             this.Lector = this.Comando.ExecuteReader();
 

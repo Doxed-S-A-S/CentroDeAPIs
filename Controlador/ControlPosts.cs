@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +11,11 @@ namespace Controlador
 {
     public class ControlPosts
     {
-        public static void CrearPost(string contenido, string reacciones)
+        public static void CrearPost(string contenido, string idCuenta)
         {
             ModeloPost post = new ModeloPost();
             post.Contenido = contenido;
+            post.Id_Cuenta = Int32.Parse(idCuenta);
 
             post.GuardarPost();
         }
@@ -34,7 +35,7 @@ namespace Controlador
             post.GuardarPost();
         }
 
-        public static DataTable Listar()  
+        public static DataTable Listar(string idCuenta)  
         {
             DataTable tabla = new DataTable();
             tabla.Columns.Add("Id_Post", typeof(int));
@@ -42,7 +43,7 @@ namespace Controlador
 
 
             ModeloPost pizza = new ModeloPost();
-            foreach (ModeloPost p in pizza.ObtenerPosts())
+            foreach (ModeloPost p in pizza.ObtenerPosts(Int32.Parse(idCuenta))) 
             {
                 DataRow fila = tabla.NewRow();
                 fila["Id_post"] = p.Id_Post;

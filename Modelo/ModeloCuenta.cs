@@ -52,7 +52,19 @@ namespace Modelos
             this.Comando.ExecuteNonQuery();
         }
 
-        public bool ObtenerDatosUsuario(int id)
+        public bool ObtenerDatosDeCuenta(int idCuenta)
+        {
+            if(BuscarCuenta(idCuenta))
+            {
+                BuscarMuro();
+                BuscarPreferencias();
+                BuscarUsuario();
+                return true;
+            }
+            return false;
+        }
+
+        public bool BuscarCuenta(int id)
         {
             string sql = $"select * from cuenta where id_cuenta = {id} and eliminado = false";
             this.Comando.CommandText = sql;
@@ -68,32 +80,11 @@ namespace Modelos
                 this.reports = Int32.Parse(this.Lector["reports"].ToString());
                 this.id_usuario = Int32.Parse(this.Lector["id_usuario"].ToString());
                 this.id_muro = Int32.Parse(this.Lector["id_muro"].ToString());
+                this.id_preferencia = Int32.Parse(this.Lector["id_preferencia"].ToString());
                 this.Lector.Close();
-
-                sql = $"select * from usuario where id_usuario = '{this.id_usuario}'";
-                this.Comando.CommandText = sql;
-                this.Lector = this.Comando.ExecuteReader();
-
-                this.Lector.Read();
-                this.nombre = this.Lector["nombre"].ToString();
-                this.apellido1 = this.Lector["apellido1"].ToString();
-                this.apellido2 = this.Lector["apellido2"].ToString();
-                this.Lector.Close();
-
-                sql = $"select biografia from muro where id_muro = {this.id_muro}";
-                this.Comando.CommandText = sql;
-                this.Lector = this.Comando.ExecuteReader();
-
-                this.Lector.Read();
-                this.biografia = this.Lector["biografia"].ToString();
-                this.Lector.Close();
-
                 return true;
-
             }
-            this.Lector.Close();
             return false;
-
         }
 
         public List<ModeloCuenta> ObtenerCuentas()
@@ -134,6 +125,24 @@ namespace Modelos
             id_usuario = this.Comando.LastInsertedId;
         }
 
+        public bool BuscarUsuario()
+        {
+            string sql = $"select * from usuario where id_usuario = '{this.id_usuario}'";
+            this.Comando.CommandText = sql;
+            this.Lector = this.Comando.ExecuteReader();
+
+            if (Lector.HasRows)
+            {
+                this.Lector.Read();
+                this.nombre = this.Lector["nombre"].ToString();
+                this.apellido1 = this.Lector["apellido1"].ToString();
+                this.apellido2 = this.Lector["apellido2"].ToString();
+                this.Lector.Close();
+                return true;
+            }
+            return false;
+        }
+
         /************************************* Muro ********************************/
 
         public string detalles = "";
@@ -147,6 +156,23 @@ namespace Modelos
             this.Comando.ExecuteNonQuery();
             PrintDesktop(sql);
             id_muro = this.Comando.LastInsertedId;
+        }
+
+        public bool BuscarMuro()
+        {
+
+            string sql = $"select * from muro where id_muro = {this.id_muro}";
+            this.Comando.CommandText = sql;
+            this.Lector = this.Comando.ExecuteReader();
+
+            if (Lector.HasRows)
+            {
+                this.Lector.Read();
+                this.biografia = this.Lector["biografia"].ToString();
+                this.Lector.Close();
+                return true;
+            }
+            return false;
         }
 
         public void ModificarMuro()
@@ -178,7 +204,13 @@ namespace Modelos
 
         /************************************* Preferencias ********************************/
 
-        string tema_de_apariencia = "claro"; // dejar elejir en el futuro
+        public string tema_de_apariencia = "claro"; // dejar elejir en el futuro
+        public string idioma_app;
+        public bool recordar_contraseña;
+        public string preferencias_contenido;
+        public bool notificaciones_push;
+        public bool muro_privado;
+
 
         public void CrearPreferencias()
         {
@@ -188,6 +220,37 @@ namespace Modelos
             PrintDesktop(sql);
             id_preferencia = this.Comando.LastInsertedId;
         }
-        
+
+        public bool BuscarPreferencias()
+        {
+            string sql = $"select * from set_preferencias where id_preferencia = {this.id_preferencia}";
+            this.Comando.CommandText = sql;
+            this.Lector = this.Comando.ExecuteReader();
+
+            if (Lector.HasRows)
+            {
+                Lector.Read();
+                this.id_preferencia = Int32.Parse(this.Lector["id_preferencia"].ToString());
+                this.idioma_app = this.Lector["idioma_app"].ToString();
+                this.recordar_contraseña = Boolean.Parse(this.Lector["recordar_contrasena"].ToString());
+                this.preferencias_contenido = this.Lector["preferencias_contenido"].ToString();
+                this.notificaciones_push = Boolean.Parse(this.Lector["notificaciones_push"].ToString());
+                this.muro_privado = Boolean.Parse(this.Lector["muro_privado"].ToString());
+                this.tema_de_apariencia = this.Lector["tema_de_apariencia"].ToString();
+                this.Lector.Close();
+                return true;
+            }
+            return false;
+        }
+
+        public void ModificarPreferencias()
+        {
+            string sql = $"update set_preferencias set idioma_app ='{this.idioma_app}', recordar_contrasena = '{this.recordar_contraseña}'," +
+                $"preferencias_contenido = '{this.preferencias_contenido}',notificaciones_push ='{this.notificaciones_push}'," +
+                $"muro_privado = '{this.muro_privado}',tema_de_apariencia = '{this.tema_de_apariencia}' where id_preferencia = {this.id_preferencia}";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+            PrintDesktop(sql);
+        }
     }
 }

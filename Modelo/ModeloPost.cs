@@ -8,7 +8,7 @@ namespace Modelos
 {
     public class ModeloPost : Modelo
     {
-        public int Id_Post;
+        public long Id_Post;
         public string url_contenido = "url"; //placeholder
         public string tipo_contenido = "tag"; //placeholder
         public string Contenido;
@@ -22,7 +22,7 @@ namespace Modelos
 
         private void InsertarPost()
         {
-            string sql = $"insert into posts (contenido,url_contenido,tipo_contenido) values('{this.Contenido}','{this.url_contenido}','{this.tipo_contenido}')";
+            string sql = $"insert into posts (contenido,url_contenido,tipo_contenido,id_cuenta) values('{this.Contenido}','{this.url_contenido}','{this.tipo_contenido}',{this.Id_Cuenta})";
             PrintDesktop(sql);
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
@@ -43,11 +43,11 @@ namespace Modelos
             this.Comando.ExecuteNonQuery();
         }
 
-        public List<ModeloPost> ObtenerPosts() // Modificar en el futuro cuando tegamos creada la bd y la clase de usr, para que busque post por usr
+        public List<ModeloPost> ObtenerPosts(int id_cuenta)
         {
             List<ModeloPost> posts = new List<ModeloPost>();
 
-            string sql = $"select * from posts where eliminado = false";
+            string sql = $"select * from posts where eliminado = false and id_cuenta = {id_cuenta}";
             this.Comando.CommandText = sql;
             this.Lector = this.Comando.ExecuteReader();
 
