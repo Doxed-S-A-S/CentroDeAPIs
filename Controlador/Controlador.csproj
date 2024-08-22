@@ -111,6 +111,7 @@
   <ItemGroup>
     <Compile Include="ControlCuenta.cs" />
     <Compile Include="ControlComentarios.cs" />
+    <Compile Include="ControlGrupo.cs" />
     <Compile Include="ControlPosts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
