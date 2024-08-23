@@ -13,7 +13,8 @@ namespace Modelos
         public string nombre;
         public string descripcion;
         public string banner; //placeholder
-
+        public string rol;
+        public string id_cuenta;
         public void Guardar()
         {
             if (this.id_grupo == 0) CrearGrupo();
@@ -98,7 +99,24 @@ namespace Modelos
 
         }
 
+        public void AgregarCuentaEnGrupo()
+        {
+            string sql = $"insert into conforma (id_cuenta,id_grupo,rol) values('{this.id_cuenta}','{this.id_grupo}','{this.rol}')";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+        }
 
+        public void EliminarCuentaDeGrupo()
+        {
+            string sql = $"DELETE FROM conforma WHERE id_cuenta = {this.id_cuenta} and id_grupo ={this.id_grupo};";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+        }
+
+        public void CambiarRolDeCuentaEnGrupo()
+        {
+            string sql = $"update conforma set rol = '{this.rol}' where id_grupo = '{this.id_grupo}' and id_cuenta = '{this.id_cuenta}'";
+        }
 
     }
 }
