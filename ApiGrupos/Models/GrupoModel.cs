@@ -9,9 +9,12 @@ namespace ApiGrupos.Models
     {
 
         public int id_grupo;
-        public string nombre;
+        public string nombre_grupo;
         public string descripcion;
-        public string banner;
+        public string banner; //placeholder
+        public string rol;
+        public int id_cuenta;
+        public string nombre_usuario;
 
     }
 }

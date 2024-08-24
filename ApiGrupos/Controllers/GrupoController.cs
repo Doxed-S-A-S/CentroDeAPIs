@@ -14,7 +14,7 @@ namespace ApiGrupos.Controllers
     {
 
         [Route("ApiGrupos/grupo")]
-        public List<GrupoModel> Get()
+        public List<GrupoModel> GetGrupos()
         {
             DataTable grupos = ControlGrupo.ObtenerGrupos();
 
@@ -24,18 +24,39 @@ namespace ApiGrupos.Controllers
             {
                 GrupoModel g = new GrupoModel();
                 g.id_grupo = Int32.Parse(grupo["id_grupo"].ToString());
-                g.nombre = grupo["nombre"].ToString();
+                g.nombre_grupo = grupo["nombre"].ToString();
 
                 ListaDeGrupos.Add(g);
             }
             return ListaDeGrupos;
         }
 
+        [Route("ApiGrupos/grupo/{id_grupo:int}/integrantes")]
+        public List<GrupoModel> GetIntegrantes()
+        {
+            DataTable integrantes = ControlGrupo.ObtenerIntegrantesDeGrupo();
+
+            List<GrupoModel> ListaDeIntegrantes = new List<GrupoModel>();
+
+            foreach (DataRow integrante in integrantes.Rows)
+            {
+                GrupoModel g = new GrupoModel();
+                g.nombre_grupo = integrante["nombre_grupo"].ToString();
+                g.nombre_usuario = integrante["nombre_usuario"].ToString();
+                g.rol = integrante["rol"].ToString();
+
+                ListaDeIntegrantes.Add(g);
+            }
+            return ListaDeIntegrantes;
+        }
+
+
+
         [Route("ApiGrupos/grupo/")]
         public IHttpActionResult Post(GrupoModel grupo)
         {
             
-            ControlGrupo.CrearGrupo(grupo.nombre, grupo.descripcion, grupo.banner);
+            ControlGrupo.CrearGrupo(grupo.nombre_grupo, grupo.descripcion, grupo.banner);
             Dictionary<string, string> resultado = new Dictionary<string, string>();
             resultado.Add("mensaje", "grupo creado");
             return Ok(resultado);
@@ -45,7 +66,7 @@ namespace ApiGrupos.Controllers
         public IHttpActionResult Put(int id_grupo, GrupoModel grupo)
         {
             Dictionary<string, string> resultado = new Dictionary<string, string>();
-            bool existe = ControlGrupo.ModificarGrupo(id_grupo.ToString(), grupo.nombre, grupo.descripcion, grupo.banner);
+            bool existe = ControlGrupo.ModificarGrupo(id_grupo.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.banner);
 
             if (existe)
             {
@@ -56,6 +77,9 @@ namespace ApiGrupos.Controllers
             return NotFound();
 
         }
+
+        
+
 
 
     }
