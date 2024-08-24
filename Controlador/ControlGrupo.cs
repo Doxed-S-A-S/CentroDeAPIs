@@ -83,7 +83,6 @@ namespace Controlador
             DataTable tabla = new DataTable();
             tabla.Columns.Add("id_grupo", typeof(int));
             tabla.Columns.Add("nombre", typeof(string));
-            tabla.Columns.Add("descripcion", typeof(string));
 
 
             ModeloGrupo grupo = new ModeloGrupo();
@@ -92,6 +91,27 @@ namespace Controlador
                 DataRow fila = tabla.NewRow();
                 fila["id_grupo"] = p.id_grupo;
                 fila["nombre"] = p.nombre;
+                tabla.Rows.Add(fila);
+            }
+
+            return tabla;
+
+        }
+
+        public static DataTable ObtenerIntegrantesDeGrupo()
+        {
+            DataTable tabla = new DataTable();
+            tabla.Columns.Add("id_cuenta", typeof(int));
+            tabla.Columns.Add("nombre_usuario", typeof(string));
+            tabla.Columns.Add("rol", typeof(string));
+
+
+            ModeloGrupo grupo = new ModeloGrupo();
+            foreach (ModeloGrupo p in grupo.ObtenerIntegrantesDeGrupo())
+            {
+                DataRow fila = tabla.NewRow();
+                fila["id_cuenta"] = p.id_grupo;
+                fila["nombre_usuario"] = p.nombre;
                 tabla.Rows.Add(fila);
             }
 
@@ -116,8 +136,24 @@ namespace Controlador
             return resultado;
         }
 
+        public void AgregarCuentaEnGrupo(string rol, string id_grupo, string id_cuenta ) 
+        {
+            ModeloGrupo grupo = new ModeloGrupo();
+            grupo.id_cuenta = Int32.Parse(id_cuenta);
+            grupo.id_grupo = Int32.Parse(id_grupo);
+            grupo.rol = rol;
+
+            grupo.AgregarCuentaEnGrupo();
+        }
+        public void EliminarCuentaDeGrupo()
+        {
 
 
+        }
+        public void CambiarRolDeCuentaEnGrupo()
+        {
 
+
+        }
     }
 }
