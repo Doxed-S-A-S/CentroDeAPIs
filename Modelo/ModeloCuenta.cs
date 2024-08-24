@@ -57,7 +57,7 @@ namespace Modelos
             if(BuscarCuenta(idCuenta))
             {
                 BuscarMuro();
-                BuscarPreferencias();
+                BuscarPreferencias(idCuenta);
                 BuscarUsuario();
                 return true;
             }
@@ -221,9 +221,9 @@ namespace Modelos
             id_preferencia = this.Comando.LastInsertedId;
         }
 
-        public bool BuscarPreferencias()
+        public bool BuscarPreferencias(int idCuenta)
         {
-            string sql = $"select * from set_preferencias where id_preferencia = {this.id_preferencia}";
+            string sql = $"select * from set_preferencias where id_preferencia = {idCuenta}";
             this.Comando.CommandText = sql;
             this.Lector = this.Comando.ExecuteReader();
 

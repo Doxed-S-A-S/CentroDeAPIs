@@ -10,7 +10,7 @@ namespace Modelo
 {
     class ModeloREST
     {
-        public string Url = "http://localhost:57063/";
+        public string Url = "https://localhost:44335/";
         public RestClient client;
         public RestRequest request;
         public RestResponse response;

@@ -94,8 +94,28 @@ namespace Controlador
                 cuenta.muro_privado = privacidad;
                 cuenta.tema_de_apariencia = apariencia;
                 cuenta.ModificarPreferencias();
+                return true;
             }
             return false;
+        }
+
+        public static Dictionary<string,string> BuscarPreferencia(string idCuenta)
+        {
+            Dictionary<string, string> preferencia = new Dictionary<string, string>();
+            ModeloCuenta cuenta = new ModeloCuenta();
+            if (cuenta.BuscarPreferencias(Int32.Parse(idCuenta)))
+            {
+                preferencia.Add("resultado", "true");
+                preferencia.Add("tema de apariencia", cuenta.tema_de_apariencia);
+                preferencia.Add("idioma", cuenta.idioma_app);
+                preferencia.Add("preferencias", cuenta.preferencias_contenido);
+                preferencia.Add("recordar contraseña", cuenta.recordar_contraseña.ToString());
+                preferencia.Add("notificaciones push", cuenta.notificaciones_push.ToString());
+                preferencia.Add("muro privado", cuenta.muro_privado.ToString());
+                return preferencia;
+            }
+            preferencia.Add("resultado", "true");
+            return preferencia;
         }
     }
 }
