@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modelos", "Modelo\Modelos.c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGrupos", "ApiGrupos\ApiGrupos.csproj", "{F71464A5-3E20-4DAF-911F-9DA831B948E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiPost", "APIPost\ApiPost.csproj", "{2C06F79A-03B3-40B0-9B27-8B16F652AB99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F71464A5-3E20-4DAF-911F-9DA831B948E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F71464A5-3E20-4DAF-911F-9DA831B948E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F71464A5-3E20-4DAF-911F-9DA831B948E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C06F79A-03B3-40B0-9B27-8B16F652AB99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C06F79A-03B3-40B0-9B27-8B16F652AB99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C06F79A-03B3-40B0-9B27-8B16F652AB99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C06F79A-03B3-40B0-9B27-8B16F652AB99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

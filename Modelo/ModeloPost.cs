@@ -9,8 +9,8 @@ namespace Modelos
     public class ModeloPost : Modelo
     {
         public long Id_Post;
-        public string url_contenido = "url"; //placeholder
-        public string tipo_contenido = "tag"; //placeholder
+        public string url_contenido;
+        public string Tags;
         public string Contenido;
         public int Id_Cuenta ;
 
@@ -22,7 +22,7 @@ namespace Modelos
 
         private void InsertarPost()
         {
-            string sql = $"insert into posts (contenido,url_contenido,tipo_contenido,id_cuenta) values('{this.Contenido}','{this.url_contenido}','{this.tipo_contenido}',{this.Id_Cuenta})";
+            string sql = $"insert into posts (contenido,url_contenido,tipo_contenido,id_cuenta) values('{this.Contenido}','{this.url_contenido}','{this.Tags}',{this.Id_Cuenta})";
             PrintDesktop(sql);
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
@@ -31,7 +31,8 @@ namespace Modelos
 
         public void AcutalizarPost()
         {
-            string sql = $"update posts set contenido ='{this.Contenido}'where id_post ='{this.Id_Post}'";
+            string sql = $"update posts set contenido ='{this.Contenido}',tipo_contenido = '{this.Tags}'," +
+                $"url_contenido = '{this.url_contenido}' where id_post ='{this.Id_Post}'";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }
