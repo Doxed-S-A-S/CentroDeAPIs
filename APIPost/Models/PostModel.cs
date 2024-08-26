@@ -9,7 +9,7 @@ namespace APIPost.Models
     {
         public long Id_Post;
         public string url_contenido;
-        public string tipo_contenido;
+        public string Tags;
         public string Contenido;
         public int Id_Cuenta;
     }

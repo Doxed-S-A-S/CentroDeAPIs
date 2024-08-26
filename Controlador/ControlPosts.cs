@@ -11,10 +11,12 @@ namespace Controlador
 {
     public class ControlPosts
     {
-        public static void CrearPost(string contenido, string idCuenta)
+        public static void CrearPost(string contenido,string url,string Tags, string idCuenta)
         {
             ModeloPost post = new ModeloPost();
             post.Contenido = contenido;
+            post.url_contenido = url;
+            post.Tags = Tags;
             post.Id_Cuenta = Int32.Parse(idCuenta);
 
             post.GuardarPost();

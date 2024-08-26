@@ -15,7 +15,7 @@ namespace APIPost.Controllers
         [Route("LinugaLink/post/crear/")]
         public IHttpActionResult CrearPost(PostModel post)
         {
-            ControlPosts.CrearPost(post.Contenido, post.Id_Cuenta.ToString());
+            ControlPosts.CrearPost(post.Contenido,post.url_contenido,post.Tags, post.Id_Cuenta.ToString());
             Dictionary<string, string> resultado = new Dictionary<string, string>();
             resultado.Add("mensaje", "post creado");
             return Ok(resultado);
