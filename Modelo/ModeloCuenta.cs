@@ -245,12 +245,12 @@ namespace Modelos
 
         public void ModificarPreferencias()
         {
-            string sql = $"update set_preferencias set idioma_app ='{this.idioma_app}', recordar_contrasena = '{this.recordar_contraseña}'," +
-                $"preferencias_contenido = '{this.preferencias_contenido}',notificaciones_push ='{this.notificaciones_push}'," +
-                $"muro_privado = '{this.muro_privado}',tema_de_apariencia = '{this.tema_de_apariencia}' where id_preferencia = {this.id_preferencia}";
+            string sql = $"update set_preferencias set idioma_app ='{this.idioma_app}', recordar_contrasena = {this.recordar_contraseña}," +
+                $"preferencias_contenido = '{this.preferencias_contenido}',notificaciones_push ={this.notificaciones_push}," +
+                $"muro_privado = {this.muro_privado},tema_de_apariencia = '{this.tema_de_apariencia}' where id_preferencia = {this.id_preferencia}";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
-            PrintDesktop(sql);
+
         }
     }
 }
