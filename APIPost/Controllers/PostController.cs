@@ -21,7 +21,7 @@ namespace APIPost.Controllers
             return Ok(resultado);
         }
 
-        [Route("LinguaLink/post/edit/{idPost:int}")]
+        [Route("LinguaLink/post/{idPost:int}")]
         [HttpPut]
         public IHttpActionResult ModificarPost(int idPost,PostModel post)
         {
@@ -33,5 +33,14 @@ namespace APIPost.Controllers
             resultado.Add("Tags", post.Tags);
             return Ok(resultado);
         }
-    }
+
+        [Route("LinguaLink/post/{idPost:int}")]
+        [HttpDelete]
+        public IHttpActionResult EliminarPost(int idPost)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            ControlPosts.ElimiarPost(idPost.ToString());
+            resultado.Add("Resultado", "Post eliminado");
+            return Ok(resultado);
+        }
 }
