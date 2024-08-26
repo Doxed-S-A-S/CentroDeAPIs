@@ -12,12 +12,12 @@ namespace Controlador
 {
     public class ControlCuenta
     {
-        public static void CrearCuenta(string nombreUsuario, string email)
+        public static void CrearCuenta(string nombreUsuario, string email, string contraseña)
         {
             ModeloCuenta cuenta = new ModeloCuenta();
             cuenta.nombre_usuario = nombreUsuario;
             cuenta.email = email;
-
+            cuenta.contraseña = contraseña;
             cuenta.CrearCuenta();
 
         }

@@ -11,7 +11,7 @@ namespace Modelos
         public int id_cuenta;
         public string nombre_usuario;
         public string email;
-        public string contraseña = "123"; //placeholder
+        public string contraseña; //placeholder
         public string imagen_perfil = "pic"; //placeholder
         public int reports;
         public long id_usuario;

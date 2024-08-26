@@ -10,5 +10,6 @@ namespace ApiUsuarios.Models
         
         public string nombre_usuario;
         public string email;
+        public string contraseña;
     }
 }

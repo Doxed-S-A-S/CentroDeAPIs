@@ -13,7 +13,7 @@ namespace ApiUsuario.Controllers
     public class UsuarioController : ApiController
     {
 
-        [Route("ApiUsuarios/usuarios")]
+        [Route("ApiUsuarios/ListarUsuarios")]
         public List<UsuarioModel> Get()
         {
             DataTable usuarios = ControlCuenta.ListarCuentas();
@@ -33,10 +33,10 @@ namespace ApiUsuario.Controllers
             return ListaDeGrupos;
         }
 
-        [Route("LinguaLink/usuarios/")]
+        [Route("ApiUsuarios/CrearUsuario/")]
         public IHttpActionResult Post(UsuarioModel usuario)
         {
-            ControlCuenta.CrearCuenta(usuario.nombre_usuario, usuario.email);
+            ControlCuenta.CrearCuenta(usuario.nombre_usuario, usuario.email, usuario.contraseña);
             Dictionary<string, string> resultado = new Dictionary<string, string>();
             resultado.Add("mensaje", "usuario creado");
             return Ok(resultado);
