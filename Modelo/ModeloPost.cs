@@ -31,7 +31,8 @@ namespace Modelos
 
         public void AcutalizarPost()
         {
-            string sql = $"update posts set contenido ='{this.Contenido}'where id_post ='{this.Id_Post}'";
+            string sql = $"update posts set contenido ='{this.Contenido}',tipo_contenido = '{this.Tags}'," +
+                $"url_contenido = '{this.url_contenido}' where id_post ='{this.Id_Post}'";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }

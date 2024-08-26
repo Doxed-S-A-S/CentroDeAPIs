@@ -20,5 +20,18 @@ namespace APIPost.Controllers
             resultado.Add("mensaje", "post creado");
             return Ok(resultado);
         }
+
+        [Route("LinguaLink/post/edit/{idPost:int}")]
+        [HttpPut]
+        public IHttpActionResult ModificarPost(int idPost,PostModel post)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            ControlPosts.ModificarPost(idPost.ToString(), post.Contenido, post.url_contenido, post.Tags);
+
+            resultado.Add("Contenido", post.Contenido);
+            resultado.Add("url", post.url_contenido);
+            resultado.Add("Tags", post.Tags);
+            return Ok(resultado);
+        }
     }
 }

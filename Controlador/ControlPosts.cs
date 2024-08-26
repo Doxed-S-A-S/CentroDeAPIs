@@ -29,11 +29,13 @@ namespace Controlador
             post.EliminarPost();
         }
 
-        public static void ModificarPost(string id, string contenido)
+        public static void ModificarPost(string id, string contenido,string url,string Tags)
         {
             ModeloPost post = new ModeloPost();
             post.Id_Post = Int32.Parse(id);
             post.Contenido = contenido;
+            post.url_contenido = url;
+            post.Tags = Tags;
             post.GuardarPost();
         }
 
