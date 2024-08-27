@@ -7,6 +7,7 @@ using System.Web.Http;
 using Controlador;
 using System.Data;
 using ApiGrupos.Models;
+using ApiGrupos.DTO;
 
 namespace ApiGrupos.Controllers
 {
@@ -24,7 +25,7 @@ namespace ApiGrupos.Controllers
             {
                 GrupoModel g = new GrupoModel();
                 g.id_grupo = Int32.Parse(grupo["id_grupo"].ToString());
-                g.nombre_grupo = grupo["nombre"].ToString();
+                g.nombre_grupo = grupo["nombre_grupo"].ToString();
 
                 ListaDeGrupos.Add(g);
             }
@@ -32,15 +33,17 @@ namespace ApiGrupos.Controllers
         }
 
         [Route("ApiGrupos/grupo/{id_grupo:int}/integrantes")]
-        public List<GrupoModel> GetIntegrantes()
-        {
-            DataTable integrantes = ControlGrupo.ObtenerIntegrantesDeGrupo();
 
-            List<GrupoModel> ListaDeIntegrantes = new List<GrupoModel>();
+        public List<GrupoModelDTO> GetIntegrantes(int id_grupo)
+        {
+            DataTable integrantes = ControlGrupo.ObtenerIntegrantesDeGrupo(id_grupo);
+
+            List<GrupoModelDTO> ListaDeIntegrantes = new List<GrupoModelDTO>();
 
             foreach (DataRow integrante in integrantes.Rows)
             {
-                GrupoModel g = new GrupoModel();
+                GrupoModelDTO g = new GrupoModelDTO();
+                
                 g.nombre_grupo = integrante["nombre_grupo"].ToString();
                 g.nombre_usuario = integrante["nombre_usuario"].ToString();
                 g.rol = integrante["rol"].ToString();

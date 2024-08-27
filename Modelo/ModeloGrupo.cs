@@ -79,22 +79,22 @@ namespace Modelos
             return grupos;
         }
 
-        public List<ModeloGrupo> ObtenerIntegrantesDeGrupo()
+        public List<ModeloGrupo> ObtenerIntegrantesDeGrupo(int id)
         {
             List<ModeloGrupo> grupos = new List<ModeloGrupo>();
 
             string sql = $"SELECT cuenta.nombre_usuario, grupos.nombre_grupo AS nombre_grupo, conforma.rol " +
                          $"FROM cuenta JOIN conforma ON cuenta.id_cuenta = conforma.id_cuenta " +
                          $"JOIN grupos ON conforma.id_grupo = grupos.id_grupo " +
-                         $"WHERE grupos.id_grupo ='{this.id_grupo}'";
+                         $"WHERE grupos.id_grupo ='{id}'";
             this.Comando.CommandText = sql;
             this.Lector = this.Comando.ExecuteReader();
 
             while (this.Lector.Read())
             {
                 ModeloGrupo grupo = new ModeloGrupo();
-                grupo.nombre_grupo = this.Lector["nombre_grupo"].ToString();
                 grupo.nombre_usuario = this.Lector["nombre_usuario"].ToString();
+                grupo.nombre_grupo = this.Lector["nombre_grupo"].ToString();
                 grupo.rol = this.Lector["rol"].ToString();
                 grupos.Add(grupo);
             }

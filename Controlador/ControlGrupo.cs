@@ -98,7 +98,7 @@ namespace Controlador
 
         }
 
-        public static DataTable ObtenerIntegrantesDeGrupo()
+        public static DataTable ObtenerIntegrantesDeGrupo(int id_grupo)
         {
             DataTable tabla = new DataTable();
             tabla.Columns.Add("nombre_grupo", typeof(string));
@@ -107,7 +107,7 @@ namespace Controlador
 
 
             ModeloGrupo grupo = new ModeloGrupo();
-            foreach (ModeloGrupo p in grupo.ObtenerIntegrantesDeGrupo())
+            foreach (ModeloGrupo p in grupo.ObtenerIntegrantesDeGrupo(id_grupo))
             {
                 DataRow fila = tabla.NewRow();
                 fila["nombre_grupo"] = p.nombre_grupo;
