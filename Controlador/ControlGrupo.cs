@@ -144,15 +144,15 @@ namespace Controlador
             grupo.id_cuenta = Int32.Parse(id_cuenta);
             grupo.id_grupo = Int32.Parse(id_grupo);
             grupo.rol = rol;
-            //if (grupo.FormaParteDelGrupo())
-            //{
+            if (grupo.FormaParteDelGrupo())
+            {
                 grupo.AgregarCuentaEnGrupo();
                 resultado.Add("resultado", "true");
                 return resultado;
-            //}
+            }
+            resultado.Add("resultado", "false");
+            return resultado;
 
-            //resultado.Add("resultado", "false");
-            //return resultado;
         }
         public void EliminarCuentaDeGrupo()
         {

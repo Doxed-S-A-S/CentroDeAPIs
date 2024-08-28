@@ -129,13 +129,18 @@ namespace Modelos
         {
             string sql = $"SELECT COUNT(*) FROM conforma WHERE id_grupo = '{this.id_grupo}' AND id_cuenta = '{this.id_cuenta}'";
             this.Comando.CommandText = sql;
-            int count = (int)this.Comando.ExecuteScalar();
+            string count = this.Comando.ExecuteScalar().ToString();
 
-            return count > 0;
+            if (count == "0")
+            { 
+                return true;
+            }
+
+            return false;
         }
         public void AgregarCuentaEnGrupo()
         {
-            string sql = $"insert into conforma (id_cuenta,id_grupo) values('{this.id_cuenta}','{this.id_grupo}')";
+            string sql = $"insert into conforma (id_cuenta,id_grupo,rol) values('{this.id_cuenta}','{this.id_grupo}','{this.rol}')";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }
