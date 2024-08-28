@@ -158,6 +158,7 @@
     <Compile Include="Controllers\GrupoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="DTO\AgregarCuentaDto.cs" />
     <Compile Include="DTO\GetGruposDTO.cs" />
     <Compile Include="DTO\GetIntegrantesDTO.cs" />
     <Compile Include="Global.asax.cs">

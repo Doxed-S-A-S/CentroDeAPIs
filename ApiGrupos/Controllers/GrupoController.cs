@@ -65,17 +65,17 @@ namespace ApiGrupos.Controllers
         }
         
         [Route("ApiGrupos/grupo/agregarCuenta")]
-        public IHttpActionResult PostAgregarCuentaEnGrupo(string rol, int id_grupo, int id_cuenta)
+        public IHttpActionResult PostAgregarCuentaEnGrupo(AgregarCuentaDto a)
         {
 
-            Dictionary<string, string> g = ControlGrupo.AgregarCuentaEnGrupo(rol, id_grupo.ToString(), id_cuenta.ToString());
+            Dictionary<string, string> g = ControlGrupo.AgregarCuentaEnGrupo(a.rol,a.id_grupo.ToString(),a.id_cuenta.ToString());
             if (g["resultado"] == "true")
             {
                 string mensajeOK = "cuenta agregada al grupo con exito";
                 return Ok(mensajeOK);
             }
             string mensajeError = "la cuenta ya esta agregada a este grupo";
-            return Ok(mensajeError);
+            return BadRequest(mensajeError);
         }
 
         [Route("ApiGrupos/grupo/{id_grupo:int}")]
