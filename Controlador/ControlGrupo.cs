@@ -137,14 +137,22 @@ namespace Controlador
             return resultado;
         }
 
-        public void AgregarCuentaEnGrupo(string rol, string id_grupo, string id_cuenta ) 
+        public static Dictionary<string, string> AgregarCuentaEnGrupo(string rol, string id_grupo, string id_cuenta)
         {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
             ModeloGrupo grupo = new ModeloGrupo();
             grupo.id_cuenta = Int32.Parse(id_cuenta);
             grupo.id_grupo = Int32.Parse(id_grupo);
             grupo.rol = rol;
+            //if (grupo.FormaParteDelGrupo())
+            //{
+                grupo.AgregarCuentaEnGrupo();
+                resultado.Add("resultado", "true");
+                return resultado;
+            //}
 
-            grupo.AgregarCuentaEnGrupo();
+            //resultado.Add("resultado", "false");
+            //return resultado;
         }
         public void EliminarCuentaDeGrupo()
         {

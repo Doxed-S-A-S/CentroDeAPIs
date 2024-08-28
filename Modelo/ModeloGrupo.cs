@@ -125,9 +125,17 @@ namespace Modelos
 
         }
 
+        public bool FormaParteDelGrupo()
+        {
+            string sql = $"SELECT COUNT(*) FROM conforma WHERE id_grupo = '{this.id_grupo}' AND id_cuenta = '{this.id_cuenta}'";
+            this.Comando.CommandText = sql;
+            int count = (int)this.Comando.ExecuteScalar();
+
+            return count > 0;
+        }
         public void AgregarCuentaEnGrupo()
         {
-            string sql = $"insert into conforma (id_cuenta,id_grupo,rol) values('{this.id_cuenta}','{this.id_grupo}','{this.rol}')";
+            string sql = $"insert into conforma (id_cuenta,id_grupo) values('{this.id_cuenta}','{this.id_grupo}')";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }

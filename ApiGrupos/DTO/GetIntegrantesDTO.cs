@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ApiGrupos.DTO
 {
-    public class GrupoModelDTO
+    public class GetIntegrantesDTO
     {
         public string nombre_usuario;
         public string nombre_grupo;
