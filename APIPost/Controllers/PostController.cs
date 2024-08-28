@@ -15,7 +15,7 @@ namespace APIPost.Controllers
         [Route("LinugaLink/post/crear/")]
         public IHttpActionResult CrearPost(PostModel post)
         {
-            ControlPosts.CrearPost(post.Contenido,post.url_contenido,post.Tags, post.Id_Cuenta.ToString());
+            ControlPosts.CrearPost(post.Contenido, post.url_contenido, post.Tags, post.Id_Cuenta.ToString());
             Dictionary<string, string> resultado = new Dictionary<string, string>();
             resultado.Add("mensaje", "post creado");
             return Ok(resultado);
@@ -23,7 +23,7 @@ namespace APIPost.Controllers
 
         [Route("LinguaLink/post/{idPost:int}")]
         [HttpPut]
-        public IHttpActionResult ModificarPost(int idPost,PostModel post)
+        public IHttpActionResult ModificarPost(int idPost, PostModel post)
         {
             Dictionary<string, string> resultado = new Dictionary<string, string>();
             ControlPosts.ModificarPost(idPost.ToString(), post.Contenido, post.url_contenido, post.Tags);
@@ -43,4 +43,5 @@ namespace APIPost.Controllers
             resultado.Add("Resultado", "Post eliminado");
             return Ok(resultado);
         }
+    }
 }
