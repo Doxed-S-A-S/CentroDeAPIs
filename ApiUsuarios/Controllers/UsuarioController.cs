@@ -42,7 +42,7 @@ namespace ApiUsuario.Controllers
             return Ok(resultado);
         }
 
-        [Route("LinguaLink/usuarios/preferencias/{idCuenta:int}")]
+        [Route("ApiUsuarios/usuarios/preferencias/{idCuenta:int}")]
         [HttpGet]
         public IHttpActionResult PreferenciasGet(int idCuenta)
         {
@@ -59,12 +59,12 @@ namespace ApiUsuario.Controllers
                 preferencias.muro_privado = bool.Parse(resultado["muro privado"]);
                 return Ok(preferencias);
             }
-        return NotFound();
+            return NotFound();
         }
 
-        [Route("LinguaLink/usuarios/preferencias/{idCuenta:int}")]
+        [Route("ApiUsuarios/usuarios/preferencias/{idCuenta:int}")]
         [HttpPut]
-        public IHttpActionResult PreferenciasPut(int idCuenta,PreferenciasModel Pref)
+        public IHttpActionResult PreferenciasPut(int idCuenta, PreferenciasModel Pref)
         {
             Dictionary<string, string> preferencias = new Dictionary<string, string>();
             bool existe = ControlCuenta.ModificarPreferencias(idCuenta.ToString(), Pref.idioma_app, Pref.recordar_contraseña, Pref.preferencias_contenido,
@@ -82,6 +82,24 @@ namespace ApiUsuario.Controllers
             }
 
             return NotFound();
+        }
+
+        [Route("ApiUsuarios/usuarios/actualizarPass/{idCuenta:int}")]
+        [HttpPut]
+        public IHttpActionResult ModificarContraseña(int idCuenta, UsuarioModel usuario)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            ControlCuenta.ModificarContraseña(idCuenta.ToString(), usuario.contraseña);
+
+        }
+
+        [Route("ApiUsuarios/usuarios/actualizarNombre/{idCuenta:int}")]
+        [HttpPut]
+        public IHttpActionResult ModificarCorreo(int idCuenta, UsuarioModel usuario)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            ControlCuenta.ModificarCorreo(idCuenta.ToString(), usuario.contraseña);
+
         }
     }
 }
