@@ -85,22 +85,31 @@ namespace ApiUsuario.Controllers
             return NotFound();
         }
 
-        /*[Route("ApiUsuarios/usuarios/actualizarPass/{idCuenta:int}")]
+        /* [Route("ApiUsuarios/usuarios/actualizarPass/{idCuenta:int}")]
+         [HttpPut]
+         public IHttpActionResult ModificarContraseña(int idCuenta, UsuarioModel usuario)
+         {
+             Dictionary<string, string> resultado = new Dictionary<string, string>();
+             ControlCuenta.ModificarContraseña(idCuenta.ToString(), usuario.contraseña);
+
+         }*/
+
+        [Route("LinguaLink/usuarios/actualizarEmail/{id_cuenta:int}")]
         [HttpPut]
-        public IHttpActionResult ModificarContraseña(int idCuenta, UsuarioModel usuario)
+        public IHttpActionResult ModificarCorreo(int id_cuenta, string email, UsuarioModel usuario)
         {
             Dictionary<string, string> resultado = new Dictionary<string, string>();
-            ControlCuenta.ModificarContraseña(idCuenta.ToString(), usuario.contraseña);
+            ControlCuenta.ModificarCorreo(id_cuenta.ToString(), usuario.email);
+            bool existe = ControlCuenta.ModificarCorreo(id_cuenta.ToString(),usuario.email);
+
+            if (existe)
+            {
+                resultado.Add("mensaje", "Correo modificado");
+                return Ok(resultado);
+            }
+
+            return NotFound();
 
         }
-
-        [Route("ApiUsuarios/usuarios/actualizarNombre/{idCuenta:int}")]
-        [HttpPut]
-        public IHttpActionResult ModificarCorreo(int idCuenta, UsuarioModel usuario)
-        {
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-            ControlCuenta.ModificarCorreo(idCuenta.ToString(), usuario.contraseña);
-
-        }*/
     }
 }

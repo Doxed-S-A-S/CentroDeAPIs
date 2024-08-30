@@ -56,7 +56,7 @@ namespace Modelos
 
         public void ModificarCorreo()
         {
-            string sql = $"update cuenta set email ='{this.email}'where id_cuenta ='{this.id_cuenta}'";
+            string sql = $"update registro set email ='{this.email}'where id_cuenta ='{this.id_cuenta}'";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }
@@ -266,6 +266,26 @@ namespace Modelos
                 $"muro_privado = {this.muro_privado},tema_de_apariencia = '{this.tema_de_apariencia}' where id_preferencia = {this.id_preferencia}";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
+
+        }
+
+        public bool Buscar(int id_cuenta)
+        {
+            string sql = $"SELECT * FROM registro WHERE eliminado = false and id_cuenta = {id_cuenta}";
+            this.Comando.CommandText = sql;
+            this.Lector = this.Comando.ExecuteReader();
+
+            if (this.Lector.HasRows)
+            {
+                this.Lector.Read();
+                this.id_cuenta = Int32.Parse(this.Lector["Id"].ToString());
+                this.email = this.Lector["Nombre"].ToString();
+                this.Lector.Close();
+                return true;
+
+            }
+            this.Lector.Close();
+            return false;
 
         }
     }

@@ -30,13 +30,24 @@ namespace Controlador
             cuenta.ModificarContraseña();
         }
 
-        public static void ModificarCorreo(string id, string email)
+        public static bool ModificarCorreo(string id_cuenta, string email)
         {
             ModeloCuenta cuenta = new ModeloCuenta();
-            cuenta.id_cuenta = Int32.Parse(id);
+            cuenta.id_cuenta = Int32.Parse(id_cuenta);
             cuenta.email = email;
 
-            cuenta.ModificarCorreo();
+            if (cuenta.BuscarCuenta(Int32.Parse(id_cuenta)))
+            {
+                cuenta.email = email;
+
+                cuenta.ModificarCorreo();
+                return true;
+            }
+
+            return false;
+
+
+          
         }
 
         public static Dictionary<string, string> BuscarUsuario(string id)
