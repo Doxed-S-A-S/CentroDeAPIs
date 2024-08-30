@@ -33,7 +33,8 @@ namespace ApiUsuario.Controllers
             return ListaDeGrupos;
         }
 
-        [Route("ApiUsuarios/CrearUsuario/")]
+        [Route("LinguaLink/CrearUsuario/")]
+        [HttpPost]
         public IHttpActionResult Post(UsuarioModel usuario)
         {
             ControlCuenta.CrearCuenta(usuario.nombre_usuario, usuario.email, usuario.contraseña);
@@ -84,7 +85,7 @@ namespace ApiUsuario.Controllers
             return NotFound();
         }
 
-        [Route("ApiUsuarios/usuarios/actualizarPass/{idCuenta:int}")]
+        /*[Route("ApiUsuarios/usuarios/actualizarPass/{idCuenta:int}")]
         [HttpPut]
         public IHttpActionResult ModificarContraseña(int idCuenta, UsuarioModel usuario)
         {
@@ -100,6 +101,6 @@ namespace ApiUsuario.Controllers
             Dictionary<string, string> resultado = new Dictionary<string, string>();
             ControlCuenta.ModificarCorreo(idCuenta.ToString(), usuario.contraseña);
 
-        }
+        }*/
     }
 }

@@ -8,7 +8,7 @@ namespace Modelos
 {
     public class ModeloCuenta : Modelo
     {
-        public int id_cuenta;
+        public long id_cuenta;
         public string nombre_usuario;
         public string email;
         public string contraseña; //placeholder
@@ -18,16 +18,32 @@ namespace Modelos
         public long id_muro;
         public long id_preferencia;
 
+        public void Registro()
+        {
+            CrearCuenta();
+            string sql = $"insert into registro (nombre_usuario,email,contrasena,id_cuenta) values(@username,@email,@contrasena,@id_cuenta)";
+            this.Comando.CommandText = sql;
+            this.Comando.Parameters.AddWithValue("@username", this.nombre_usuario);
+            this.Comando.Parameters.AddWithValue("@email", this.email);
+            this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
+            this.Comando.Parameters.AddWithValue("@id_cuenta", this.id_cuenta);
+            this.Comando.Prepare();
+            this.Comando.ExecuteNonQuery();
+            PrintDesktop(sql);
 
+        }
         public void CrearCuenta()
         {
             CrearUsuario();
             CrearMuro();
             CrearPreferencias();
-            string sql = $"insert into cuenta (nombre_usuario,email,contrasena,imagen_perfil,id_usuario,id_muro,id_preferencia)" +
-                $" values('{this.nombre_usuario}','{this.email}','{this.contraseña}','{this.imagen_perfil}',{this.id_usuario},{this.id_muro},{this.id_preferencia})";
+            string sql = $"insert into cuenta (nombre_usuario,imagen_perfil,id_usuario,id_muro,id_preferencia)" +
+                $" values(@nombre_usuario,'{this.imagen_perfil}',{this.id_usuario},{this.id_muro},{this.id_preferencia})";
             this.Comando.CommandText = sql;
+            this.Comando.Parameters.AddWithValue("@nombre_usuario", this.nombre_usuario);
+            this.Comando.Prepare();
             this.Comando.ExecuteNonQuery();
+            this.id_cuenta = this.Comando.LastInsertedId;
             PrintDesktop(sql);
         }
 

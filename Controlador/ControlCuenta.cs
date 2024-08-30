@@ -18,10 +18,9 @@ namespace Controlador
             cuenta.nombre_usuario = nombreUsuario;
             cuenta.email = email;
             cuenta.contraseña = contraseña;
-            cuenta.CrearCuenta();
 
+            cuenta.Registro();
         }
-
         public static void ModificarContraseña(string id, string contraseña)
         {
             ModeloCuenta cuenta = new ModeloCuenta();
