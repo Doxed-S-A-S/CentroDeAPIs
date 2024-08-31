@@ -32,6 +32,8 @@ namespace ApiGrupos.Controllers
             return ListaDeGrupos;
         }
 
+
+
         [Route("ApiGrupos/grupo/{id_grupo:int}/integrantes")]
 
         public List<GetIntegrantesDTO> GetIntegrantes(int id_grupo)
@@ -55,7 +57,7 @@ namespace ApiGrupos.Controllers
 
 
 
-        [Route("ApiGrupos/grupo/")]
+        [Route("ApiGrupos/grupo")]
         public IHttpActionResult PostCrearGrupo(GrupoModel grupo)
         {
             ControlGrupo.CrearGrupo(grupo.nombre_grupo, grupo.descripcion, grupo.banner);
@@ -63,13 +65,15 @@ namespace ApiGrupos.Controllers
             resultado.Add("mensaje", "grupo creado");
             return Ok(resultado);
         }
-        
-        [Route("ApiGrupos/grupo/agregarCuenta")]
-        public IHttpActionResult PostAgregarCuentaEnGrupo(AgregarCuentaDto a)
+
+
+
+        [Route("ApiGrupos/grupo/{id_grupo:int}/agregarCuenta")]
+        public IHttpActionResult PostAgregarCuentaEnGrupo(int id_grupo, AgregarCuentaDto a)
         {
 
-            Dictionary<string, string> g = ControlGrupo.AgregarCuentaEnGrupo(a.rol,a.id_grupo.ToString(),a.id_cuenta.ToString());
-            if (g["resultado"] == "true")
+            var resultado = ControlGrupo.AgregarCuentaEnGrupo(a.rol, id_grupo.ToString(), a.id_cuenta.ToString());
+            if (resultado["resultado"] == "true")
             {
                 string mensajeOK = "cuenta agregada al grupo con exito";
                 return Ok(mensajeOK);
@@ -77,6 +81,8 @@ namespace ApiGrupos.Controllers
             string mensajeError = "la cuenta ya esta agregada a este grupo";
             return BadRequest(mensajeError);
         }
+
+
 
         [Route("ApiGrupos/grupo/{id_grupo:int}")]
         public IHttpActionResult Put(int id_grupo, GrupoModel grupo)
