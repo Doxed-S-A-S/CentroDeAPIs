@@ -127,16 +127,15 @@ namespace Modelos
 
         public bool FormaParteDelGrupo()
         {
-            string sql = $"SELECT COUNT(*) FROM conforma WHERE id_grupo = '{this.id_grupo}' AND id_cuenta = '{this.id_cuenta}'";
+            string sql = "SELECT COUNT(*) FROM conforma WHERE id_grupo = @id_grupo AND id_cuenta = @id_cuenta";
             this.Comando.CommandText = sql;
-            string count = this.Comando.ExecuteScalar().ToString();
+            this.Comando.Parameters.Clear();
+            this.Comando.Parameters.AddWithValue("@id_grupo", this.id_grupo);
+            this.Comando.Parameters.AddWithValue("@id_cuenta", this.id_cuenta);
 
-            if (count == "0")
-            { 
-                return true;
-            }
+            int count = Convert.ToInt32(this.Comando.ExecuteScalar());
 
-            return false;
+            return count == 0;
         }
         public void AgregarCuentaEnGrupo()
         {

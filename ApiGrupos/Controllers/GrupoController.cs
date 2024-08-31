@@ -73,6 +73,7 @@ namespace ApiGrupos.Controllers
         {
 
             var resultado = ControlGrupo.AgregarCuentaEnGrupo(a.rol, id_grupo.ToString(), a.id_cuenta.ToString());
+
             if (resultado["resultado"] == "true")
             {
                 string mensajeOK = "cuenta agregada al grupo con exito";
@@ -87,21 +88,50 @@ namespace ApiGrupos.Controllers
         [Route("ApiGrupos/grupo/{id_grupo:int}")]
         public IHttpActionResult Put(int id_grupo, GrupoModel grupo)
         {
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
             bool existe = ControlGrupo.ModificarGrupo(id_grupo.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.banner);
 
             if (existe)
             {
-                resultado.Add("mensaje", "grupo creado");
-                return Ok(resultado);
+                return Ok("Grupo modificado con éxito");
             }
 
             return NotFound();
-
         }
 
 
+        [Route("ApiGrupos/grupo/{id_grupo:int}")]
+        public IHttpActionResult DeleteGrupo(int id_grupo)
+        {
+            var resultado = ControlGrupo.EliminarGrupo(id_grupo.ToString());
 
+            if (resultado == true)
+            {
+                return Ok("Grupo eliminado");
+            }
+
+            string mensajeError = "El grupo no existe";
+            return BadRequest(mensajeError);
+        }
+
+
+        [Route("ApiGrupos/grupo/{id_grupo:int}/cuenta/{id_cuenta:int}")]
+
+        public IHttpActionResult Delete(int id_grupo, int id_cuenta)
+        {
+            var resultado = ControlGrupo.EliminarCuentaDeGrupo(id_grupo.ToString(), id_cuenta.ToString());
+
+            if(resultado["resultado"] == "true")
+            {
+                return Ok("Cuenta eliminada del grupo con éxito");
+            }
+
+            string mensajeError = "La cuenta no existe en este grupo";
+            return BadRequest(mensajeError);
+        }
 
     }
+
+
+
+
 }
