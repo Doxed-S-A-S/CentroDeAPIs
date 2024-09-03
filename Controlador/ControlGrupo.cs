@@ -176,10 +176,24 @@ namespace Controlador
 
 
         }
-        public void CambiarRolDeCuentaEnGrupo()
+        public static Dictionary<string, string> CambiarRolDeCuentaEnGrupo(string id_cuenta, string id_grupo, string rol)
         {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
 
+            ModeloGrupo grupo = new ModeloGrupo();
+            grupo.id_cuenta = Int32.Parse(id_cuenta);
+            grupo.id_grupo = Int32.Parse(id_grupo);
+            grupo.rol = rol;
 
+            if (!grupo.FormaParteDelGrupo())
+            {
+
+                resultado.Add("resultado", "false");
+                return resultado;
+            }
+            grupo.CambiarRolDeCuentaEnGrupo();
+            resultado.Add("resultado", "true");
+            return resultado;
         }
     }
 }

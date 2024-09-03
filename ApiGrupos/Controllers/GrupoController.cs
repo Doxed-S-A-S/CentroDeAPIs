@@ -15,6 +15,8 @@ namespace ApiGrupos.Controllers
     {
 
         [Route("ApiGrupos/grupos")]
+
+        [HttpGet]
         public List<GetGruposDTO> GetGrupos()
         {
             DataTable grupos = ControlGrupo.ObtenerGrupos();
@@ -36,6 +38,7 @@ namespace ApiGrupos.Controllers
 
         [Route("ApiGrupos/grupo/{id_grupo:int}/integrantes")]
 
+        [HttpGet]
         public List<GetIntegrantesDTO> GetIntegrantes(int id_grupo)
         {
             DataTable integrantes = ControlGrupo.ObtenerIntegrantesDeGrupo(id_grupo.ToString());
@@ -58,6 +61,8 @@ namespace ApiGrupos.Controllers
 
 
         [Route("ApiGrupos/grupo")]
+
+        [HttpPost]
         public IHttpActionResult PostCrearGrupo(GrupoModel grupo)
         {
             ControlGrupo.CrearGrupo(grupo.nombre_grupo, grupo.descripcion, grupo.banner);
@@ -69,6 +74,8 @@ namespace ApiGrupos.Controllers
 
 
         [Route("ApiGrupos/grupo/{id_grupo:int}/agregarCuenta")]
+
+        [HttpPost]
         public IHttpActionResult PostAgregarCuentaEnGrupo(int id_grupo, AgregarCuentaDto a)
         {
 
@@ -85,8 +92,10 @@ namespace ApiGrupos.Controllers
 
 
 
-        [Route("ApiGrupos/grupo/{id_grupo:int}")]
-        public IHttpActionResult Put(int id_grupo, GrupoModel grupo)
+        [Route("ApiGrupos/grupo/{id_grupo:int}/modificar-grupo")]
+
+        [HttpPut]
+        public IHttpActionResult PutModificarGrupo(int id_grupo, GrupoModel grupo)
         {
             bool existe = ControlGrupo.ModificarGrupo(id_grupo.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.banner);
 
@@ -99,7 +108,29 @@ namespace ApiGrupos.Controllers
         }
 
 
+
+        [Route("ApiGrupos/grupo/{id_grupo:int}/cambiar-rol")]
+
+        [HttpPut]
+
+        public IHttpActionResult PutCambiarRolDeCuentaEnGrupo(ModificarRolDeCuentaEnGrupoDTO grupo, int id_grupo)
+        {
+            var resultado = ControlGrupo.CambiarRolDeCuentaEnGrupo(grupo.id_cuenta.ToString(),id_grupo.ToString(), grupo.rol);
+
+            if (resultado["resultado"] == "true")
+            {
+                return Ok("Rol cambiado");
+            }
+
+            string mensajeError = "No existe la cuenta indicada en el grupo indicado";
+            return BadRequest(mensajeError);
+        }
+
+
+        
         [Route("ApiGrupos/grupo/{id_grupo:int}")]
+
+        [HttpDelete]
         public IHttpActionResult DeleteGrupo(int id_grupo)
         {
             var resultado = ControlGrupo.EliminarGrupo(id_grupo.ToString());
@@ -116,7 +147,8 @@ namespace ApiGrupos.Controllers
 
         [Route("ApiGrupos/grupo/{id_grupo:int}/cuenta/{id_cuenta:int}")]
 
-        public IHttpActionResult Delete(int id_grupo, int id_cuenta)
+        [HttpDelete]
+        public IHttpActionResult DeleteCuentaDeGrupo(int id_grupo, int id_cuenta)
         {
             var resultado = ControlGrupo.EliminarCuentaDeGrupo(id_grupo.ToString(), id_cuenta.ToString());
 
