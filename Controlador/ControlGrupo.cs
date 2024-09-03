@@ -98,7 +98,7 @@ namespace Controlador
 
         }
 
-        public static DataTable ObtenerIntegrantesDeGrupo(int id_grupo)
+        public static DataTable ObtenerIntegrantesDeGrupo(string id_grupo)
         {
             DataTable tabla = new DataTable();
             tabla.Columns.Add("nombre_grupo", typeof(string));
@@ -107,7 +107,7 @@ namespace Controlador
 
 
             ModeloGrupo grupo = new ModeloGrupo();
-            foreach (ModeloGrupo p in grupo.ObtenerIntegrantesDeGrupo(id_grupo))
+            foreach (ModeloGrupo p in grupo.ObtenerIntegrantesDeGrupo(Int32.Parse(id_grupo)))
             {
                 DataRow fila = tabla.NewRow();
                 fila["nombre_grupo"] = p.nombre_grupo;
@@ -120,11 +120,11 @@ namespace Controlador
 
         }
 
-        public static Dictionary<string, string> BuscarGrupo(int id_grupo)
+        public static Dictionary<string, string> BuscarGrupo(string id_grupo)
         {
             Dictionary<string, string> resultado = new Dictionary<string, string>();
             ModeloGrupo grupo = new ModeloGrupo();
-            if (grupo.BuscarGrupo(id_grupo))
+            if (grupo.BuscarGrupo(Int32.Parse(id_grupo)))
             {
                 resultado.Add("resultado", "true");
                 resultado.Add("id", grupo.id_grupo.ToString());

@@ -38,7 +38,7 @@ namespace ApiGrupos.Controllers
 
         public List<GetIntegrantesDTO> GetIntegrantes(int id_grupo)
         {
-            DataTable integrantes = ControlGrupo.ObtenerIntegrantesDeGrupo(id_grupo);
+            DataTable integrantes = ControlGrupo.ObtenerIntegrantesDeGrupo(id_grupo.ToString());
 
             List<GetIntegrantesDTO> ListaDeIntegrantes = new List<GetIntegrantesDTO>();
 

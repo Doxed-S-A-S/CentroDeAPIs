@@ -133,9 +133,9 @@ namespace Modelos
             this.Comando.Parameters.AddWithValue("@id_grupo", this.id_grupo);
             this.Comando.Parameters.AddWithValue("@id_cuenta", this.id_cuenta);
 
-            int count = Convert.ToInt32(this.Comando.ExecuteScalar());
+            string count = this.Comando.ExecuteScalar().ToString();
 
-            return count == 0;
+            return count == "1";
         }
         public void AgregarCuentaEnGrupo()
         {
