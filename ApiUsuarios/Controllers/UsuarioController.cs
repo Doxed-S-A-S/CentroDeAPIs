@@ -112,24 +112,21 @@ namespace ApiUsuario.Controllers
 
          }*/
 
-        [Route("LinguaLink/usuarios/actualizarEmail/{idCuenta:int}")]
-        [HttpPut]
-        public IHttpActionResult ModificarCorreo(int idCuenta, UsuarioModel usuario)
+
+
+        [Route("LinguaLink/usuarios/Correo/{id:int}")]
+        [HttpPost]
+        public IHttpActionResult ModificarCorreo(int id, UsuarioModel usuario)
         {
             Dictionary<string, string> resultado = new Dictionary<string, string>();
-            bool existe = ControlCuenta.ModificarCorreo(idCuenta.ToString(),usuario.email);
+            bool existe = ControlCuenta.ModificarCorreo(id.ToString(), usuario.email);
 
             if (existe)
             {
                 resultado.Add("mensaje", "Correo modificado");
                 return Ok(resultado);
             }
-
             return NotFound();
-
         }
-        
-
-
     }
 }

@@ -57,7 +57,7 @@ namespace Modelos
 
         public bool ModificarCorreo(int id)
         {
-            if (BuscarRegistro(id))
+            if (VerificarRegistro(id))
             {
                 string sql = $"UPDATE registro set email = '{this.email}' where id_cuenta = {this.id_cuenta}";
                 this.Comando.CommandText = sql;
@@ -108,20 +108,15 @@ namespace Modelos
             return false;
         }
 
-        public bool BuscarRegistro(int id)
+        public bool VerificarRegistro(int id)
         {
-            string sql = $"select * from registro where id_cuenta = {id}"; // agregar join para ver si existe la cuenta
+            string sql = $"select count(*) from registro join cuenta on registro.id_cuenta = cuenta.id_cuenta " +
+                $"where registro.id_cuenta = {id} and eliminado = false";
             this.Comando.CommandText = sql;
-            this.Lector = this.Comando.ExecuteReader();
+            string resultado = this.Comando.ExecuteScalar().ToString();
 
-            if (this.Lector.HasRows)
-            {
-                this.Lector.Read();
-                this.email = this.Lector["email"].ToString();
-                this.contraseña = this.Lector["contrasena"].ToString();
-                this.Lector.Close();
+            if (resultado == "1")
                 return true;
-            }
             return false;
 
         }
