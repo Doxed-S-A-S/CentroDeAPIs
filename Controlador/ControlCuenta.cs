@@ -21,6 +21,16 @@ namespace Controlador
 
             cuenta.Registro();
         }
+        
+        public static bool Login (string nombre_usuario, string contraseña)
+        {
+            ModeloCuenta c = new ModeloCuenta();
+            c.nombre_usuario = nombre_usuario;
+            c.contraseña = contraseña;
+
+           return c.Autenticar();
+        }
+        
         public static void ModificarContraseña(string id, string contraseña)
         {
             ModeloCuenta cuenta = new ModeloCuenta();
@@ -30,24 +40,14 @@ namespace Controlador
             cuenta.ModificarContraseña();
         }
 
-        public static bool ModificarCorreo(string id_cuenta, string email)
+        public static void ModificarCorreo(string id_cuenta, string email)
         {
             ModeloCuenta cuenta = new ModeloCuenta();
             cuenta.id_cuenta = Int32.Parse(id_cuenta);
             cuenta.email = email;
 
-            if (cuenta.BuscarCuenta(Int32.Parse(id_cuenta)))
-            {
-                cuenta.email = email;
-
-                cuenta.ModificarCorreo();
-                return true;
-            }
-
-            return false;
-
-
-          
+            cuenta.ModificarCorreo();
+         
         }
 
         public static Dictionary<string, string> BuscarUsuario(string id)

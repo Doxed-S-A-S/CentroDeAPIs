@@ -43,6 +43,23 @@ namespace ApiUsuario.Controllers
             return Ok(resultado);
         }
 
+        [Route("LinguaLink/Usuarios/verificar/")]
+        public IHttpActionResult Put()
+        {
+            UsuarioModel usuario = new UsuarioModel();
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            bool existe = ControlCuenta.Login(usuario.nombre_usuario, usuario.contraseña);
+
+            if (existe)
+            {
+                resultado.Add("Mensaje", "Usuario creado");
+                return Ok(resultado);
+            }
+            return NotFound();
+        }
+        
+        
+        
         [Route("ApiUsuarios/usuarios/preferencias/{idCuenta:int}")]
         [HttpGet]
         public IHttpActionResult PreferenciasGet(int idCuenta)
@@ -111,5 +128,7 @@ namespace ApiUsuario.Controllers
             return NotFound();
 
         }
+
+
     }
 }

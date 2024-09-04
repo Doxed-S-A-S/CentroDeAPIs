@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +8,7 @@ namespace Modelos
 {
     public class ModeloCuenta : Modelo
     {
+        public long id_registro;
         public long id_cuenta;
         public string nombre_usuario;
         public string email;
@@ -56,7 +57,7 @@ namespace Modelos
 
         public void ModificarCorreo()
         {
-            string sql = $"update registro set email ='{this.email}'where id_cuenta ='{this.id_cuenta}'";
+            string sql = $"UPDATE registro set email ='{this.email}'where id_cuenta ='{this.id_cuenta}'";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }
@@ -92,7 +93,6 @@ namespace Modelos
                 this.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
                 this.nombre_usuario = this.Lector["nombre_usuario"].ToString();
                 //this.imagen_perfil = this.Lector["imagen_perfil"].ToString();
-                this.email = this.Lector["email"].ToString();
                 this.reports = Int32.Parse(this.Lector["reports"].ToString());
                 this.id_usuario = Int32.Parse(this.Lector["id_usuario"].ToString());
                 this.id_muro = Int32.Parse(this.Lector["id_muro"].ToString());
@@ -101,6 +101,20 @@ namespace Modelos
                 return true;
             }
             return false;
+        }
+
+        public bool Autenticar()
+        {
+            string sql = $"select count (*) from registro where nombre_usuario = {nombre_usuario} and eliminado = false";
+            this.Comando.CommandText = sql;
+            this.Comando.Parameters.AddWithValue("@nombre_usuario", nombre_usuario);
+            this.Comando.Parameters.AddWithValue("@contraseña", contraseña);
+            this.Comando.Prepare();
+            string resultado = this.Comando.ExecuteScalar().ToString();
+
+            if (resultado == "0")
+            return false;
+            return true;
         }
 
         public List<ModeloCuenta> ObtenerCuentas()
