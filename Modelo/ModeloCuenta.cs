@@ -55,11 +55,16 @@ namespace Modelos
             this.Comando.ExecuteNonQuery();
         }
 
-        public void ModificarCorreo()
+        public bool ModificarCorreo(int id)
         {
-            string sql = $"UPDATE registro set email ='{this.email}'where id_cuenta ='{this.id_cuenta}'";
-            this.Comando.CommandText = sql;
-            this.Comando.ExecuteNonQuery();
+            if (BuscarRegistro(id))
+            {
+                string sql = $"UPDATE registro set email = '{this.email}' where id_cuenta = {this.id_cuenta}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+                return true;
+            }
+            return false;
         }
 
         public void EliminarCuenta()
@@ -103,12 +108,30 @@ namespace Modelos
             return false;
         }
 
+        public bool BuscarRegistro(int id)
+        {
+            string sql = $"select * from registro where id_cuenta = {id}"; // agregar join para ver si existe la cuenta
+            this.Comando.CommandText = sql;
+            this.Lector = this.Comando.ExecuteReader();
+
+            if (this.Lector.HasRows)
+            {
+                this.Lector.Read();
+                this.email = this.Lector["email"].ToString();
+                this.contraseña = this.Lector["contrasena"].ToString();
+                this.Lector.Close();
+                return true;
+            }
+            return false;
+
+        }
+
         public bool Autenticar()
         {
-            string sql = $"select count (*) from registro where nombre_usuario = {nombre_usuario} and eliminado = false";
+            string sql = $"select count(*) from registro where nombre_usuario = @nombre_usuario and contrasena = @contrasena";
             this.Comando.CommandText = sql;
-            this.Comando.Parameters.AddWithValue("@nombre_usuario", nombre_usuario);
-            this.Comando.Parameters.AddWithValue("@contraseña", contraseña);
+            this.Comando.Parameters.AddWithValue("@nombre_usuario", this.nombre_usuario);
+            this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
             this.Comando.Prepare();
             string resultado = this.Comando.ExecuteScalar().ToString();
 

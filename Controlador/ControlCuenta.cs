@@ -40,15 +40,38 @@ namespace Controlador
             cuenta.ModificarContraseña();
         }
 
-        public static void ModificarCorreo(string id_cuenta, string email)
+        public static bool ModificarCorreo(string id_cuenta, string email)
         {
             ModeloCuenta cuenta = new ModeloCuenta();
-            cuenta.id_cuenta = Int32.Parse(id_cuenta);
-            cuenta.email = email;
+            if (cuenta.ModificarCorreo(Int32.Parse(id_cuenta)))
+            {
+                cuenta.id_cuenta = Int32.Parse(id_cuenta);
+                cuenta.email = email;
 
-            cuenta.ModificarCorreo();
-         
+                cuenta.ModificarCorreo(Int32.Parse(id_cuenta));
+                return true;
+            }
+            return false;
         }
+
+        public static bool ModificarPreferencias(string idCuenta, string idioma, Boolean recordarContraseña, string preferenciaContenido,
+    Boolean notificacionPush, Boolean privacidad, string apariencia)
+        {
+            ModeloCuenta cuenta = new ModeloCuenta();
+            if (cuenta.ObtenerDatosDeCuenta(Int32.Parse(idCuenta)))
+            {
+                cuenta.idioma_app = idioma;
+                cuenta.recordar_contraseña = recordarContraseña;
+                cuenta.preferencias_contenido = preferenciaContenido;
+                cuenta.notificaciones_push = notificacionPush;
+                cuenta.muro_privado = privacidad;
+                cuenta.tema_de_apariencia = apariencia;
+                cuenta.ModificarPreferencias();
+                return true;
+            }
+            return false;
+        }
+
 
         public static Dictionary<string, string> BuscarUsuario(string id)
         {
@@ -89,24 +112,6 @@ namespace Controlador
                 tabla.Rows.Add(fila);
             }
             return tabla;
-        }
-
-        public static bool ModificarPreferencias(string idCuenta,string idioma, Boolean recordarContraseña, string preferenciaContenido,
-            Boolean notificacionPush, Boolean privacidad, string apariencia)
-        {
-            ModeloCuenta cuenta = new ModeloCuenta();
-            if (cuenta.ObtenerDatosDeCuenta(Int32.Parse(idCuenta)))
-            {
-                cuenta.idioma_app = idioma;
-                cuenta.recordar_contraseña = recordarContraseña;
-                cuenta.preferencias_contenido = preferenciaContenido;
-                cuenta.notificaciones_push = notificacionPush;
-                cuenta.muro_privado = privacidad;
-                cuenta.tema_de_apariencia = apariencia;
-                cuenta.ModificarPreferencias();
-                return true;
-            }
-            return false;
         }
 
         public static Dictionary<string,string> BuscarPreferencia(string idCuenta)

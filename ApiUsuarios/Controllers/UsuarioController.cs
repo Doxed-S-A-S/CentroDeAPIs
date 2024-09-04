@@ -14,7 +14,8 @@ namespace ApiUsuario.Controllers
     {
 
         [Route("ApiUsuarios/ListarUsuarios")]
-        public List<UsuarioModel> Get()
+        [HttpGet]
+        public List<UsuarioModel> ListarUsuarios()
         {
             DataTable usuarios = ControlCuenta.ListarCuentas();
 
@@ -44,15 +45,15 @@ namespace ApiUsuario.Controllers
         }
 
         [Route("LinguaLink/Usuarios/verificar/")]
-        public IHttpActionResult Put()
+        [HttpPut]
+        public IHttpActionResult VerificarUser(UsuarioModel usuario)
         {
-            UsuarioModel usuario = new UsuarioModel();
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
             bool existe = ControlCuenta.Login(usuario.nombre_usuario, usuario.contraseña);
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
 
             if (existe)
             {
-                resultado.Add("Mensaje", "Usuario creado");
+                resultado.Add("Mensaje", "Login aprobado");
                 return Ok(resultado);
             }
             return NotFound();
@@ -111,13 +112,12 @@ namespace ApiUsuario.Controllers
 
          }*/
 
-        [Route("LinguaLink/usuarios/actualizarEmail/{id_cuenta:int}")]
+        [Route("LinguaLink/usuarios/actualizarEmail/{idCuenta:int}")]
         [HttpPut]
-        public IHttpActionResult ModificarCorreo(int id_cuenta, string email, UsuarioModel usuario)
+        public IHttpActionResult ModificarCorreo(int idCuenta, UsuarioModel usuario)
         {
             Dictionary<string, string> resultado = new Dictionary<string, string>();
-            ControlCuenta.ModificarCorreo(id_cuenta.ToString(), usuario.email);
-            bool existe = ControlCuenta.ModificarCorreo(id_cuenta.ToString(),usuario.email);
+            bool existe = ControlCuenta.ModificarCorreo(idCuenta.ToString(),usuario.email);
 
             if (existe)
             {
@@ -128,6 +128,7 @@ namespace ApiUsuario.Controllers
             return NotFound();
 
         }
+        
 
 
     }
