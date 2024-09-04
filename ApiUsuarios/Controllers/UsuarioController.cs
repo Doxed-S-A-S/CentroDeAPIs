@@ -14,7 +14,8 @@ namespace ApiUsuario.Controllers
     {
 
         [Route("ApiUsuarios/ListarUsuarios")]
-        public List<UsuarioModel> Get()
+        [HttpGet]
+        public List<UsuarioModel> ListarUsuarios()
         {
             DataTable usuarios = ControlCuenta.ListarCuentas();
 
@@ -33,7 +34,8 @@ namespace ApiUsuario.Controllers
             return ListaDeGrupos;
         }
 
-        [Route("ApiUsuarios/CrearUsuario/")]
+        [Route("LinguaLink/CrearUsuario/")]
+        [HttpPost]
         public IHttpActionResult Post(UsuarioModel usuario)
         {
             ControlCuenta.CrearCuenta(usuario.nombre_usuario, usuario.email, usuario.contraseña);
@@ -42,7 +44,24 @@ namespace ApiUsuario.Controllers
             return Ok(resultado);
         }
 
-        [Route("LinguaLink/usuarios/preferencias/{idCuenta:int}")]
+        [Route("LinguaLink/Usuarios/verificar/")]
+        [HttpPut]
+        public IHttpActionResult VerificarUser(UsuarioModel usuario)
+        {
+            bool existe = ControlCuenta.Login(usuario.nombre_usuario, usuario.contraseña);
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+
+            if (existe)
+            {
+                resultado.Add("Mensaje", "Login aprobado");
+                return Ok(resultado);
+            }
+            return NotFound();
+        }
+        
+        
+        
+        [Route("ApiUsuarios/usuarios/preferencias/{idCuenta:int}")]
         [HttpGet]
         public IHttpActionResult PreferenciasGet(int idCuenta)
         {
@@ -59,12 +78,12 @@ namespace ApiUsuario.Controllers
                 preferencias.muro_privado = bool.Parse(resultado["muro privado"]);
                 return Ok(preferencias);
             }
-        return NotFound();
+            return NotFound();
         }
 
-        [Route("LinguaLink/usuarios/preferencias/{idCuenta:int}")]
+        [Route("ApiUsuarios/usuarios/preferencias/{idCuenta:int}")]
         [HttpPut]
-        public IHttpActionResult PreferenciasPut(int idCuenta,PreferenciasModel Pref)
+        public IHttpActionResult PreferenciasPut(int idCuenta, PreferenciasModel Pref)
         {
             Dictionary<string, string> preferencias = new Dictionary<string, string>();
             bool existe = ControlCuenta.ModificarPreferencias(idCuenta.ToString(), Pref.idioma_app, Pref.recordar_contraseña, Pref.preferencias_contenido,
@@ -81,6 +100,32 @@ namespace ApiUsuario.Controllers
                 return Ok(preferencias);
             }
 
+            return NotFound();
+        }
+
+        /* [Route("ApiUsuarios/usuarios/actualizarPass/{idCuenta:int}")]
+         [HttpPut]
+         public IHttpActionResult ModificarContraseña(int idCuenta, UsuarioModel usuario)
+         {
+             Dictionary<string, string> resultado = new Dictionary<string, string>();
+             ControlCuenta.ModificarContraseña(idCuenta.ToString(), usuario.contraseña);
+
+         }*/
+
+
+
+        [Route("LinguaLink/usuarios/Correo/{id:int}")]
+        [HttpPost]
+        public IHttpActionResult ModificarCorreo(int id, UsuarioModel usuario)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            bool existe = ControlCuenta.ModificarCorreo(id.ToString(), usuario.email);
+
+            if (existe)
+            {
+                resultado.Add("mensaje", "Correo modificado");
+                return Ok(resultado);
+            }
             return NotFound();
         }
     }

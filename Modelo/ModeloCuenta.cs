@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +8,8 @@ namespace Modelos
 {
     public class ModeloCuenta : Modelo
     {
-        public int id_cuenta;
+        public long id_registro;
+        public long id_cuenta;
         public string nombre_usuario;
         public string email;
         public string contraseña; //placeholder
@@ -18,16 +19,32 @@ namespace Modelos
         public long id_muro;
         public long id_preferencia;
 
+        public void Registro()
+        {
+            CrearCuenta();
+            string sql = $"insert into registro (nombre_usuario,email,contrasena,id_cuenta) values(@username,@email,@contrasena,@id_cuenta)";
+            this.Comando.CommandText = sql;
+            this.Comando.Parameters.AddWithValue("@username", this.nombre_usuario);
+            this.Comando.Parameters.AddWithValue("@email", this.email);
+            this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
+            this.Comando.Parameters.AddWithValue("@id_cuenta", this.id_cuenta);
+            this.Comando.Prepare();
+            this.Comando.ExecuteNonQuery();
+            PrintDesktop(sql);
 
+        }
         public void CrearCuenta()
         {
             CrearUsuario();
             CrearMuro();
             CrearPreferencias();
-            string sql = $"insert into cuenta (nombre_usuario,email,contrasena,imagen_perfil,id_usuario,id_muro,id_preferencia)" +
-                $" values('{this.nombre_usuario}','{this.email}','{this.contraseña}','{this.imagen_perfil}',{this.id_usuario},{this.id_muro},{this.id_preferencia})";
+            string sql = $"insert into cuenta (nombre_usuario,imagen_perfil,id_usuario,id_muro,id_preferencia)" +
+                $" values(@nombre_usuario,'{this.imagen_perfil}',{this.id_usuario},{this.id_muro},{this.id_preferencia})";
             this.Comando.CommandText = sql;
+            this.Comando.Parameters.AddWithValue("@nombre_usuario", this.nombre_usuario);
+            this.Comando.Prepare();
             this.Comando.ExecuteNonQuery();
+            this.id_cuenta = this.Comando.LastInsertedId;
             PrintDesktop(sql);
         }
 
@@ -38,11 +55,16 @@ namespace Modelos
             this.Comando.ExecuteNonQuery();
         }
 
-        public void ModificarCorreo()
+        public bool ModificarCorreo(int id)
         {
-            string sql = $"update cuenta set email ='{this.email}'where id_cuenta ='{this.id_cuenta}'";
-            this.Comando.CommandText = sql;
-            this.Comando.ExecuteNonQuery();
+            if (VerificarRegistro(id))
+            {
+                string sql = $"UPDATE registro set email = '{this.email}' where id_cuenta = {this.id_cuenta}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+                return true;
+            }
+            return false;
         }
 
         public void EliminarCuenta()
@@ -76,7 +98,6 @@ namespace Modelos
                 this.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
                 this.nombre_usuario = this.Lector["nombre_usuario"].ToString();
                 //this.imagen_perfil = this.Lector["imagen_perfil"].ToString();
-                this.email = this.Lector["email"].ToString();
                 this.reports = Int32.Parse(this.Lector["reports"].ToString());
                 this.id_usuario = Int32.Parse(this.Lector["id_usuario"].ToString());
                 this.id_muro = Int32.Parse(this.Lector["id_muro"].ToString());
@@ -85,6 +106,33 @@ namespace Modelos
                 return true;
             }
             return false;
+        }
+
+        public bool VerificarRegistro(int id)
+        {
+            string sql = $"select count(*) from registro join cuenta on registro.id_cuenta = cuenta.id_cuenta " +
+                $"where registro.id_cuenta = {id} and eliminado = false";
+            this.Comando.CommandText = sql;
+            string resultado = this.Comando.ExecuteScalar().ToString();
+
+            if (resultado == "1")
+                return true;
+            return false;
+
+        }
+
+        public bool Autenticar()
+        {
+            string sql = $"select count(*) from registro where nombre_usuario = @nombre_usuario and contrasena = @contrasena";
+            this.Comando.CommandText = sql;
+            this.Comando.Parameters.AddWithValue("@nombre_usuario", this.nombre_usuario);
+            this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
+            this.Comando.Prepare();
+            string resultado = this.Comando.ExecuteScalar().ToString();
+
+            if (resultado == "0")
+            return false;
+            return true;
         }
 
         public List<ModeloCuenta> ObtenerCuentas()
@@ -250,6 +298,26 @@ namespace Modelos
                 $"muro_privado = {this.muro_privado},tema_de_apariencia = '{this.tema_de_apariencia}' where id_preferencia = {this.id_preferencia}";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
+
+        }
+
+        public bool Buscar(int id_cuenta)
+        {
+            string sql = $"SELECT * FROM registro WHERE eliminado = false and id_cuenta = {id_cuenta}";
+            this.Comando.CommandText = sql;
+            this.Lector = this.Comando.ExecuteReader();
+
+            if (this.Lector.HasRows)
+            {
+                this.Lector.Read();
+                this.id_cuenta = Int32.Parse(this.Lector["Id"].ToString());
+                this.email = this.Lector["Nombre"].ToString();
+                this.Lector.Close();
+                return true;
+
+            }
+            this.Lector.Close();
+            return false;
 
         }
     }

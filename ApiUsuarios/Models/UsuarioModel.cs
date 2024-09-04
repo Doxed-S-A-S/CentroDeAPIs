@@ -7,7 +7,6 @@ namespace ApiUsuarios.Models
 {
     public class UsuarioModel
     {
-        
         public string nombre_usuario;
         public string email;
         public string contraseña;
