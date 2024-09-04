@@ -117,7 +117,7 @@ namespace Modelos
 
         public void CrearUsuario()
         {
-            string sql = $"insert into usuario (nombre,apellido1,apellido2,pais,idiomas_hablados) " +
+            string sql = $"insert into usuario (nombre_grupo,apellido1,apellido2,pais,idiomas_hablados) " +
                 $"values ('{this.nombre}','{this.apellido1}','{this.apellido2}','{this.pais}','{this.idiomas_hablados}')";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
@@ -134,7 +134,7 @@ namespace Modelos
             if (Lector.HasRows)
             {
                 this.Lector.Read();
-                this.nombre = this.Lector["nombre"].ToString();
+                this.nombre = this.Lector["nombre_grupo"].ToString();
                 this.apellido1 = this.Lector["apellido1"].ToString();
                 this.apellido2 = this.Lector["apellido2"].ToString();
                 this.Lector.Close();

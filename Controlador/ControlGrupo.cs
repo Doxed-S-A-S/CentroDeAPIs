@@ -13,7 +13,7 @@ namespace Controlador
         public static void CrearGrupo(string nombreGrupo, string descripcion, string banner)
         {
             ModeloGrupo grupo = new ModeloGrupo();
-            grupo.nombre = nombreGrupo;
+            grupo.nombre_grupo = nombreGrupo;
             grupo.descripcion = descripcion;
             grupo.banner = banner;
 
@@ -25,7 +25,7 @@ namespace Controlador
             ModeloGrupo grupo = new Modelos.ModeloGrupo();
             if (grupo.BuscarGrupo(Int32.Parse(id)))
             {
-                grupo.nombre = nombre;
+                grupo.nombre_grupo = nombre;
                 grupo.descripcion = descripcion;
                 grupo.banner = banner;
 
@@ -40,7 +40,7 @@ namespace Controlador
         {
             ModeloGrupo grupo = new Modelos.ModeloGrupo();
             grupo.id_grupo = Int32.Parse(id);
-            grupo.nombre = nombre;
+            grupo.nombre_grupo = nombre;
 
             grupo.ModificarNombreGrupo();
 
@@ -50,7 +50,7 @@ namespace Controlador
         {
             ModeloGrupo grupo = new Modelos.ModeloGrupo();
             grupo.id_grupo = Int32.Parse(id);
-            grupo.nombre = descripcion;
+            grupo.nombre_grupo = descripcion;
 
             grupo.ModificarDescripcionGrupo();
 
@@ -60,7 +60,7 @@ namespace Controlador
         {
             ModeloGrupo grupo = new Modelos.ModeloGrupo();
             grupo.id_grupo = Int32.Parse(id);
-            grupo.nombre = banner;
+            grupo.nombre_grupo = banner;
 
             grupo.ModificarBannerGrupo();
 
@@ -82,8 +82,7 @@ namespace Controlador
         {
             DataTable tabla = new DataTable();
             tabla.Columns.Add("id_grupo", typeof(int));
-            tabla.Columns.Add("nombre", typeof(string));
-            tabla.Columns.Add("descripcion", typeof(string));
+            tabla.Columns.Add("nombre_grupo", typeof(string));
 
 
             ModeloGrupo grupo = new ModeloGrupo();
@@ -91,7 +90,7 @@ namespace Controlador
             {
                 DataRow fila = tabla.NewRow();
                 fila["id_grupo"] = p.id_grupo;
-                fila["nombre"] = p.nombre;
+                fila["nombre_grupo"] = p.nombre_grupo;
                 tabla.Rows.Add(fila);
             }
 
@@ -99,15 +98,37 @@ namespace Controlador
 
         }
 
-        public static Dictionary<string, string> BuscarGrupo(int id_grupo)
+        public static DataTable ObtenerIntegrantesDeGrupo(string id_grupo)
+        {
+            DataTable tabla = new DataTable();
+            tabla.Columns.Add("nombre_grupo", typeof(string));
+            tabla.Columns.Add("nombre_usuario", typeof(string));
+            tabla.Columns.Add("rol", typeof(string));
+
+
+            ModeloGrupo grupo = new ModeloGrupo();
+            foreach (ModeloGrupo p in grupo.ObtenerIntegrantesDeGrupo(Int32.Parse(id_grupo)))
+            {
+                DataRow fila = tabla.NewRow();
+                fila["nombre_grupo"] = p.nombre_grupo;
+                fila["nombre_usuario"] = p.nombre_usuario;
+                fila["rol"] = p.rol;
+                tabla.Rows.Add(fila);
+            }
+
+            return tabla;
+
+        }
+
+        public static Dictionary<string, string> BuscarGrupo(string id_grupo)
         {
             Dictionary<string, string> resultado = new Dictionary<string, string>();
             ModeloGrupo grupo = new ModeloGrupo();
-            if (grupo.BuscarGrupo(id_grupo))
+            if (grupo.BuscarGrupo(Int32.Parse(id_grupo)))
             {
                 resultado.Add("resultado", "true");
                 resultado.Add("id", grupo.id_grupo.ToString());
-                resultado.Add("nombre", grupo.nombre);
+                resultado.Add("nombre_grupo", grupo.nombre_grupo);
                 resultado.Add("descripcion", grupo.descripcion);
                 resultado.Add("banner", grupo.banner);
                 return resultado;
@@ -116,8 +137,63 @@ namespace Controlador
             return resultado;
         }
 
+        public static Dictionary<string, string> AgregarCuentaEnGrupo(string rol, string id_grupo, string id_cuenta)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+
+            ModeloGrupo grupo = new ModeloGrupo();
+            grupo.id_cuenta = Int32.Parse(id_cuenta);
+            grupo.id_grupo = Int32.Parse(id_grupo);
+            grupo.rol = rol;
+
+            if (!grupo.FormaParteDelGrupo())
+            {
+                grupo.AgregarCuentaEnGrupo();
+                resultado.Add("resultado", "true");
+                return resultado;
+            }
+            resultado.Add("resultado", "false");
+            return resultado;
+
+        }
+        public static Dictionary<string, string> EliminarCuentaDeGrupo(string id_grupo, string id_cuenta)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+
+            ModeloGrupo grupo = new ModeloGrupo();
+            grupo.id_cuenta = Int32.Parse(id_cuenta);
+            grupo.id_grupo = Int32.Parse(id_grupo);
+
+            if (!grupo.FormaParteDelGrupo()) 
+            {  
+            
+                resultado.Add("resultado", "false");
+                return resultado;
+            }
+            grupo.EliminarCuentaDeGrupo();
+            resultado.Add("resultado", "true");
+            return resultado;
 
 
+        }
+        public static Dictionary<string, string> CambiarRolDeCuentaEnGrupo(string id_cuenta, string id_grupo, string rol)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
 
+            ModeloGrupo grupo = new ModeloGrupo();
+            grupo.id_cuenta = Int32.Parse(id_cuenta);
+            grupo.id_grupo = Int32.Parse(id_grupo);
+            grupo.rol = rol;
+
+            if (!grupo.FormaParteDelGrupo())
+            {
+
+                resultado.Add("resultado", "false");
+                return resultado;
+            }
+            grupo.CambiarRolDeCuentaEnGrupo();
+            resultado.Add("resultado", "true");
+            return resultado;
+        }
     }
 }
