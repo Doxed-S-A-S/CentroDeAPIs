@@ -11,15 +11,31 @@ namespace Controlador
 {
     public class ControlPosts
     {
-        public static void CrearPost(string contenido,string url,string Tags, string idCuenta)
+        public static void CrearPost(string contenido,string url,string tipo_contenido, string idCuenta)
         {
             ModeloPost post = new ModeloPost();
-            post.Contenido = contenido;
+            post.contenido = contenido;
             post.url_contenido = url;
-            post.Tags = Tags;
-            post.Id_Cuenta = Int32.Parse(idCuenta);
+            post.tipo_contenido = tipo_contenido;
+            post.id_cuenta = Int32.Parse(idCuenta);
 
             post.GuardarPost();
+        }
+
+        public static void CrearEvento(string nombre_evento, string imagen, string descripcion_evento, string contenido, string url, string tipo_contenido, string idCuenta)
+        {
+            ModeloPost evento = new ModeloPost();
+
+            evento.nombre_evento = nombre_evento;
+            evento.imagen = imagen;
+            evento.descripcion_evento = descripcion_evento;
+
+            evento.contenido = contenido;
+            evento.url_contenido = url;
+            evento.tipo_contenido = tipo_contenido;
+            evento.id_cuenta = Int32.Parse(idCuenta);
+
+            evento.GuardarEvento();
         }
 
         public static void ElimiarPost(string id)
@@ -29,13 +45,13 @@ namespace Controlador
             post.EliminarPost();
         }
 
-        public static void ModificarPost(string id, string contenido,string url,string Tags)
+        public static void ModificarPost(string id, string contenido,string url,string tipo_contenido)
         {
             ModeloPost post = new ModeloPost();
             post.Id_Post = Int32.Parse(id);
-            post.Contenido = contenido;
+            post.contenido = contenido;
             post.url_contenido = url;
-            post.Tags = Tags;
+            post.tipo_contenido = tipo_contenido;
             post.GuardarPost();
         }
 
@@ -51,7 +67,7 @@ namespace Controlador
             {
                 DataRow fila = tabla.NewRow();
                 fila["Id_post"] = p.Id_Post;
-                fila["Contenido"] = p.Contenido;
+                fila["Contenido"] = p.contenido;
                 tabla.Rows.Add(fila);
             }
 

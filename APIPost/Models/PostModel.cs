@@ -9,8 +9,12 @@ namespace APIPost.Models
     {
         public long Id_Post;
         public string url_contenido;
-        public string Tags;
-        public string Contenido;
-        public int Id_Cuenta;
+        public string tipo_contenido;
+        public string contenido;
+        public int id_cuenta;
+
+        public string nombre_evento;
+        public string imagen ;
+        public string descripcion_evento;
     }
 }
