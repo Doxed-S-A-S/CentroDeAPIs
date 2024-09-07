@@ -48,11 +48,17 @@ namespace Modelos
             PrintDesktop(sql);
         }
 
-        public void ModificarContraseña()
+        public bool ModificarContraseña(int id)
         {
-            string sql = $"update cuenta set contrasena ='{this.contraseña}'where id_cuenta ='{this.id_cuenta}'";
-            this.Comando.CommandText = sql;
-            this.Comando.ExecuteNonQuery();
+            if (VerificarRegistro(id))
+            {
+                string sql = $"update registro set contrasena ='{this.contraseña}'where id_cuenta ='{this.id_cuenta}'";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+                return true;
+            }
+            return false;
+            
         }
 
         public bool ModificarCorreo(int id)
