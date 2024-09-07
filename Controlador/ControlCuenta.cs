@@ -31,10 +31,10 @@ namespace Controlador
            return c.Autenticar();
         }
 
-        public static bool ModificarContraseña(string id_Cuenta, string contraseña)
+        public static bool ModificarContraseña(string id_Cuenta, string contraseña,string contraseñaAntigua)
         {
             ModeloCuenta c = new ModeloCuenta();
-            if (c.ModificarContraseña(Int32.Parse(id_Cuenta)))
+            if (c.ModificarContraseña(Int32.Parse(id_Cuenta)) && (c.ContraseñaExiste(Int32.Parse(id_Cuenta), contraseñaAntigua)))
             {
                 c.id_cuenta = Int32.Parse(id_Cuenta);
                 c.contraseña = contraseña;

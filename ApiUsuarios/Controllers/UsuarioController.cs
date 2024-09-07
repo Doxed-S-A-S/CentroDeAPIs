@@ -108,7 +108,7 @@ namespace ApiUsuario.Controllers
          public IHttpActionResult ModificarContraseña(int id, UsuarioModel usuario)
          {
              Dictionary<string, string> resultado = new Dictionary<string, string>();
-             bool existe = ControlCuenta.ModificarContraseña(id.ToString(), usuario.contraseña);
+             bool existe = ControlCuenta.ModificarContraseña(id.ToString(), usuario.contraseña,usuario.contraseñaAntigua);
 
              if (existe)
             {

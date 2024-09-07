@@ -56,7 +56,7 @@ namespace Modelos
 
         public bool ModificarContraseña(int id)
         {
-            if (VerificarRegistro(id) && )
+            if (VerificarRegistro(id))
             {
                 string sql = $"update registro set contrasena ='{this.contraseña}'where id_cuenta ='{this.id_cuenta}'";
                 this.Comando.CommandText = sql;
@@ -147,11 +147,11 @@ namespace Modelos
             return true;
         }
 
-        public bool ContraseñaExiste(int id)
+        public bool ContraseñaExiste(int id,string ContraseñaAntigua)
         {
             string sql = $"select count(*) from registro where id_cuenta = '{id}' and contrasena = @contrasena";
             this.Comando.CommandText = sql;
-            this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
+            this.Comando.Parameters.AddWithValue("@contrasena", ContraseñaAntigua);
             this.Comando.Prepare();
             string resultado = this.Comando.ExecuteScalar().ToString();
 
