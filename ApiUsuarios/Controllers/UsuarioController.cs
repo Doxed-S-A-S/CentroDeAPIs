@@ -103,7 +103,7 @@ namespace ApiUsuario.Controllers
             return NotFound();
         }
 
-         [Route("ApiUsuarios/usuarios/Pass/{idCuenta:int}")]
+         [Route("LinguaLink/usuarios/Pass/{id:int}")]
          [HttpPost]
          public IHttpActionResult ModificarContraseña(int id, UsuarioModel usuario)
          {
