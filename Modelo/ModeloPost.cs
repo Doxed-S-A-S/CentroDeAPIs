@@ -13,11 +13,14 @@ namespace Modelos
         public string tipo_contenido = "tagsito";
         public string contenido;
         public int id_cuenta ;
-        
+
+        public int id_evento;
         public string nombre_evento;
         public string imagen = "url imagen";
         public string descripcion_evento;
-        
+        public string fecha_evento = "2022-04-22 10:34:53";
+
+
 
         public void GuardarPost()
         {
@@ -27,8 +30,8 @@ namespace Modelos
 
         public void GuardarEvento()
         {
-            if (this.Id_Post == 0) InsertarEvento();
-            if (this.Id_Post > 0) ActualizarEvento();
+            if (this.id_evento == 0) InsertarEvento();
+            if (this.id_evento > 0) ActualizarEvento();
         }
 
         private void InsertarPost()
@@ -37,7 +40,7 @@ namespace Modelos
             PrintDesktop(sql);
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
-            
+            PrintDesktop(sql);
         }
 
         public void InsertarEvento()
@@ -45,14 +48,16 @@ namespace Modelos
             InsertarPost();
             this.Id_Post = this.Comando.LastInsertedId;
 
-            string sql = $"INSERT INTO evento (id_post, nombre_evento,imagen, descripcion_evento) VALUES('{this.Id_Post}',@nombre_evento,@imagen,@descripcion_evento)";
+            string sql = $"INSERT INTO evento (id_post, nombre_evento,imagen,fecha_evento, descripcion_evento) " +
+                $"VALUES('{this.Id_Post}',@nombre_evento,@imagen,'{this.fecha_evento}',@descripcion_evento)";
             this.Comando.CommandText = sql;
+            PrintDesktop(sql);
             this.Comando.Parameters.AddWithValue("@nombre_evento", this.nombre_evento);
             this.Comando.Parameters.AddWithValue("@imagen", this.imagen);
             this.Comando.Parameters.AddWithValue("@descripcion_evento", this.descripcion_evento);
             this.Comando.Prepare();
             this.Comando.ExecuteNonQuery();
-
+            
 
         }
         public void ActualizarPost()
@@ -61,6 +66,7 @@ namespace Modelos
                 $"url_contenido = '{this.url_contenido}' where id_post ='{this.Id_Post}'";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
+            PrintDesktop(sql);
         }
 
         public void ActualizarEvento()
@@ -69,6 +75,7 @@ namespace Modelos
             string sql = $"update evento set id_post ='{this.Id_Post}',nombre_evento='{this.nombre_evento}',imagen='{this.imagen}',descripcion_evento='{this.descripcion_evento}'";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
+            PrintDesktop(sql);
         }
 
         public void EliminarPost()
