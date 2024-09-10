@@ -35,7 +35,6 @@ namespace ApiGrupos.Controllers
         }
 
 
-
         [Route("ApiGrupos/grupo/{id_grupo:int}/integrantes")]
 
         [HttpGet]
@@ -90,7 +89,22 @@ namespace ApiGrupos.Controllers
             return BadRequest(mensajeError);
         }
 
+        [Route("ApiGrupos/grupos/crearEvento")]
 
+        [HttpPost]
+
+        public IHttpActionResult PostCrearEventoDesdeGrupo(EventoSenderDTO evento)
+        {
+            var resultado = ControlGrupo.CrearEventoDesdeGrupo(evento.nombre_evento, evento.imagen, evento.descripcion_evento, evento.contenido, evento.url_contenido, evento.tipo_contenido, evento.id_cuenta.ToString());
+            if (resultado == true)
+            {
+                string mensajeOK = "evento creado con exito";
+                return Ok(mensajeOK);
+            }
+            string mensajeError = "error";
+            return BadRequest(mensajeError);
+
+        }
 
         [Route("ApiGrupos/grupo/{id_grupo:int}/modificar-grupo")]
 

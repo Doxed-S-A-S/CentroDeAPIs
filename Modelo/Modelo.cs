@@ -21,7 +21,7 @@ namespace Modelos
         public Modelo()
         {
             this.IP = "127.0.0.1";
-            this.NombreBase = "LinguaLinkDB";
+            this.NombreBase = "LinguaLinkDB2";
             this.Password = "1234";
             this.NombreDeUsuario = "root";
 
