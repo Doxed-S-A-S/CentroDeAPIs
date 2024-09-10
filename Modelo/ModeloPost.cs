@@ -49,11 +49,11 @@ namespace Modelos
             this.Id_Post = this.Comando.LastInsertedId;
 
             string sql = $"INSERT INTO evento (id_post, nombre_evento,imagen,fecha_evento, descripcion_evento) " +
-                $"VALUES('{this.Id_Post}',@nombre_evento,@imagen,'{this.fecha_evento}',@descripcion_evento)";
+                $"VALUES('{this.Id_Post}',@nombre_evento,'{this.imagen}','{this.fecha_evento}',@descripcion_evento)";
             this.Comando.CommandText = sql;
             PrintDesktop(sql);
             this.Comando.Parameters.AddWithValue("@nombre_evento", this.nombre_evento);
-            this.Comando.Parameters.AddWithValue("@imagen", this.imagen);
+            //this.Comando.Parameters.AddWithValue("@imagen", this.imagen);
             this.Comando.Parameters.AddWithValue("@descripcion_evento", this.descripcion_evento);
             this.Comando.Prepare();
             this.Comando.ExecuteNonQuery();
