@@ -198,7 +198,7 @@ namespace Controlador
             return resultado;
         }
 
-        public static bool CrearEventoDesdeGrupo(string nombre_evento, string imagen, string descripcion_evento, string contenido, string url_contenido, string tipo_contenido, string id_cuenta)
+        /*public static bool CrearEventoDesdeGrupo(string nombre_evento, string imagen, string descripcion_evento, string contenido, string url_contenido, string tipo_contenido, string id_cuenta)
         {
             Dictionary<string, string> data = new Dictionary<string, string>(){
                 { "nombre_evento", nombre_evento },
@@ -226,5 +226,6 @@ namespace Controlador
                 return true;
             return false;
         }
+        */
     }
 }

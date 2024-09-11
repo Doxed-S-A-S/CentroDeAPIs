@@ -88,7 +88,7 @@ namespace ApiGrupos.Controllers
             string mensajeError = "la cuenta ya esta agregada a este grupo";
             return BadRequest(mensajeError);
         }
-
+        /*
         [Route("ApiGrupos/grupos/crearEvento")]
 
         [HttpPost]
@@ -105,7 +105,7 @@ namespace ApiGrupos.Controllers
             return BadRequest(mensajeError);
 
         }
-
+        */
         [Route("ApiGrupos/grupo/{id_grupo:int}/modificar-grupo")]
 
         [HttpPut]

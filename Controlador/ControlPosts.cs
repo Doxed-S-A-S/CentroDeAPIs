@@ -22,20 +22,29 @@ namespace Controlador
             post.GuardarPost();
         }
 
-        public static void CrearEvento(string nombre_evento, string imagen, string descripcion_evento, string contenido, string url, string tipo_contenido, string idCuenta)
+        public static bool CrearEvento(string nombre_evento, string imagen, string descripcion_evento, string contenido, string url, string tipo_contenido, string idCuenta)
         {
             ModeloPost evento = new ModeloPost();
+            try
+            {
+                evento.nombre_evento = nombre_evento;
+                evento.imagen = imagen;
+                evento.descripcion_evento = descripcion_evento;
 
-            evento.nombre_evento = nombre_evento;
-            evento.imagen = imagen;
-            evento.descripcion_evento = descripcion_evento;
-
-            evento.contenido = contenido;
-            evento.url_contenido = url;
-            evento.tipo_contenido = tipo_contenido;
-            evento.id_cuenta = Int32.Parse(idCuenta);
-
-            evento.GuardarEvento();
+                evento.contenido = contenido;
+                evento.url_contenido = url;
+                evento.tipo_contenido = tipo_contenido;
+                evento.id_cuenta = Int32.Parse(idCuenta);
+                evento.GuardarEvento();
+                return true;
+            }
+            catch(Exception e)
+            {
+                if (e.Message == "DUPLICATE_ENTRY")
+                    throw new Exception("El evento ya existe");
+                return false;
+            }
+            
         }
 
         public static void ElimiarPost(string id)

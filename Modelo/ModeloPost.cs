@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace Modelos
         public string descripcion_evento;
         public string fecha_evento = "2022-04-22 10:34:53";
 
-
+        const int MYSQL_DUPLICATE_ENTRY = 1062;
 
         public void GuardarPost()
         {
@@ -47,16 +48,23 @@ namespace Modelos
         {
             InsertarPost();
             this.Id_Post = this.Comando.LastInsertedId;
-
-            string sql = $"INSERT INTO evento (id_post, nombre_evento,imagen,fecha_evento, descripcion_evento) " +
-                $"VALUES('{this.Id_Post}',@nombre_evento,'{this.imagen}','{this.fecha_evento}',@descripcion_evento)";
-            this.Comando.CommandText = sql;
-            PrintDesktop(sql);
-            this.Comando.Parameters.AddWithValue("@nombre_evento", this.nombre_evento);
-            //this.Comando.Parameters.AddWithValue("@imagen", this.imagen);
-            this.Comando.Parameters.AddWithValue("@descripcion_evento", this.descripcion_evento);
-            this.Comando.Prepare();
-            this.Comando.ExecuteNonQuery();
+            try {
+                string sql = $"INSERT INTO evento (id_post, nombre_evento,imagen,fecha_evento, descripcion_evento) " +
+                    $"VALUES('{this.Id_Post}',@nombre_evento,'{this.imagen}','{this.fecha_evento}',@descripcion_evento)";
+                this.Comando.CommandText = sql;
+                PrintDesktop(sql);
+                this.Comando.Parameters.AddWithValue("@nombre_evento", this.nombre_evento);
+                //this.Comando.Parameters.AddWithValue("@imagen", this.imagen);
+                this.Comando.Parameters.AddWithValue("@descripcion_evento", this.descripcion_evento);
+                this.Comando.Prepare();
+                this.Comando.ExecuteNonQuery();
+            }
+            catch(MySqlException e)
+            {
+                if (e.Number == MYSQL_DUPLICATE_ENTRY)
+                    throw new Exception("DUPLICATE_ENTRY");
+            }
+            
             
 
         }
