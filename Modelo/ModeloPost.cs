@@ -44,11 +44,28 @@ namespace Modelos
             PrintDesktop(sql);
         }
 
+
+        private void VerificarEventoEnBD()
+        {
+            string verificarEventoSql = "SELECT COUNT(*) FROM evento WHERE nombre_evento = @nombre_evento";
+            this.Comando.CommandText = verificarEventoSql;
+            this.Comando.Parameters.Clear(); // Limpia los parámetros antes de agregar los nuevos
+            this.Comando.Parameters.AddWithValue("@nombre_evento", this.nombre_evento);
+
+            long count = (long)this.Comando.ExecuteScalar();
+
+            if (count > 0)
+            {
+                throw new Exception("DUPLICATE_ENTRY");
+            }
+        }
         public void InsertarEvento()
         {
             InsertarPost();
             this.Id_Post = this.Comando.LastInsertedId;
             try {
+                VerificarEventoEnBD();
+                this.Comando.Parameters.Clear();
                 string sql = $"INSERT INTO evento (id_post, nombre_evento,imagen,fecha_evento, descripcion_evento) " +
                     $"VALUES('{this.Id_Post}',@nombre_evento,'{this.imagen}','{this.fecha_evento}',@descripcion_evento)";
                 this.Comando.CommandText = sql;
@@ -64,8 +81,8 @@ namespace Modelos
                 if (e.Number == MYSQL_DUPLICATE_ENTRY)
                     throw new Exception("DUPLICATE_ENTRY");
             }
-            
-            
+
+
 
         }
         public void ActualizarPost()
