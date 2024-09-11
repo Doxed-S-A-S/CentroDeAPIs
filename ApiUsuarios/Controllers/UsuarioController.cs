@@ -103,14 +103,21 @@ namespace ApiUsuario.Controllers
             return NotFound();
         }
 
-        /* [Route("ApiUsuarios/usuarios/actualizarPass/{idCuenta:int}")]
-         [HttpPut]
-         public IHttpActionResult ModificarContraseña(int idCuenta, UsuarioModel usuario)
+         [Route("LinguaLink/usuarios/Pass/{id:int}")]
+         [HttpPost]
+         public IHttpActionResult ModificarContraseña(int id, UsuarioModel usuario)
          {
              Dictionary<string, string> resultado = new Dictionary<string, string>();
-             ControlCuenta.ModificarContraseña(idCuenta.ToString(), usuario.contraseña);
+             bool existe = ControlCuenta.ModificarContraseña(id.ToString(), usuario.contraseña,usuario.contraseñaAntigua);
 
-         }*/
+             if (existe)
+            {
+                resultado.Add("mensaje", "Contraseña modificada");
+                return Ok(resultado);
+            }
+            return NotFound();
+
+         }
 
 
 
