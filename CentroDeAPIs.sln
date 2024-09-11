@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGrupos", "ApiGrupos\ApiG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiPost", "APIPost\ApiPost.csproj", "{2C06F79A-03B3-40B0-9B27-8B16F652AB99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAutenticar", "APIAutenticar\APIAutenticar.csproj", "{291DA869-E2FA-4F0C-A115-095133AE9BA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{2C06F79A-03B3-40B0-9B27-8B16F652AB99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C06F79A-03B3-40B0-9B27-8B16F652AB99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C06F79A-03B3-40B0-9B27-8B16F652AB99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{291DA869-E2FA-4F0C-A115-095133AE9BA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{291DA869-E2FA-4F0C-A115-095133AE9BA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{291DA869-E2FA-4F0C-A115-095133AE9BA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{291DA869-E2FA-4F0C-A115-095133AE9BA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
