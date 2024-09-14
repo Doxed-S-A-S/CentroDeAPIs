@@ -90,7 +90,6 @@ namespace ApiGrupos.Controllers
         }
 
         [Route("ApiGrupos/grupo/{id_grupo:int}/modificar-grupo")]
-
         [HttpPut]
         public IHttpActionResult ModificarGrupo(int id_grupo, GrupoModel grupo)
         {

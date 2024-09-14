@@ -21,16 +21,24 @@ namespace APIPost.Controllers
             return Ok(resultado);
         }
 
-        [Route("ApiPost/evento/crear/")]
+
+        [Route("ApiPost/crearEvento")]
         [HttpPost]
         public IHttpActionResult CrearEvento(PostModel evento)
         {
-            ControlPosts.CrearEvento(evento.nombre_evento, evento.imagen, evento.descripcion_evento, evento.contenido, evento.url_contenido, evento.tipo_contenido, evento.id_cuenta.ToString());
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-            resultado.Add("mensaje", "evento creado");
-            return Ok(resultado);
+            
+            try 
+            {   
+                ControlPosts.CrearEvento(evento.nombre_evento, evento.imagen, evento.descripcion_evento, evento.contenido, evento.url_contenido, evento.tipo_contenido, evento.id_cuenta.ToString());
+                string resultado =  "evento creado";
+                return Ok(resultado);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
-        
+
 
         [Route("ApiPost/post/modificar-post/{idPost:int}")]
         [HttpPut]
@@ -44,6 +52,7 @@ namespace APIPost.Controllers
             resultado.Add("tipo_contenido", post.tipo_contenido);
             return Ok(resultado);
         }
+
 
         [Route("ApiPost/evento/modificar-evento{idPost:int}")]
         [HttpPut]
