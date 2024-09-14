@@ -22,7 +22,7 @@ namespace APIPost.Controllers
         }
 
 
-        [Route("ApiPost/crearEvento")]
+        [Route("ApiPost/evento/crear")]
         [HttpPost]
         public IHttpActionResult CrearEvento(PostModel evento)
         {
@@ -38,6 +38,27 @@ namespace APIPost.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [Route("ApiPost/post/compartir-en-muro/{id_post:int}/{id_muro:int}")]
+        [HttpPost]
+        public IHttpActionResult CompartirPostEnMuro(int id_post, int id_muro)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            ControlPosts.CompartirPostEnMuro(id_post.ToString(), id_muro.ToString());
+            resultado.Add("Resultado", "Post compartido");
+            return Ok(resultado);
+        }
+
+        [Route("ApiPost/post/compartir-en-muro/{id_post:int}/{id_muro:int}")]
+        [HttpPost]
+        public IHttpActionResult CompartirPostEnGrupo(int id_post, int id_grupo)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            ControlPosts.CompartirPostEnMuro(id_post.ToString(), id_grupo.ToString());
+            resultado.Add("Resultado", "Post compartido");
+            return Ok(resultado);
+        }
+
 
 
         [Route("ApiPost/post/modificar-post/{idPost:int}")]
@@ -92,6 +113,7 @@ namespace APIPost.Controllers
             resultado.Add("Resultado", "Evento eliminado");
             return Ok(resultado);
         }
+
 
 
     }

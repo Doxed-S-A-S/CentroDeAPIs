@@ -9,7 +9,7 @@ namespace Modelos
 {
     public class ModeloPost : Modelo
     {
-        public long Id_Post;
+        public long id_post;
         public string url_contenido = "url";
         public string tipo_contenido = "tagsito";
         public string contenido;
@@ -21,12 +21,15 @@ namespace Modelos
         public string descripcion_evento;
         public string fecha_evento = "2022-04-22 10:34:53";
 
+        public int id_muro;
+        public int id_grupo;
+
         const int MYSQL_DUPLICATE_ENTRY = 1062;
 
         public void GuardarPost()
         {
-            if (this.Id_Post == 0) InsertarPost();
-            if (this.Id_Post > 0) ActualizarPost();
+            if (this.id_post == 0) InsertarPost();
+            if (this.id_post > 0) ActualizarPost();
         }
 
         public void GuardarEvento()
@@ -62,12 +65,12 @@ namespace Modelos
         public void InsertarEvento()
         {
             InsertarPost();
-            this.Id_Post = this.Comando.LastInsertedId;
+            this.id_post = this.Comando.LastInsertedId;
             try {
                 VerificarEventoEnBD();
                 this.Comando.Parameters.Clear();
                 string sql = $"INSERT INTO evento (id_post, nombre_evento,imagen,fecha_evento, descripcion_evento) " +
-                    $"VALUES('{this.Id_Post}',@nombre_evento,'{this.imagen}','{this.fecha_evento}',@descripcion_evento)";
+                    $"VALUES('{this.id_post}',@nombre_evento,'{this.imagen}','{this.fecha_evento}',@descripcion_evento)";
                 this.Comando.CommandText = sql;
                 PrintDesktop(sql);
                 this.Comando.Parameters.AddWithValue("@nombre_evento", this.nombre_evento);
@@ -88,7 +91,7 @@ namespace Modelos
         public void ActualizarPost()
         {
             string sql = $"update posts set contenido ='{this.contenido}',tipo_contenido = '{this.tipo_contenido}'," +
-                $"url_contenido = '{this.url_contenido}' where id_post ={this.Id_Post}";
+                $"url_contenido = '{this.url_contenido}' where id_post ={this.id_post}";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
             PrintDesktop(sql);
@@ -106,7 +109,7 @@ namespace Modelos
 
         public void EliminarPost()
         {
-            string sql = $"update posts set eliminado = true where id_post ='{this.Id_Post}'";
+            string sql = $"update posts set eliminado = true where id_post ='{this.id_post}'";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }
@@ -115,6 +118,20 @@ namespace Modelos
         {
             
             string sql = $"update evento set eliminado = true where id_evento ='{this.id_evento}'";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+        }
+
+        public void CompartirPostEnMuro()
+        {
+            string sql = $"insert into postea_muro (id_muro,id_post) values({this.id_muro},{this.id_post})";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+        }
+
+        public void CompartirPostEnGrupo()
+        {
+            string sql = $"insert into postea_grupos (id_muro,id_post) values({this.id_grupo},{this.id_post})";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }
@@ -131,7 +148,7 @@ namespace Modelos
             while (this.Lector.Read())
             {
                 ModeloPost post = new ModeloPost();
-                post.Id_Post = Int32.Parse(this.Lector["Id_post"].ToString());
+                post.id_post = Int32.Parse(this.Lector["Id_post"].ToString());
                 post.contenido = this.Lector["Contenido"].ToString();
                 posts.Add(post);
             }

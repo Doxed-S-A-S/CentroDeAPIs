@@ -50,7 +50,7 @@ namespace Controlador
         public static void ElimiarPost(string id)
         {
             ModeloPost post = new ModeloPost();
-            post.Id_Post = Int32.Parse(id);
+            post.id_post = Int32.Parse(id);
             post.EliminarPost();
         }
 
@@ -65,7 +65,7 @@ namespace Controlador
         public static void ModificarPost(string id, string contenido,string url,string tipo_contenido)
         {
             ModeloPost post = new ModeloPost();
-            post.Id_Post = Int32.Parse(id);
+            post.id_post = Int32.Parse(id);
             post.contenido = contenido;
             post.url_contenido = url;
             post.tipo_contenido = tipo_contenido;
@@ -75,7 +75,7 @@ namespace Controlador
         public static void ModificarEvento(string Id_Post, string id_evento, string url_contenido, string tipo_contenido, string contenido, string nombre_evento, string imagen, string descripcion_evento, string id_cuenta)
         {
             ModeloPost evento = new ModeloPost();
-            evento.Id_Post = Int32.Parse(Id_Post);
+            evento.id_post = Int32.Parse(Id_Post);
             evento.id_evento = Int32.Parse(id_evento);
             evento.url_contenido = url_contenido;
             evento.tipo_contenido = tipo_contenido;
@@ -87,10 +87,32 @@ namespace Controlador
 
             evento.ActualizarEvento();
         }
+
+        public static void CompartirPostEnMuro(string id_post, string id_muro)
+        {
+            ModeloPost post = new ModeloPost();
+
+            post.id_post = Int32.Parse(id_post);
+            post.id_muro = Int32.Parse(id_muro);
+
+            post.CompartirPostEnMuro();
+        }
+
+        public static void CompartirPostEnGrupo(string id_post, string id_grupo)
+        {
+            ModeloPost post = new ModeloPost();
+
+            post.id_post = Int32.Parse(id_post);
+            post.id_muro = Int32.Parse(id_grupo);
+
+            post.CompartirPostEnGrupo();
+        }
+
+
         public static DataTable Listar(string idCuenta)  
         {
             DataTable tabla = new DataTable();
-            tabla.Columns.Add("Id_Post", typeof(int));
+            tabla.Columns.Add("id_post", typeof(int));
             tabla.Columns.Add("Contenido", typeof(string));
 
 
@@ -98,7 +120,7 @@ namespace Controlador
             foreach (ModeloPost p in pizza.ObtenerPosts(Int32.Parse(idCuenta))) 
             {
                 DataRow fila = tabla.NewRow();
-                fila["Id_post"] = p.Id_Post;
+                fila["Id_post"] = p.id_post;
                 fila["Contenido"] = p.contenido;
                 tabla.Rows.Add(fila);
             }
