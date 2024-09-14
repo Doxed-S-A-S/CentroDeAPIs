@@ -54,13 +54,13 @@ namespace APIPost.Controllers
         }
 
 
-        [Route("ApiPost/evento/modificar-evento{idPost:int}")]
+        [Route("ApiPost/evento/modificar-evento/{id_evento:int}")]
         [HttpPut]
 
-        public IHttpActionResult ModificarEvento(int idPost, PostModel evento)
+        public IHttpActionResult ModificarEvento(int id_evento, PostModel evento)
         {
             Dictionary<string, string> resultado = new Dictionary<string, string>();
-            ControlPosts.ModificarEvento(idPost.ToString(), evento.url_contenido, evento.tipo_contenido, evento.contenido, evento.nombre_evento, evento.imagen, evento.descripcion_evento);
+            ControlPosts.ModificarEvento(evento.Id_Post.ToString(), id_evento.ToString(), evento.url_contenido, evento.tipo_contenido, evento.contenido, evento.nombre_evento, evento.imagen, evento.descripcion_evento, evento.id_cuenta.ToString()); ;
 
             resultado.Add("url", evento.url_contenido);
             resultado.Add("tipo_contenido", evento.tipo_contenido);

@@ -88,7 +88,7 @@ namespace Modelos
         public void ActualizarPost()
         {
             string sql = $"update posts set contenido ='{this.contenido}',tipo_contenido = '{this.tipo_contenido}'," +
-                $"url_contenido = '{this.url_contenido}' where id_post ='{this.Id_Post}'";
+                $"url_contenido = '{this.url_contenido}' where id_post ={this.Id_Post}";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
             PrintDesktop(sql);
@@ -96,8 +96,9 @@ namespace Modelos
 
         public void ActualizarEvento()
         {
+
             ActualizarPost();
-            string sql = $"update evento set id_post ='{this.Id_Post}',nombre_evento='{this.nombre_evento}',imagen='{this.imagen}',descripcion_evento='{this.descripcion_evento}'";
+            string sql = $"update evento set nombre_evento='{this.nombre_evento}',imagen='{this.imagen}',descripcion_evento='{this.descripcion_evento}' where id_evento ={this.id_evento}";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
             PrintDesktop(sql);
