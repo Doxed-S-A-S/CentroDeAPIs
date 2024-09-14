@@ -62,7 +62,7 @@ namespace ApiGrupos.Controllers
         [Route("ApiGrupos/grupo")]
 
         [HttpPost]
-        public IHttpActionResult PostCrearGrupo(GrupoModel grupo)
+        public IHttpActionResult CrearGrupo(GrupoModel grupo)
         {
             ControlGrupo.CrearGrupo(grupo.nombre_grupo, grupo.descripcion, grupo.banner);
             Dictionary<string, string> resultado = new Dictionary<string, string>();
@@ -75,7 +75,7 @@ namespace ApiGrupos.Controllers
         [Route("ApiGrupos/grupo/{id_grupo:int}/agregarCuenta")]
 
         [HttpPost]
-        public IHttpActionResult PostAgregarCuentaEnGrupo(int id_grupo, AgregarCuentaDto a)
+        public IHttpActionResult AgregarCuentaEnGrupo(int id_grupo, AgregarCuentaDto a)
         {
 
             var resultado = ControlGrupo.AgregarCuentaEnGrupo(a.rol, id_grupo.ToString(), a.id_cuenta.ToString());
@@ -89,27 +89,10 @@ namespace ApiGrupos.Controllers
             return BadRequest(mensajeError);
         }
 
-        [Route("ApiGrupos/grupos/crearEvento")]
-
-        [HttpPost]
-
-        public IHttpActionResult PostCrearEventoDesdeGrupo(EventoSenderDTO evento)
-        {
-            var resultado = ControlGrupo.CrearEventoDesdeGrupo(evento.nombre_evento, evento.imagen, evento.descripcion_evento, evento.contenido, evento.url_contenido, evento.tipo_contenido, evento.id_cuenta.ToString());
-            if (resultado == true)
-            {
-                string mensajeOK = "evento creado con exito";
-                return Ok(mensajeOK);
-            }
-            string mensajeError = "error";
-            return BadRequest(mensajeError);
-
-        }
-
         [Route("ApiGrupos/grupo/{id_grupo:int}/modificar-grupo")]
 
         [HttpPut]
-        public IHttpActionResult PutModificarGrupo(int id_grupo, GrupoModel grupo)
+        public IHttpActionResult ModificarGrupo(int id_grupo, GrupoModel grupo)
         {
             bool existe = ControlGrupo.ModificarGrupo(id_grupo.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.banner);
 
@@ -127,7 +110,7 @@ namespace ApiGrupos.Controllers
 
         [HttpPut]
 
-        public IHttpActionResult PutCambiarRolDeCuentaEnGrupo(ModificarRolDeCuentaEnGrupoDTO grupo, int id_grupo)
+        public IHttpActionResult CambiarRolDeCuentaEnGrupo(ModificarRolDeCuentaEnGrupoDTO grupo, int id_grupo)
         {
             var resultado = ControlGrupo.CambiarRolDeCuentaEnGrupo(grupo.id_cuenta.ToString(),id_grupo.ToString(), grupo.rol);
 

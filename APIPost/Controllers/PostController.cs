@@ -12,7 +12,7 @@ namespace APIPost.Controllers
 {
     public class PostController : ApiController
     {
-        [Route("LinguaLink/post/crear/")]
+        [Route("ApiPost/post/crear/")]
         public IHttpActionResult CrearPost(PostModel post)
         {
             ControlPosts.CrearPost(post.contenido, post.url_contenido, post.tipo_contenido, post.id_cuenta.ToString());
@@ -21,7 +21,7 @@ namespace APIPost.Controllers
             return Ok(resultado);
         }
 
-        [Route("LinguaLink/evento/crear/")]
+        [Route("ApiPost/evento/crear/")]
         [HttpPost]
         public IHttpActionResult CrearEvento(PostModel evento)
         {
@@ -32,7 +32,7 @@ namespace APIPost.Controllers
         }
         
 
-        [Route("LinguaLink/post/{idPost:int}")]
+        [Route("ApiPost/post/modificar-post/{idPost:int}")]
         [HttpPut]
         public IHttpActionResult ModificarPost(int idPost, PostModel post)
         {
@@ -45,7 +45,26 @@ namespace APIPost.Controllers
             return Ok(resultado);
         }
 
-        [Route("LinguaLink/post/{idPost:int}")]
+        [Route("ApiPost/evento/modificar-evento{idPost:int}")]
+        [HttpPut]
+
+        public IHttpActionResult ModificarEvento(int idPost, PostModel evento)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            ControlPosts.ModificarEvento(idPost.ToString(), evento.url_contenido, evento.tipo_contenido, evento.contenido, evento.nombre_evento, evento.imagen, evento.descripcion_evento);
+
+            resultado.Add("url", evento.url_contenido);
+            resultado.Add("tipo_contenido", evento.tipo_contenido);
+            resultado.Add("contenido", evento.contenido);
+            resultado.Add("nombre_evento", evento.nombre_evento);
+            resultado.Add("imagen", evento.imagen);
+            resultado.Add("descripcion_evento", evento.descripcion_evento);
+
+            return Ok(resultado);
+        }
+
+
+        [Route("ApiPost/post/eliminar-post/{idPost:int}")]
         [HttpDelete]
         public IHttpActionResult EliminarPost(int idPost)
         {

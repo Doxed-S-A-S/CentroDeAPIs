@@ -55,6 +55,19 @@ namespace Controlador
             post.GuardarPost();
         }
 
+        public static void ModificarEvento(string id_post, string url_contenido, string tipo_contenido, string contenido, string nombre_evento, string imagen, string descripcion_evento)
+        {
+            ModeloPost evento = new ModeloPost();
+            evento.Id_Post = Int32.Parse(id_post);
+            evento.url_contenido = url_contenido;
+            evento.tipo_contenido = tipo_contenido;
+            evento.contenido = contenido;
+            evento.nombre_evento = nombre_evento;
+            evento.imagen = imagen;
+            evento.descripcion_evento = descripcion_evento;
+
+            evento.GuardarEvento();
+        }
         public static DataTable Listar(string idCuenta)  
         {
             DataTable tabla = new DataTable();
