@@ -111,6 +111,15 @@ namespace Modelos
             this.Comando.ExecuteNonQuery();
         }
 
+        public void EliminarEvento()
+        {
+            
+            string sql = $"update evento set eliminado = true where id_evento ='{this.id_evento}'";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+        }
+
+
         public List<ModeloPost> ObtenerPosts(int id_cuenta)
         {
             List<ModeloPost> posts = new List<ModeloPost>();

@@ -82,5 +82,17 @@ namespace APIPost.Controllers
             resultado.Add("Resultado", "Post eliminado");
             return Ok(resultado);
         }
+
+        [Route("ApiPost/post/eliminar-evento/{id_evento:int}/{id_post:int}")]
+        [HttpDelete]
+        public IHttpActionResult EliminarEvento(int id_evento,int id_post)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            ControlPosts.ElimiarEvento(id_post.ToString(),id_evento.ToString());
+            resultado.Add("Resultado", "Evento eliminado");
+            return Ok(resultado);
+        }
+
+
     }
 }

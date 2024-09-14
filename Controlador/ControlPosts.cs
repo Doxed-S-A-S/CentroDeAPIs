@@ -54,6 +54,14 @@ namespace Controlador
             post.EliminarPost();
         }
 
+        public static void ElimiarEvento(string id_post, string id_evento)
+        {
+            ElimiarPost(id_post);
+            ModeloPost evento = new ModeloPost();
+            evento.id_evento = Int32.Parse(id_evento);
+            evento.EliminarEvento();
+        }
+
         public static void ModificarPost(string id, string contenido,string url,string tipo_contenido)
         {
             ModeloPost post = new ModeloPost();
