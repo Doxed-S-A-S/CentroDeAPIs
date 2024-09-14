@@ -303,7 +303,8 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49915</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:44331/</IISUrl>
+
+          <IISUrl>http://localhost:44330/</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
           <IISAppRootUrl>http://localhost:44331/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

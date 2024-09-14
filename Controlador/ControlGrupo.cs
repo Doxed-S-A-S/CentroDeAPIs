@@ -166,9 +166,9 @@ namespace Controlador
             grupo.id_cuenta = Int32.Parse(id_cuenta);
             grupo.id_grupo = Int32.Parse(id_grupo);
 
-            if (!grupo.FormaParteDelGrupo()) 
-            {  
-            
+            if (!grupo.FormaParteDelGrupo())
+            {
+
                 resultado.Add("resultado", "false");
                 return resultado;
             }
@@ -198,34 +198,6 @@ namespace Controlador
             return resultado;
         }
 
-        /*public static bool CrearEventoDesdeGrupo(string nombre_evento, string imagen, string descripcion_evento, string contenido, string url_contenido, string tipo_contenido, string id_cuenta)
-        {
-            Dictionary<string, string> data = new Dictionary<string, string>(){
-                { "nombre_evento", nombre_evento },
-                { "imagen", imagen },
-                { "descripcion_evento", descripcion_evento },
-                { "contenido", contenido },
-                { "url_contenido", url_contenido },
-                { "tipo_contenido", tipo_contenido },
-                { "id_cuenta", id_cuenta }
-            };
-            string requestBody = JsonConvert.SerializeObject(data);
 
-            RestClient client = new RestClient("https://localhost:44330/");
-            RestRequest request = new RestRequest("/LinguaLink/evento/crear/", Method.Post);
-
-
-            request.RequestFormat = DataFormat.Json;
-            request.AddBody(requestBody);
-            request.AddHeader("Accept", "application/json");
-            request.AddHeader("Content-Type", "application/json");
-
-            RestResponse response = client.Execute(request);
-
-            if (response.IsSuccessStatusCode)
-                return true;
-            return false;
-        }
-        */
     }
 }
