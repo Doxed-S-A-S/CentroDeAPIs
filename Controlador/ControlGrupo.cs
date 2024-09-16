@@ -14,14 +14,23 @@ namespace Controlador
     {
         public static void CrearGrupo(string id_cuenta, string nombreGrupo, string descripcion,string privacidad, string banner)
         {
-            ModeloGrupo grupo = new ModeloGrupo();
-            grupo.nombre_grupo = nombreGrupo;
-            grupo.descripcion = descripcion;
-            grupo.privacidad = bool.Parse(privacidad) ;
-            grupo.banner = banner;
-            grupo.id_cuenta = Int32.Parse(id_cuenta);
+            try
+            {
+                ModeloGrupo grupo = new ModeloGrupo();
+                grupo.nombre_grupo = nombreGrupo;
+                grupo.descripcion = descripcion;
+                grupo.privacidad = bool.Parse(privacidad);
+                grupo.banner = banner;
+                grupo.id_cuenta = Int32.Parse(id_cuenta);
 
-            grupo.CrearGrupo();
+                grupo.CrearGrupo();
+            }
+            catch(Exception e)
+            {
+                if (e.Message == "DUPLICATE_ENTRY")
+                    throw new Exception("El grupo ya existe");
+            }
+
         }
 
         public static bool ModificarGrupo(string id, string nombre, string descripcion, string banner)

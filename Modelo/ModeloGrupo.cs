@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace Modelos
 {
@@ -19,6 +20,10 @@ namespace Modelos
         public int id_cuenta;
         public string nombre_usuario;
 
+
+        const int MYSQL_DUPLICATE_ENTRY = 1062;
+        const int MYSQL_ACCESS_DENIED = 1045;
+
         public void Guardar()
         {
             if (this.id_grupo == 0) CrearGrupo();
@@ -26,11 +31,35 @@ namespace Modelos
         }
         public void CrearGrupo()
         {
-            string sql = $"insert into grupos (nombre_grupo,descripcion,privacidad,banner) values('{this.nombre_grupo}','{this.descripcion}',{this.privacidad},'{this.banner}')";
-            this.Comando.CommandText = sql;
-            this.Comando.ExecuteNonQuery();
-            this.id_grupo = this.Comando.LastInsertedId;
-            AsignarGrupoOwner();
+            try
+            {
+                string sql = $"insert into grupos (nombre_grupo,descripcion,privacidad,banner) values(@nombre_grupo,@descripcion,{this.privacidad},@banner)";
+                this.Comando.CommandText = sql;
+                this.Comando.Parameters.AddWithValue("@nombre_grupo",this.nombre_grupo);
+                this.Comando.Parameters.AddWithValue("@descripcion",this.descripcion);
+                this.Comando.Parameters.AddWithValue("@banner",this.banner);
+                this.Comando.Prepare();
+                this.Comando.ExecuteNonQuery();
+                this.id_grupo = this.Comando.LastInsertedId;
+                AsignarGrupoOwner();
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+            }catch (Exception ex)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+        private void MySqlErrorCatch(MySqlException sqlx)
+        {
+            if (sqlx.Number == MYSQL_DUPLICATE_ENTRY)
+                throw new Exception("DUPLICATE_ENTRY");
+            if (sqlx.Number == MYSQL_ACCESS_DENIED)
+                throw new Exception("ACCESS_DENIED");
+
+            throw new Exception("UNKNOWN_DB_ERROR");
         }
         private void ModificarGrupo()
         {
@@ -68,7 +97,7 @@ namespace Modelos
             string sql = $"update grupos set eliminado = true where id_grupo ='{this.id_grupo}'";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
- 
+ /*******************************/
         }
         public List<ModeloGrupo> ObtenerGrupos()
         {

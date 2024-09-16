@@ -63,10 +63,19 @@ namespace ApiGrupos.Controllers
         [HttpPost]
         public IHttpActionResult CrearGrupo(GrupoModel grupo,int idCuenta)
         {
-            ControlGrupo.CrearGrupo(idCuenta.ToString(),grupo.nombre_grupo, grupo.descripcion,grupo.privacidad, grupo.banner);
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-            resultado.Add("mensaje", "grupo creado");
-            return Ok(resultado);
+            try
+            {
+                ControlGrupo.CrearGrupo(idCuenta.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.privacidad, grupo.banner);
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                resultado.Add("mensaje", "grupo creado");
+                return Ok(resultado);
+            }
+            catch (Exception q)
+            {
+                if (q.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                return BadRequest();
+            }
         }
 
         [Route("ApiGrupos/grupo/{idGrupo:int}/privacidad")]
