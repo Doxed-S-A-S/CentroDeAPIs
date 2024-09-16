@@ -59,14 +59,23 @@ namespace ApiGrupos.Controllers
 
 
 
-        [Route("ApiGrupos/grupo")]
-
+        [Route("ApiGrupos/grupo/{idCuenta:int}")]
         [HttpPost]
-        public IHttpActionResult CrearGrupo(GrupoModel grupo)
+        public IHttpActionResult CrearGrupo(GrupoModel grupo,int idCuenta)
         {
-            ControlGrupo.CrearGrupo(grupo.nombre_grupo, grupo.descripcion, grupo.banner);
+            ControlGrupo.CrearGrupo(idCuenta.ToString(),grupo.nombre_grupo, grupo.descripcion,grupo.privacidad, grupo.banner);
             Dictionary<string, string> resultado = new Dictionary<string, string>();
             resultado.Add("mensaje", "grupo creado");
+            return Ok(resultado);
+        }
+
+        [Route("ApiGrupos/grupo/{idGrupo:int}/privacidad")]
+        [HttpPut]
+        public IHttpActionResult ModificarPrivacidad(GrupoModel grupo,int idGrupo)
+        {
+            ControlGrupo.ModificarPrivacidadGrupo(idGrupo.ToString(), grupo.privacidad);
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            resultado.Add("mensaje", "privacidad cambiada");
             return Ok(resultado);
         }
 

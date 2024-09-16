@@ -9,13 +9,16 @@ namespace Modelos
 {
     public class ModeloGrupo : Modelo
     {
-        public int id_grupo;
+        public long id_grupo;
         public string nombre_grupo;
         public string descripcion;
-        public string banner; //placeholder
+        public string banner;
+        public Boolean privacidad;
+
         public string rol;
         public int id_cuenta;
         public string nombre_usuario;
+
         public void Guardar()
         {
             if (this.id_grupo == 0) CrearGrupo();
@@ -23,10 +26,11 @@ namespace Modelos
         }
         public void CrearGrupo()
         {
-            string sql = $"insert into grupos (nombre_grupo,descripcion,banner) values('{this.nombre_grupo}','{this.descripcion}','{this.banner}')";
-            PrintDesktop(sql);
+            string sql = $"insert into grupos (nombre_grupo,descripcion,privacidad,banner) values('{this.nombre_grupo}','{this.descripcion}',{this.privacidad},'{this.banner}')";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
+            this.id_grupo = this.Comando.LastInsertedId;
+            AsignarGrupoOwner();
         }
         private void ModificarGrupo()
         {
@@ -43,6 +47,13 @@ namespace Modelos
         public void ModificarDescripcionGrupo()
         {
             string sql = $"update grupos set descripcion = '{this.descripcion}' where id_grupo = '{this.id_grupo}'";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+        }
+
+        public void ModificarPrivacidadGrupo()
+        {
+            string sql = $"update grupos set privacidad = {this.privacidad} where id_grupo = {this.id_grupo}";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }
@@ -127,7 +138,7 @@ namespace Modelos
 
         public bool FormaParteDelGrupo()
         {
-            string sql = "SELECT COUNT(*) FROM conforma WHERE id_grupo = @id_grupo AND id_cuenta = @id_cuenta";
+            string sql = $"SELECT COUNT(*) FROM conforma WHERE id_grupo = @id_grupo AND id_cuenta = @id_cuenta";
             this.Comando.CommandText = sql;
             this.Comando.Parameters.Clear();
             this.Comando.Parameters.AddWithValue("@id_grupo", this.id_grupo);
@@ -137,9 +148,15 @@ namespace Modelos
 
             return count == "1";
         }
+        public void AsignarGrupoOwner()
+        {
+            string sql = $"insert into conforma (id_grupo,id_cuenta,rol) values({this.id_grupo},{this.id_cuenta},'owner')";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+        }
         public void AgregarCuentaEnGrupo()
         {
-            string sql = $"insert into conforma (id_cuenta,id_grupo,rol) values('{this.id_cuenta}','{this.id_grupo}','{this.rol}')";
+            string sql = $"insert into conforma (id_cuenta,id_grupo,rol) values('{this.id_cuenta}','{this.id_grupo}','participante')";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
         }

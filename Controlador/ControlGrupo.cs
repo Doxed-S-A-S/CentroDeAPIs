@@ -12,12 +12,14 @@ namespace Controlador
 {
     public class ControlGrupo
     {
-        public static void CrearGrupo(string nombreGrupo, string descripcion, string banner)
+        public static void CrearGrupo(string id_cuenta, string nombreGrupo, string descripcion,string privacidad, string banner)
         {
             ModeloGrupo grupo = new ModeloGrupo();
             grupo.nombre_grupo = nombreGrupo;
             grupo.descripcion = descripcion;
+            grupo.privacidad = bool.Parse(privacidad) ;
             grupo.banner = banner;
+            grupo.id_cuenta = Int32.Parse(id_cuenta);
 
             grupo.CrearGrupo();
         }
@@ -56,6 +58,15 @@ namespace Controlador
 
             grupo.ModificarDescripcionGrupo();
 
+        }
+
+        public static void ModificarPrivacidadGrupo(string id_grupo,string privacidad)
+        {
+            ModeloGrupo grupo = new Modelos.ModeloGrupo();
+            grupo.id_grupo = Int32.Parse(id_grupo);
+            grupo.privacidad = bool.Parse(privacidad);
+
+            grupo.ModificarPrivacidadGrupo();
         }
 
         public static void ModificarBannerGrupo(string id, string banner)
