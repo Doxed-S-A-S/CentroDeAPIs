@@ -73,7 +73,7 @@ namespace ApiGrupos.Controllers
 
 
 
-        [Route("ApiGrupos/grupo/{idCuenta:int}")]
+        [Route("ApiGrupos/grupo/crear/{idCuenta:int}")]
         [HttpPost]
         public IHttpActionResult CrearGrupo(GrupoModel grupo,int idCuenta)
         {
@@ -92,6 +92,8 @@ namespace ApiGrupos.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized,"Acceso denegado"));
                 if (q.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (q.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
                 if (q.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
                 if (q.Message == "UNKNOWN_ERROR")
@@ -120,6 +122,8 @@ namespace ApiGrupos.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
                 if (q.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (q.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
                 if (q.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
                 if (q.Message == "UNKNOWN_ERROR")
@@ -155,6 +159,8 @@ namespace ApiGrupos.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
                 if (q.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (q.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
                 if (q.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
                 if (q.Message == "UNKNOWN_ERROR")
@@ -186,6 +192,8 @@ namespace ApiGrupos.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
                 if (q.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (q.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
                 if (q.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
                 if (q.Message == "UNKNOWN_ERROR")
@@ -221,6 +229,8 @@ namespace ApiGrupos.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
                 if (q.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (q.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
                 if (q.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
                 if (q.Message == "UNKNOWN_ERROR")
@@ -231,8 +241,7 @@ namespace ApiGrupos.Controllers
 
 
         
-        [Route("ApiGrupos/grupo/{id_grupo:int}")]
-
+        [Route("ApiGrupos/grupo/{id_grupo:int}/eliminar")]
         [HttpDelete]
         public IHttpActionResult DeleteGrupo(int id_grupo)
         {
@@ -256,6 +265,8 @@ namespace ApiGrupos.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
                 if (q.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (q.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
                 if (q.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
                 if (q.Message == "UNKNOWN_ERROR")
@@ -266,7 +277,6 @@ namespace ApiGrupos.Controllers
 
 
         [Route("ApiGrupos/grupo/{id_grupo:int}/cuenta/{id_cuenta:int}")]
-
         [HttpDelete]
         public IHttpActionResult DeleteCuentaDeGrupo(int id_grupo, int id_cuenta)
         {
@@ -290,6 +300,37 @@ namespace ApiGrupos.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
                 if (q.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (q.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (q.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (q.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
+        }
+
+        [Route("ApiGrupos/grupo/{idGrupo:int}/report")]
+        [HttpPut]
+        public IHttpActionResult AñadirReporte(int idGrupo)
+        {
+            try
+            {
+                ControlGrupo.AñadirReportGrupo(idGrupo.ToString());
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                resultado.Add("mensaje", "grupo reportado");
+                return Ok(resultado);
+            }
+            catch (Exception q)
+            {
+                if (q.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (q.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (q.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (q.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
                 if (q.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
                 if (q.Message == "UNKNOWN_ERROR")
@@ -316,6 +357,8 @@ namespace ApiGrupos.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized,"Acceso denegado"));
                 if (q.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (q.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
                 if (q.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
                 if (q.Message == "UNKNOWN_ERROR")

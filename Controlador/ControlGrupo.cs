@@ -284,7 +284,6 @@ namespace Controlador
 
                 if (!grupo.FormaParteDelGrupo())
                 {
-
                     resultado.Add("resultado", "false");
                     return resultado;
                 }
@@ -299,6 +298,21 @@ namespace Controlador
             }
         }
 
+        public static void AñadirReportGrupo(string idGrupo)
+        {
+            try
+            {
+                ModeloGrupo grupo = new ModeloGrupo();
+                grupo.id_grupo = Int32.Parse(idGrupo);
+
+                grupo.AñadirReporteGrupo();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
+        }
+
         private static void ErrorHandle(Exception ex)
         {
             if (ex.Message == "DUPLICATE_ENTRY")
@@ -309,6 +323,8 @@ namespace Controlador
                 throw new Exception("UNKNOWN_COLUMN");
             if (ex.Message == "UNKNOWN_DB_ERROR")
                 throw new Exception("UNKNOWN_DB_ERROR");
+            if (ex.Message == "ERROR_CHILD_ROW")
+                throw new Exception("ERROR_CHILD_ROW");
 
             throw new Exception("UNKNOWN_ERROR");
         }
