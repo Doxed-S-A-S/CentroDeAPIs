@@ -55,7 +55,7 @@ namespace CapaVisual
         {
 
             List<PostDesdeAPI> post = obtenerPostDesdeAPI();
-            //txtContenido.Text = post[1].contenido;
+            txtContenido.Text = post[1].contenido;
         }
     }
 }

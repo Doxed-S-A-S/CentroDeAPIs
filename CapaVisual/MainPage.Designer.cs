@@ -38,11 +38,11 @@ namespace CapaVisual
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.materialCard1 = new MaterialSkin.Controls.MaterialCard();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.txtContenido = new System.Windows.Forms.RichTextBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.btnPostear = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -50,7 +50,7 @@ namespace CapaVisual
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnPostear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -154,8 +154,8 @@ namespace CapaVisual
             this.materialCard1.Controls.Add(this.pictureBox4);
             this.materialCard1.Controls.Add(this.pictureBox5);
             this.materialCard1.Controls.Add(this.pictureBox3);
-            this.materialCard1.Controls.Add(this.pictureBox2);
-            this.materialCard1.Controls.Add(this.richTextBox1);
+            this.materialCard1.Controls.Add(this.btnPostear);
+            this.materialCard1.Controls.Add(this.txtContenido);
             this.materialCard1.Depth = 0;
             this.materialCard1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.materialCard1.Location = new System.Drawing.Point(104, 14);
@@ -166,13 +166,13 @@ namespace CapaVisual
             this.materialCard1.Size = new System.Drawing.Size(517, 128);
             this.materialCard1.TabIndex = 0;
             // 
-            // richTextBox1
+            // txtContenido
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(17, 17);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(420, 67);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
+            this.txtContenido.Location = new System.Drawing.Point(17, 17);
+            this.txtContenido.Name = "txtContenido";
+            this.txtContenido.Size = new System.Drawing.Size(420, 67);
+            this.txtContenido.TabIndex = 0;
+            this.txtContenido.Text = "";
             // 
             // pictureBox4
             // 
@@ -203,14 +203,14 @@ namespace CapaVisual
             this.pictureBox3.TabIndex = 2;
             this.pictureBox3.TabStop = false;
             // 
-            // pictureBox2
+            // btnPostear
             // 
-            this.pictureBox2.Image = global::CapaVisual.Properties.Resources.Write_Articles_by_iconSvg_co_2_;
-            this.pictureBox2.Location = new System.Drawing.Point(455, 17);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(32, 32);
-            this.pictureBox2.TabIndex = 1;
-            this.pictureBox2.TabStop = false;
+            this.btnPostear.Image = global::CapaVisual.Properties.Resources.Write_Articles_by_iconSvg_co_2_;
+            this.btnPostear.Location = new System.Drawing.Point(455, 17);
+            this.btnPostear.Name = "btnPostear";
+            this.btnPostear.Size = new System.Drawing.Size(32, 32);
+            this.btnPostear.TabIndex = 1;
+            this.btnPostear.TabStop = false;
             // 
             // pictureBox1
             // 
@@ -238,7 +238,7 @@ namespace CapaVisual
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnPostear)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -255,8 +255,8 @@ namespace CapaVisual
         private MaterialSkin.Controls.MaterialDivider materialDivider1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private MaterialSkin.Controls.MaterialCard materialCard1;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.PictureBox btnPostear;
+        private System.Windows.Forms.RichTextBox txtContenido;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.PictureBox pictureBox3;
