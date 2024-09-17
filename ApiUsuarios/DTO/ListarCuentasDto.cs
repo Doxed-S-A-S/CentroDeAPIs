@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ApiUsuarios.Models
+namespace ApiUsuarios.DTO
 {
-    public class UsuarioModel
+    public class ListarCuentasDto
     {
+        public string id_cuenta;
         public string nombre_usuario;
-        public string email;
-        public string contraseña;
-        public string contraseñaAntigua;
         public string rol_cuenta;
+        public string miembro_desde;
     }
 }
