@@ -21,7 +21,7 @@ namespace Modelos
         public Modelo()
         {
             this.IP = "127.0.0.1";
-            this.NombreBase = "LinguaLinkDB2";
+            this.NombreBase = "LinguaLinkDB";
             this.Password = "1234";
             this.NombreDeUsuario = "root";
 
@@ -32,10 +32,19 @@ namespace Modelos
                 $"database={this.NombreBase};"
             );
 
-            this.Conexion.Open();
+            try
+            {
 
-            this.Comando = new MySqlCommand();
-            this.Comando.Connection = this.Conexion;
+                this.Conexion.Open();
+
+                this.Comando = new MySqlCommand();
+                this.Comando.Connection = this.Conexion;
+            }
+            catch (Exception sqlex)
+            {
+                throw new Exception("CANNOT_CONNECT_TO_DB");
+            }
+
 
         }
 
