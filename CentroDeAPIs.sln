@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiPost", "APIPost\ApiPost.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAutenticar", "APIAutenticar\APIAutenticar.csproj", "{291DA869-E2FA-4F0C-A115-095133AE9BA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaVisual", "CapaVisual\CapaVisual.csproj", "{94F55BDA-49F9-401B-B057-FB817AA34B58}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{291DA869-E2FA-4F0C-A115-095133AE9BA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{291DA869-E2FA-4F0C-A115-095133AE9BA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{291DA869-E2FA-4F0C-A115-095133AE9BA1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{94F55BDA-49F9-401B-B057-FB817AA34B58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{94F55BDA-49F9-401B-B057-FB817AA34B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{94F55BDA-49F9-401B-B057-FB817AA34B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{94F55BDA-49F9-401B-B057-FB817AA34B58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
