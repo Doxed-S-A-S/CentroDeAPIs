@@ -30,7 +30,7 @@ namespace APIPost.Controllers
             try
             {
                 ControlPosts.CrearEvento(evento.nombre_evento, evento.imagen, evento.descripcion_evento, evento.contenido, evento.url_contenido, evento.tipo_contenido, evento.id_cuenta.ToString());
-                string resultado = "evento creado";
+                string resultado = "evento creado"; 
                 return Ok(resultado);
             }
             catch (Exception e)
@@ -49,12 +49,12 @@ namespace APIPost.Controllers
 
         [Route("ApiPost/post/eliminar-comentario/{idComentario:int}")]
         [HttpDelete]
-        public IHttpActionResult EliminarComentario(int idComentario, PostModel)
+        public IHttpActionResult EliminarComentario(int idComentario) 
         {
             try
             {
                 ControlComentarios.EliminarComentario(idComentario.ToString());
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Comentario eliminado"));
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Gone, "Comentario eliminado"));
             }
             catch (Exception e)
             {
@@ -70,8 +70,8 @@ namespace APIPost.Controllers
         {
             try
             {
-                ControlComentarios.ModificarComentario(idComentario.ToString(), comenatrio.id_cuenta.ToString());
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Comentario modificado"));
+                ControlComentarios.ModificarComentario(idComentario.ToString(), comenatrio.comentario); 
+                return Ok();
             }
             catch (Exception e)
             {
