@@ -47,6 +47,41 @@ namespace APIPost.Controllers
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Comentario Creado"));
         }
 
+        [Route("ApiPost/post/eliminar-comentario/{idComentario:int}")]
+        [HttpDelete]
+        public IHttpActionResult EliminarComentario(int idComentario, PostModel)
+        {
+            try
+            {
+                ControlComentarios.EliminarComentario(idComentario.ToString());
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Comentario eliminado"));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+            
+        }
+
+        [Route("ApiPost/post/modificar-comentario/{idComentario:int}")]
+        [HttpPut]
+
+        public IHttpActionResult ModificarComentario(int idComentario, PostModel comenatrio) 
+        {
+            try
+            {
+                ControlComentarios.ModificarComentario(idComentario.ToString(), comenatrio.id_cuenta.ToString());
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Comentario modificado"));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
+
+    
+
         [Route("ApiPost/post/compartir-en-muro/{id_post:int}/{id_muro:int}")]
         [HttpPost]
         public IHttpActionResult CompartirPostEnMuro(int id_post, int id_muro)
