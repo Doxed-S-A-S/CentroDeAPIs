@@ -32,10 +32,19 @@ namespace Modelos
                 $"database={this.NombreBase};"
             );
 
-            this.Conexion.Open();
+            try
+            {
 
-            this.Comando = new MySqlCommand();
-            this.Comando.Connection = this.Conexion;
+                this.Conexion.Open();
+
+                this.Comando = new MySqlCommand();
+                this.Comando.Connection = this.Conexion;
+            }
+            catch (Exception sqlex)
+            {
+                throw new Exception("CANNOT_CONNECT_TO_DB");
+            }
+
 
         }
 
