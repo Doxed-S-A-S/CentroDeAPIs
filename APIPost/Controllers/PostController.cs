@@ -41,9 +41,10 @@ namespace APIPost.Controllers
 
         [Route("ApiPost/post/{idpost:int}/comentario")]
         [HttpPost]
-        public IHttpActionResult CrearComentario(int id_post, int comentario)
+        public IHttpActionResult CrearComentario(int id_post, PostModel post)
         {
-
+            ControlComentarios.CrearComentario(post.id_cuenta.ToString(), id_post.ToString(), post.comentario);
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Comentario Creado"));
         }
 
         [Route("ApiPost/post/compartir-en-muro/{id_post:int}/{id_muro:int}")]
