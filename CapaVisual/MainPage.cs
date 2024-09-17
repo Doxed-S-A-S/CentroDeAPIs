@@ -20,21 +20,18 @@ namespace CapaVisual
         public MainPage()
         {
             InitializeComponent();
+
+            flowLayoutPanel1.Scroll += new ScrollEventHandler(flowLayoutPanel1_Scroll);
+            flowLayoutPanel1.MouseWheel += flowLayoutPanel1_MouseWheel;
             var skinManager = MaterialSkin.MaterialSkinManager.Instance;
-
-            // Asignar el formulario en el que estás trabajando
             skinManager.AddFormToManage(this);
-
-            // Cambiar el esquema de colores (Claro u Oscuro)
-            skinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.DARK;
-
-            // Cambiar los colores primarios y de acento
+            skinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
             skinManager.ColorScheme = new MaterialSkin.ColorScheme(
-                MaterialSkin.Primary.Red600,   // Color primario
-                MaterialSkin.Primary.Red700,   // Color oscuro primario
-                MaterialSkin.Primary.Red200,   // Color claro primario
-                MaterialSkin.Accent.Green400,     // Color de acento
-                MaterialSkin.TextShade.BLACK    // Sombra del texto
+                MaterialSkin.Primary.Red600,  
+                MaterialSkin.Primary.Red700,   
+                MaterialSkin.Primary.Red200,  
+                MaterialSkin.Accent.Green400,   
+                MaterialSkin.TextShade.BLACK    
             );
         }
 
@@ -57,5 +54,65 @@ namespace CapaVisual
             List<PostDesdeAPI> post = obtenerPostDesdeAPI();
             txtContenido.Text = post[1].contenido;
         }
+
+        private void CrearMaterialCard(string contenido)
+        {
+            
+            MaterialSkin.Controls.MaterialCard materialCard = new MaterialSkin.Controls.MaterialCard
+            {
+                Width = 697,
+                Height = 225,
+                BackColor = Color.White 
+            };
+
+            
+            Label lblContenido = new Label
+            {
+                Text = contenido,
+                Location = new Point(10, 10), 
+                AutoSize = true
+            };
+
+            
+            materialCard.Controls.Add(lblContenido);
+
+            
+            flowLayoutPanel1.Controls.Add(materialCard);
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+            CrearMaterialCard("Contenido de la tarjeta 1");
+            CrearMaterialCard("Contenido de la tarjeta 2");
+            CrearMaterialCard("Contenido de la tarjeta 3");
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void flowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
+        {
+            
+            if (flowLayoutPanel1.VerticalScroll.Value + flowLayoutPanel1.ClientSize.Height >= flowLayoutPanel1.VerticalScroll.Maximum)
+            {
+                
+                CrearMaterialCard("Nuevo post al llegar al fondo");
+            }
+        }
+
+        
+        private void flowLayoutPanel1_MouseWheel(object sender, MouseEventArgs e)
+        {
+            
+            if (flowLayoutPanel1.VerticalScroll.Value + flowLayoutPanel1.ClientSize.Height >= flowLayoutPanel1.VerticalScroll.Maximum)
+            {
+                
+                CrearMaterialCard("Nuevo post al llegar al fondo usando MouseWheel");
+            }
+        }
     }
+
 }
