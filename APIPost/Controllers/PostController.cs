@@ -26,17 +26,24 @@ namespace APIPost.Controllers
         [HttpPost]
         public IHttpActionResult CrearEvento(PostModel evento)
         {
-            
-            try 
-            {   
+
+            try
+            {
                 ControlPosts.CrearEvento(evento.nombre_evento, evento.imagen, evento.descripcion_evento, evento.contenido, evento.url_contenido, evento.tipo_contenido, evento.id_cuenta.ToString());
-                string resultado =  "evento creado";
+                string resultado = "evento creado";
                 return Ok(resultado);
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
+        }
+
+        [Route("ApiPost/post/{idpost:int}/comentario")]
+        [HttpPost]
+        public IHttpActionResult CrearComentario(int id_post, int comentario)
+        {
+
         }
 
         [Route("ApiPost/post/compartir-en-muro/{id_post:int}/{id_muro:int}")]
