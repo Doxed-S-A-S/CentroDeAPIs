@@ -35,44 +35,56 @@ namespace CapaVisual
                 MaterialSkin.TextShade.BLACK
                 );
 
-            button1.BackColor = Color.FromArgb(255, 128, 64); // Color personalizado
-            richTextBox1.BackColor = Color.White;  // Ajustar color de texto
-            txtContenido.BackColor = Color.White;
+            
         }
 
         private void mostrarPostsIniciales()
         {
             List<PostDesdeAPI> posts = obtenerPostDesdeAPI();
 
-            // Paso 2: Limpiar el FlowLayoutPanel si ya tiene controles
+            
             flowLayoutPanelPosts.Controls.Clear();
 
-            // Paso 3: Crear dinámicamente un MaterialCard para cada post
+            
             foreach (PostDesdeAPI post in posts)
             {
-                // Crear un MaterialCard
+                
                 MaterialCard card = new MaterialCard();
                 card.Width = 697;
                 card.Height = 225;
                 card.Padding = new Padding(10);
 
-                // Crear un Label para el nombre de usuario
+                PictureBox pictureBox = new PictureBox();
+                pictureBox.Location = new Point(40, 24); 
+                pictureBox.Size = new Size(54, 54); 
+                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage; 
+
+                
+                pictureBox.Image = CapaVisual.Properties.Resources.Profile_Picture_by_iconSvg_co;
+
+                
+                card.Controls.Add(pictureBox);
+
+
                 Label lblUsuario = new Label();
-                lblUsuario.Text = obtenerCreadorDePost(post.id_cuenta); // Asumiendo que tienes un atributo UsuarioNombre
+                lblUsuario.Text = obtenerCreadorDePost(post.id_cuenta);
+                lblUsuario.Location = new Point(18, 88);
                 lblUsuario.Font = new Font("Arial", 10, FontStyle.Bold);
                 lblUsuario.AutoSize = true;
                 card.Controls.Add(lblUsuario);
 
-                // Crear un TextBox para el contenido del post
+                
                 TextBox txtContenido = new TextBox();
-                txtContenido.Text = post.contenido; // Asumiendo que tienes un atributo Contenido
+                txtContenido.Location = new Point(128, 24);
+                
+                txtContenido.Text = post.contenido;
                 txtContenido.Multiline = true;
-                txtContenido.Width = 250;
-                txtContenido.Height = 100;
+                txtContenido.Width = 552;
+                txtContenido.Height = 86;
                 txtContenido.ReadOnly = true;
                 card.Controls.Add(txtContenido);
 
-                // Agregar el MaterialCard al FlowLayoutPanel
+                
                 flowLayoutPanelPosts.Controls.Add(card);
             }
         }
@@ -95,7 +107,8 @@ namespace CapaVisual
             request.AddHeader("Accept", "application/json");
             RestResponse response = client.Execute(request);
 
-            return response.Content;
+            string content = response.Content.Trim('"');
+            return content;
         }
 
 
@@ -132,10 +145,6 @@ namespace CapaVisual
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void flowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
         {
