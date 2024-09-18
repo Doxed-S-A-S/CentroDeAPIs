@@ -176,6 +176,8 @@ namespace Modelos
             }
             return false;
         }
+
+
         public void ObtenerCreadorDePost()
         {
             string sql = $"select nombre_usuario from cuenta where id_cuenta = ({this.id_cuenta})";

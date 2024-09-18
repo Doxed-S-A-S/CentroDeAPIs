@@ -7,7 +7,7 @@ namespace APIPost.Models
 {
     public class PostModel
     {
-        public long Id_Post;
+        public int Id_Post;
         public string url_contenido;
         public string tipo_contenido;
         public string contenido;

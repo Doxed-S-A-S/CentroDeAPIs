@@ -143,6 +143,22 @@ namespace APIPost.Controllers
             return Ok(resultado);
         }
 
+        [Route("ApiPost/MostrarAlgoritmo")]
+        [HttpGet]
+        public Dictionary<string,string> TestingMuestraPost()
+        {
+            ControlPosts p = new ControlPosts();
+            PostModel post = new PostModel();
+            Dictionary<string, string> PostMuestra = p.AlgoritmoPost();
+            
+            post.contenido = PostMuestra["contenido"];
+            post.tipo_contenido = PostMuestra["tipo_contenido"];
+            post.Id_Post = Int32.Parse(PostMuestra["id_post"]);
+            return PostMuestra;
+
+
+        }
+
 
 
     }
