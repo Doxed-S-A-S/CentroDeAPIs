@@ -11,8 +11,37 @@ using APIPost.Models;
 namespace APIPost.Controllers
 {
     public class PostController : ApiController
+
+
     {
+        [Route("ApiPost/post/obtener-posts/{id_cuenta:int}")]
+        [HttpGet]
+        public List<PostModel> ObtenerPostsDeUsuario(int id_cuenta)
+        {
+            DataTable tablaPosts = ControlPosts.Listar(id_cuenta.ToString());
+
+            List<PostModel> posts = new List<PostModel>();
+
+            foreach (DataRow post in tablaPosts.Rows)
+            {
+                PostModel p = new PostModel();
+                p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
+                p.contenido = post["contenido"].ToString();
+
+
+                posts.Add(p);
+            }
+            return posts;
+        }
+
+
+        //[Route("ApiPost/post/obtener-creador")]
+        //[HttpGet]
+
+
+
         [Route("ApiPost/post/crear/")]
+        [HttpPost]
         public IHttpActionResult CrearPost(PostModel post)
         {
             ControlPosts.CrearPost(post.contenido, post.url_contenido, post.tipo_contenido, post.id_cuenta.ToString());

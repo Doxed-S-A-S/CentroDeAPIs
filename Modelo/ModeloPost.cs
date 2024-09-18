@@ -155,6 +155,13 @@ namespace Modelos
             this.Lector.Close();
             return posts;
         }
+
+        public void ObtenerCreadorDePost()
+        {
+            string sql = $"select nombre_usuario from cuenta where id_cuenta = ({this.id_cuenta})";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+        }
+    }
     }
 
-}

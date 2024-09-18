@@ -129,5 +129,12 @@ namespace Controlador
 
         }
 
+        public static void ObtenerCreadorDePost(string id_cuenta)
+        {
+            ModeloPost post = new ModeloPost();
+            post.id_cuenta = Int32.Parse(id_cuenta);
+            post.ObtenerCreadorDePost();
+        }
+
     }
 }
