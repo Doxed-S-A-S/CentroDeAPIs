@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -176,6 +176,12 @@ namespace Modelos
             }
             return false;
         }
+        public void ObtenerCreadorDePost()
+        {
+            string sql = $"select nombre_usuario from cuenta where id_cuenta = ({this.id_cuenta})";
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+        }
+    }
     }
 
-}

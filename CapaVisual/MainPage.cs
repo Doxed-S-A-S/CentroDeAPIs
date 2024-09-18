@@ -22,11 +22,11 @@ namespace CapaVisual
         {
             InitializeComponent();
 
-            flowLayoutPanel1.Scroll += new ScrollEventHandler(flowLayoutPanel1_Scroll);
-            flowLayoutPanel1.MouseWheel += flowLayoutPanel1_MouseWheel;
+            flowLayoutPanelPosts.Scroll += new ScrollEventHandler(flowLayoutPanel1_Scroll);
+            flowLayoutPanelPosts.MouseWheel += flowLayoutPanel1_MouseWheel;
             var skinManager = MaterialSkin.MaterialSkinManager.Instance;
             skinManager.AddFormToManage(this);
-            skinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.DARK;
+            skinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
             skinManager.ColorScheme = new MaterialSkin.ColorScheme(
                 MaterialSkin.Primary.Red600,
                 MaterialSkin.Primary.Red700,
@@ -40,10 +40,46 @@ namespace CapaVisual
             txtContenido.BackColor = Color.White;
         }
 
+        private void mostrarPostsIniciales()
+        {
+            List<PostDesdeAPI> posts = obtenerPostDesdeAPI();
+
+            // Paso 2: Limpiar el FlowLayoutPanel si ya tiene controles
+            //flowLayoutPanelPosts.Controls.Clear();
+
+            // Paso 3: Crear dinámicamente un MaterialCard para cada post
+            foreach (PostDesdeAPI post in posts)
+            {
+                // Crear un MaterialCard
+                MaterialCard card = new MaterialCard();
+                card.Width = 300;
+                card.Height = 200;
+                card.Padding = new Padding(10);
+
+                // Crear un Label para el nombre de usuario
+                Label lblUsuario = new Label();
+                //lblUsuario.Text = post.UsuarioNombre; // Asumiendo que tienes un atributo UsuarioNombre
+                lblUsuario.Font = new Font("Arial", 10, FontStyle.Bold);
+                lblUsuario.AutoSize = true;
+                card.Controls.Add(lblUsuario);
+
+                // Crear un TextBox para el contenido del post
+                TextBox txtContenido = new TextBox();
+                //txtContenido.Text = post.Contenido; // Asumiendo que tienes un atributo Contenido
+                txtContenido.Multiline = true;
+                txtContenido.Width = 250;
+                txtContenido.Height = 100;
+                txtContenido.ReadOnly = true;
+                card.Controls.Add(txtContenido);
+
+                // Agregar el MaterialCard al FlowLayoutPanel
+                flowLayoutPanelPosts.Controls.Add(card);
+            }
+        }
         private static List<PostDesdeAPI> obtenerPostDesdeAPI()
         {
             RestClient client = new RestClient("http://localhost:44331/");
-            RestRequest request = new RestRequest("ApiPost/post/obtener-posts", Method.Get);
+            RestRequest request = new RestRequest("ApiPost/post/obtener-posts/1", Method.Get);
             request.AddHeader("Accept", "application/json");
             RestResponse response = client.Execute(request);
 
@@ -52,13 +88,11 @@ namespace CapaVisual
             return posts;
         }
 
-
-        private void btnPostear_Click(object sender, EventArgs e)
+        private static void obtenerCreadorDePost()
         {
 
-            List<PostDesdeAPI> post = obtenerPostDesdeAPI();
-            txtContenido.Text = post[1].contenido;
         }
+
 
         private void CrearMaterialCard(string contenido)
         {
@@ -82,7 +116,7 @@ namespace CapaVisual
             materialCard.Controls.Add(lblContenido);
 
             
-            flowLayoutPanel1.Controls.Add(materialCard);
+            flowLayoutPanelPosts.Controls.Add(materialCard);
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -101,7 +135,7 @@ namespace CapaVisual
         private void flowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
         {
             
-            if (flowLayoutPanel1.VerticalScroll.Value + flowLayoutPanel1.ClientSize.Height >= flowLayoutPanel1.VerticalScroll.Maximum)
+            if (flowLayoutPanelPosts.VerticalScroll.Value + flowLayoutPanelPosts.ClientSize.Height >= flowLayoutPanelPosts.VerticalScroll.Maximum)
             {
                 
                 CrearMaterialCard("Nuevo post al llegar al fondo");
@@ -112,15 +146,18 @@ namespace CapaVisual
         private void flowLayoutPanel1_MouseWheel(object sender, MouseEventArgs e)
         {
             
-            if (flowLayoutPanel1.VerticalScroll.Value + flowLayoutPanel1.ClientSize.Height >= flowLayoutPanel1.VerticalScroll.Maximum)
+            if (flowLayoutPanelPosts.VerticalScroll.Value + flowLayoutPanelPosts.ClientSize.Height >= flowLayoutPanelPosts.VerticalScroll.Maximum)
             {
                 
                 CrearMaterialCard("Nuevo post al llegar al fondo usando MouseWheel");
             }
         }
 
-        
-        
+        private void btnPostear_Click_1(object sender, EventArgs e)
+        {
+            List<PostDesdeAPI> post = obtenerPostDesdeAPI();
+            txtContenido.Text = post[1].contenido;
+        }
     }
 
 }

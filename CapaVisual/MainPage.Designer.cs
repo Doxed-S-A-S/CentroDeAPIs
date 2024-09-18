@@ -36,22 +36,24 @@ namespace CapaVisual
             this.btnGrupos = new System.Windows.Forms.Button();
             this.btnPrincipal = new System.Windows.Forms.Button();
             this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanelPosts = new System.Windows.Forms.FlowLayoutPanel();
             this.materialCard1 = new MaterialSkin.Controls.MaterialCard();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.btnPostear = new System.Windows.Forms.PictureBox();
             this.txtContenido = new System.Windows.Forms.RichTextBox();
-            this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.materialCard2 = new MaterialSkin.Controls.MaterialCard();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblUsuario = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.flowLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanelPosts.SuspendLayout();
             this.materialCard1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
@@ -59,6 +61,7 @@ namespace CapaVisual
             ((System.ComponentModel.ISupportInitialize)(this.btnPostear)).BeginInit();
             this.materialCard2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -71,7 +74,7 @@ namespace CapaVisual
             this.panel1.Controls.Add(this.btnPrincipal);
             this.panel1.Location = new System.Drawing.Point(6, 67);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 595);
+            this.panel1.Size = new System.Drawing.Size(200, 742);
             this.panel1.TabIndex = 0;
             // 
             // pictureBox1
@@ -142,24 +145,22 @@ namespace CapaVisual
             this.materialDivider1.Location = new System.Drawing.Point(208, 65);
             this.materialDivider1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialDivider1.Name = "materialDivider1";
-            this.materialDivider1.Size = new System.Drawing.Size(10, 595);
+            this.materialDivider1.Size = new System.Drawing.Size(13, 745);
             this.materialDivider1.TabIndex = 1;
             this.materialDivider1.Text = "materialDivider1";
             // 
-            // flowLayoutPanel1
+            // flowLayoutPanelPosts
             // 
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.BackColor = System.Drawing.Color.LightGray;
-            this.flowLayoutPanel1.Controls.Add(this.materialCard1);
-            this.flowLayoutPanel1.Controls.Add(this.button2);
-            this.flowLayoutPanel1.Controls.Add(this.button1);
-            this.flowLayoutPanel1.Controls.Add(this.materialCard2);
-            this.flowLayoutPanel1.ForeColor = System.Drawing.Color.Black;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(224, 67);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(90, 0, 90, 0);
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(899, 595);
-            this.flowLayoutPanel1.TabIndex = 2;
+            this.flowLayoutPanelPosts.AutoScroll = true;
+            this.flowLayoutPanelPosts.BackColor = System.Drawing.Color.LightGray;
+            this.flowLayoutPanelPosts.Controls.Add(this.materialCard2);
+            this.flowLayoutPanelPosts.Controls.Add(this.button1);
+            this.flowLayoutPanelPosts.ForeColor = System.Drawing.Color.Black;
+            this.flowLayoutPanelPosts.Location = new System.Drawing.Point(224, 231);
+            this.flowLayoutPanelPosts.Name = "flowLayoutPanelPosts";
+            this.flowLayoutPanelPosts.Padding = new System.Windows.Forms.Padding(90, 0, 90, 0);
+            this.flowLayoutPanelPosts.Size = new System.Drawing.Size(1063, 579);
+            this.flowLayoutPanelPosts.TabIndex = 2;
             // 
             // materialCard1
             // 
@@ -176,7 +177,7 @@ namespace CapaVisual
             this.materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialCard1.Name = "materialCard1";
             this.materialCard1.Padding = new System.Windows.Forms.Padding(14);
-            this.materialCard1.Size = new System.Drawing.Size(517, 128);
+            this.materialCard1.Size = new System.Drawing.Size(517, 133);
             this.materialCard1.TabIndex = 0;
             // 
             // pictureBox4
@@ -220,6 +221,7 @@ namespace CapaVisual
             this.btnPostear.Size = new System.Drawing.Size(32, 32);
             this.btnPostear.TabIndex = 1;
             this.btnPostear.TabStop = false;
+            this.btnPostear.Click += new System.EventHandler(this.btnPostear_Click_1);
             // 
             // txtContenido
             // 
@@ -229,19 +231,9 @@ namespace CapaVisual
             this.txtContenido.TabIndex = 0;
             this.txtContenido.Text = "";
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(638, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(719, 3);
+            this.button1.Location = new System.Drawing.Point(818, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
@@ -252,10 +244,12 @@ namespace CapaVisual
             // materialCard2
             // 
             this.materialCard2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialCard2.Controls.Add(this.lblUsuario);
+            this.materialCard2.Controls.Add(this.richTextBox1);
             this.materialCard2.Controls.Add(this.pictureBox2);
             this.materialCard2.Depth = 0;
             this.materialCard2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialCard2.Location = new System.Drawing.Point(104, 170);
+            this.materialCard2.Location = new System.Drawing.Point(104, 14);
             this.materialCard2.Margin = new System.Windows.Forms.Padding(14);
             this.materialCard2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialCard2.Name = "materialCard2";
@@ -263,44 +257,69 @@ namespace CapaVisual
             this.materialCard2.Size = new System.Drawing.Size(697, 225);
             this.materialCard2.TabIndex = 1;
             // 
-            // panel2
+            // richTextBox1
             // 
-            this.panel2.BackColor = System.Drawing.Color.LightGray;
-            this.panel2.Location = new System.Drawing.Point(1129, 67);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(200, 595);
-            this.panel2.TabIndex = 5;
+            this.richTextBox1.Location = new System.Drawing.Point(128, 24);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(552, 86);
+            this.richTextBox1.TabIndex = 6;
+            this.richTextBox1.Text = "";
             // 
             // pictureBox2
             // 
             this.pictureBox2.Image = global::CapaVisual.Properties.Resources.Profile_Picture_by_iconSvg_co;
-            this.pictureBox2.Location = new System.Drawing.Point(17, 24);
+            this.pictureBox2.Location = new System.Drawing.Point(40, 24);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(54, 54);
             this.pictureBox2.TabIndex = 5;
             this.pictureBox2.TabStop = false;
             // 
-            // richTextBox1
+            // panel2
             // 
-            this.richTextBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(193)))), ((int)(((byte)(255)))));
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.ForeColor = System.Drawing.SystemColors.Info;
-            this.richTextBox1.Location = new System.Drawing.Point(474, 30);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(270, 25);
-            this.richTextBox1.TabIndex = 6;
-            this.richTextBox1.Text = "";
+            this.panel2.BackColor = System.Drawing.Color.LightGray;
+            this.panel2.Location = new System.Drawing.Point(1293, 65);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(200, 742);
+            this.panel2.TabIndex = 5;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.textBox1.Location = new System.Drawing.Point(328, 32);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(245, 20);
+            this.textBox1.TabIndex = 7;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.BackColor = System.Drawing.Color.LightGray;
+            this.flowLayoutPanel2.Controls.Add(this.materialCard1);
+            this.flowLayoutPanel2.ForeColor = System.Drawing.Color.Black;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(224, 67);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(90, 0, 90, 0);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(1063, 158);
+            this.flowLayoutPanel2.TabIndex = 4;
+            // 
+            // lblUsuario
+            // 
+            this.lblUsuario.AutoSize = true;
+            this.lblUsuario.Location = new System.Drawing.Point(18, 88);
+            this.lblUsuario.Name = "lblUsuario";
+            this.lblUsuario.Size = new System.Drawing.Size(35, 13);
+            this.lblUsuario.TabIndex = 7;
+            this.lblUsuario.Text = "label1";
             // 
             // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(175)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(1335, 668);
-            this.Controls.Add(this.richTextBox1);
+            this.ClientSize = new System.Drawing.Size(1499, 815);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.flowLayoutPanel2);
+            this.Controls.Add(this.flowLayoutPanelPosts);
             this.Controls.Add(this.materialDivider1);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
@@ -309,15 +328,18 @@ namespace CapaVisual
             this.Text = "LinguaLink";
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanelPosts.ResumeLayout(false);
             this.materialCard1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPostear)).EndInit();
             this.materialCard2.ResumeLayout(false);
+            this.materialCard2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.flowLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -330,7 +352,7 @@ namespace CapaVisual
         private System.Windows.Forms.Button btnGrupos;
         private System.Windows.Forms.Button btnPrincipal;
         private MaterialSkin.Controls.MaterialDivider materialDivider1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelPosts;
         private MaterialSkin.Controls.MaterialCard materialCard1;
         private System.Windows.Forms.PictureBox btnPostear;
         private System.Windows.Forms.RichTextBox txtContenido;
@@ -340,9 +362,11 @@ namespace CapaVisual
         private System.Windows.Forms.PictureBox pictureBox4;
         private MaterialSkin.Controls.MaterialCard materialCard2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Label lblUsuario;
     }
 }
 
