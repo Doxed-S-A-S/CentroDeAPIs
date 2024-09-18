@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CapaVisual.DTO;
+using MaterialSkin;
 using MaterialSkin.Controls;
 using Newtonsoft.Json;
 using RestSharp;
@@ -25,14 +26,18 @@ namespace CapaVisual
             flowLayoutPanel1.MouseWheel += flowLayoutPanel1_MouseWheel;
             var skinManager = MaterialSkin.MaterialSkinManager.Instance;
             skinManager.AddFormToManage(this);
-            skinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
+            skinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.DARK;
             skinManager.ColorScheme = new MaterialSkin.ColorScheme(
-                MaterialSkin.Primary.Red600,  
-                MaterialSkin.Primary.Red700,   
-                MaterialSkin.Primary.Red200,  
-                MaterialSkin.Accent.Green400,   
-                MaterialSkin.TextShade.BLACK    
-            );
+                MaterialSkin.Primary.Red600,
+                MaterialSkin.Primary.Red700,
+                MaterialSkin.Primary.Red200,
+                MaterialSkin.Accent.Green400,
+                MaterialSkin.TextShade.BLACK
+                );
+
+            button1.BackColor = Color.FromArgb(255, 128, 64); // Color personalizado
+            richTextBox1.BackColor = Color.White;  // Ajustar color de texto
+            txtContenido.BackColor = Color.White;
         }
 
         private static List<PostDesdeAPI> obtenerPostDesdeAPI()
@@ -113,6 +118,9 @@ namespace CapaVisual
                 CrearMaterialCard("Nuevo post al llegar al fondo usando MouseWheel");
             }
         }
+
+        
+        
     }
 
 }
