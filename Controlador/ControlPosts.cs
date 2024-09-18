@@ -117,7 +117,7 @@ namespace Controlador
             DataTable tabla = new DataTable();
             tabla.Columns.Add("id_post", typeof(int));
             tabla.Columns.Add("Contenido", typeof(string));
-
+            tabla.Columns.Add("id_cuenta", typeof(string));
 
             ModeloPost pizza = new ModeloPost();
             foreach (ModeloPost p in pizza.ObtenerPosts(Int32.Parse(idCuenta))) 
@@ -125,6 +125,7 @@ namespace Controlador
                 DataRow fila = tabla.NewRow();
                 fila["Id_post"] = p.id_post;
                 fila["Contenido"] = p.contenido;
+                fila["id_cuenta"] = p.id_cuenta;
                 tabla.Rows.Add(fila);
             }
 
@@ -163,11 +164,11 @@ namespace Controlador
         }
 
         
-        public static void ObtenerCreadorDePost(string id_cuenta)
+        public static string ObtenerCreadorDePost(string id_cuenta)
         {
             ModeloPost post = new ModeloPost();
             post.id_cuenta = Int32.Parse(id_cuenta);
-            post.ObtenerCreadorDePost();
+            return post.ObtenerCreadorDePost();
         }
 
     }

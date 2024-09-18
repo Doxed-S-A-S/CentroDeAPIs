@@ -27,7 +27,7 @@ namespace APIPost.Controllers
                 PostModel p = new PostModel();
                 p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
                 p.contenido = post["contenido"].ToString();
-
+                p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
 
                 posts.Add(p);
             }
@@ -35,9 +35,13 @@ namespace APIPost.Controllers
         }
 
 
-        //[Route("ApiPost/post/obtener-creador")]
-        //[HttpGet]
-
+        [Route("ApiPost/post/obtener-creador/{id_cuenta:int}")]
+        [HttpGet]
+        public IHttpActionResult ObtenerCreadorDePost(int id_cuenta)
+        {
+            string username = ControlPosts.ObtenerCreadorDePost(id_cuenta.ToString());
+            return Ok(username);
+        }
 
 
         [Route("ApiPost/post/crear/")]

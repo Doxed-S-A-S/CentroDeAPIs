@@ -21,7 +21,7 @@ namespace CapaVisual
         public MainPage()
         {
             InitializeComponent();
-
+            mostrarPostsIniciales();
             flowLayoutPanelPosts.Scroll += new ScrollEventHandler(flowLayoutPanel1_Scroll);
             flowLayoutPanelPosts.MouseWheel += flowLayoutPanel1_MouseWheel;
             var skinManager = MaterialSkin.MaterialSkinManager.Instance;
@@ -45,27 +45,27 @@ namespace CapaVisual
             List<PostDesdeAPI> posts = obtenerPostDesdeAPI();
 
             // Paso 2: Limpiar el FlowLayoutPanel si ya tiene controles
-            //flowLayoutPanelPosts.Controls.Clear();
+            flowLayoutPanelPosts.Controls.Clear();
 
             // Paso 3: Crear dinámicamente un MaterialCard para cada post
             foreach (PostDesdeAPI post in posts)
             {
                 // Crear un MaterialCard
                 MaterialCard card = new MaterialCard();
-                card.Width = 300;
-                card.Height = 200;
+                card.Width = 697;
+                card.Height = 225;
                 card.Padding = new Padding(10);
 
                 // Crear un Label para el nombre de usuario
                 Label lblUsuario = new Label();
-                //lblUsuario.Text = post.UsuarioNombre; // Asumiendo que tienes un atributo UsuarioNombre
+                lblUsuario.Text = obtenerCreadorDePost(post.id_cuenta); // Asumiendo que tienes un atributo UsuarioNombre
                 lblUsuario.Font = new Font("Arial", 10, FontStyle.Bold);
                 lblUsuario.AutoSize = true;
                 card.Controls.Add(lblUsuario);
 
                 // Crear un TextBox para el contenido del post
                 TextBox txtContenido = new TextBox();
-                //txtContenido.Text = post.Contenido; // Asumiendo que tienes un atributo Contenido
+                txtContenido.Text = post.contenido; // Asumiendo que tienes un atributo Contenido
                 txtContenido.Multiline = true;
                 txtContenido.Width = 250;
                 txtContenido.Height = 100;
@@ -88,9 +88,14 @@ namespace CapaVisual
             return posts;
         }
 
-        private static void obtenerCreadorDePost()
+        private static string obtenerCreadorDePost(int id_cuenta)
         {
+            RestClient client = new RestClient("http://localhost:44331/");
+            RestRequest request = new RestRequest($"ApiPost/post/obtener-creador/{id_cuenta}", Method.Get);
+            request.AddHeader("Accept", "application/json");
+            RestResponse response = client.Execute(request);
 
+            return response.Content;
         }
 
 

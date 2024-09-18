@@ -151,6 +151,7 @@ namespace Modelos
                 ModeloPost post = new ModeloPost();
                 post.id_post = Int32.Parse(this.Lector["Id_post"].ToString());
                 post.contenido = this.Lector["Contenido"].ToString();
+                post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
                 posts.Add(post);
             }
             this.Lector.Close();
@@ -178,11 +179,22 @@ namespace Modelos
         }
 
 
-        public void ObtenerCreadorDePost()
+        public string ObtenerCreadorDePost()
         {
-            string sql = $"select nombre_usuario from cuenta where id_cuenta = ({this.id_cuenta})";
-            this.Comando.CommandText = sql;
-            this.Comando.ExecuteNonQuery();
+            string username = null; // Inicializar la variable
+            string sql = $"select nombre_usuario from cuenta where id_cuenta = ({this.id_cuenta})"; // Definir la consulta SQL
+            this.Comando.CommandText = sql; // Asignar la consulta al comando
+
+            
+            this.Lector = this.Comando.ExecuteReader();
+            if (this.Lector.Read())
+            {
+                username = this.Lector["nombre_usuario"].ToString();
+            }
+            this.Lector.Close();
+
+            
+            return username ;
         }
     }
     }
