@@ -13,6 +13,7 @@ namespace Modelos
         public string url_contenido = "url";
         public string tipo_contenido = "tagsito";
         public string contenido;
+        public string fecha_post;
         public int id_cuenta ;
 
         public int id_evento;
@@ -154,6 +155,26 @@ namespace Modelos
             }
             this.Lector.Close();
             return posts;
+        }
+
+        public bool BuscarPostRandom()
+        {
+            string sql = $"SELECT * FROM posts where eliminado = false and reports < 5 ORDER BY RAND() LIMIT 1 "; // agregar alguna logica de fecha
+            this.Comando.CommandText = sql;
+            this.Lector = this.Comando.ExecuteReader();
+
+
+            if (this.Lector.HasRows)
+            {
+                this.Lector.Read();
+                this.contenido = this.Lector["contenido"].ToString();
+                this.tipo_contenido = this.Lector["tipo_contenido"].ToString();
+                this.fecha_post = this.Lector["fecha_creacion"].ToString();
+                this.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                this.id_post = Int32.Parse(this.Lector["id_post"].ToString());
+                return true;
+            }
+            return false;
         }
     }
 
