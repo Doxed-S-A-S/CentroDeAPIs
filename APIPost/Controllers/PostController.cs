@@ -26,11 +26,11 @@ namespace APIPost.Controllers
         [HttpPost]
         public IHttpActionResult CrearEvento(PostModel evento)
         {
-            
-            try 
-            {   
+
+            try
+            {
                 ControlPosts.CrearEvento(evento.nombre_evento, evento.imagen, evento.descripcion_evento, evento.contenido, evento.url_contenido, evento.tipo_contenido, evento.id_cuenta.ToString());
-                string resultado =  "evento creado";
+                string resultado = "evento creado"; 
                 return Ok(resultado);
             }
             catch (Exception e)
@@ -38,6 +38,49 @@ namespace APIPost.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [Route("ApiPost/post/{idPost:int}/comentario")]
+        [HttpPost]
+        public IHttpActionResult CrearComentario(int idPost, PostModel post)
+        {
+            ControlComentarios.CrearComentario(post.id_cuenta.ToString(), idPost.ToString(), post.comentario);
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Comentario Creado"));
+        }
+
+        [Route("ApiPost/post/eliminar-comentario/{idComentario:int}")]
+        [HttpDelete]
+        public IHttpActionResult EliminarComentario(int idComentario) 
+        {
+            try
+            {
+                ControlComentarios.EliminarComentario(idComentario.ToString());
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Gone, "Comentario eliminado"));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+            
+        }
+
+        [Route("ApiPost/post/modificar-comentario/{idComentario:int}")]
+        [HttpPut]
+
+        public IHttpActionResult ModificarComentario(int idComentario, PostModel comenatrio) 
+        {
+            try
+            {
+                ControlComentarios.ModificarComentario(idComentario.ToString(), comenatrio.comentario); 
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
+
+    
 
         [Route("ApiPost/post/compartir-en-muro/{id_post:int}/{id_muro:int}")]
         [HttpPost]

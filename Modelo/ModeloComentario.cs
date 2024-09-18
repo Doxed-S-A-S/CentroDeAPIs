@@ -21,8 +21,11 @@ namespace Modelos
 
         private void InsertarComentario()
         {
-            string sql = $"insert into comentarios (id_post,contenido) values({this.IdPost},'{this.Contenido}')";
+            string sql = $"insert into comentarios (id_post,contenido) values(@id_post,@contenido)";
             this.Comando.CommandText = sql;
+            this.Comando.Parameters.AddWithValue("@contenido", this.Contenido);
+            this.Comando.Parameters.AddWithValue("@id_post", this.IdPost);
+            this.Comando.Prepare();
             this.Comando.ExecuteNonQuery();
             IdComentario = this.Comando.LastInsertedId;
 
