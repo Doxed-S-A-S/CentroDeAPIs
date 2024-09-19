@@ -184,6 +184,11 @@ namespace CapaVisual
         {
             
         }
+
+        private void asdasdToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }
