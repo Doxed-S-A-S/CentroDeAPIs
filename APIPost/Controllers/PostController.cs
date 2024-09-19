@@ -34,6 +34,25 @@ namespace APIPost.Controllers
             return posts;
         }
 
+        [Route("ApiPost/post/obtener-posts")]
+        [HttpGet]
+        public List<PostModel> ObtenerPosts()
+        {
+            DataTable tablaPosts = ControlPosts.ListarPosts();
+
+            List<PostModel> posts = new List<PostModel>();
+
+            foreach (DataRow post in tablaPosts.Rows)
+            {
+                PostModel p = new PostModel();
+                p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
+                p.contenido = post["contenido"].ToString();
+                p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+
+                posts.Add(p);
+            }
+            return posts;
+        }
 
         [Route("ApiPost/post/obtener-creador/{id_cuenta:int}")]
         [HttpGet]

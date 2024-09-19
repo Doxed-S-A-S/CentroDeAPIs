@@ -120,7 +120,7 @@ namespace Controlador
             tabla.Columns.Add("id_cuenta", typeof(string));
 
             ModeloPost pizza = new ModeloPost();
-            foreach (ModeloPost p in pizza.ObtenerPosts(Int32.Parse(idCuenta))) 
+            foreach (ModeloPost p in pizza.ObtenerPostsDeCuenta(Int32.Parse(idCuenta))) 
             {
                 DataRow fila = tabla.NewRow();
                 fila["Id_post"] = p.id_post;
@@ -132,6 +132,28 @@ namespace Controlador
             return tabla;
 
         }
+
+        public static DataTable ListarPosts()
+        {
+            DataTable tabla = new DataTable();
+            tabla.Columns.Add("id_post", typeof(int));
+            tabla.Columns.Add("Contenido", typeof(string));
+            tabla.Columns.Add("id_cuenta", typeof(string));
+
+            ModeloPost pizza = new ModeloPost();
+            foreach (ModeloPost p in pizza.ObtenerPosts())
+            {
+                DataRow fila = tabla.NewRow();
+                fila["Id_post"] = p.id_post;
+                fila["Contenido"] = p.contenido;
+                fila["id_cuenta"] = p.id_cuenta;
+                tabla.Rows.Add(fila);
+            }
+
+            return tabla;
+
+        }
+
 
         public Dictionary<string,string> AlgoritmoPost() // a ver
         {

@@ -111,7 +111,7 @@ namespace CapaVisual
         private static List<PostDesdeAPI> obtenerPostDesdeAPI()
         {
             RestClient client = new RestClient("http://localhost:44331/");
-            RestRequest request = new RestRequest("ApiPost/post/obtener-posts/1", Method.Get);
+            RestRequest request = new RestRequest("ApiPost/post/obtener-posts", Method.Get);
             request.AddHeader("Accept", "application/json");
             RestResponse response = client.Execute(request);
 

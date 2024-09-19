@@ -138,11 +138,31 @@ namespace Modelos
         }
 
 
-        public List<ModeloPost> ObtenerPosts(int id_cuenta)
+        public List<ModeloPost> ObtenerPostsDeCuenta(int id_cuenta)
         {
             List<ModeloPost> posts = new List<ModeloPost>();
 
             string sql = $"select * from posts where eliminado = false and id_cuenta = {id_cuenta}";
+            this.Comando.CommandText = sql;
+            this.Lector = this.Comando.ExecuteReader();
+
+            while (this.Lector.Read())
+            {
+                ModeloPost post = new ModeloPost();
+                post.id_post = Int32.Parse(this.Lector["Id_post"].ToString());
+                post.contenido = this.Lector["Contenido"].ToString();
+                post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                posts.Add(post);
+            }
+            this.Lector.Close();
+            return posts;
+        }
+
+        public List<ModeloPost> ObtenerPosts()
+        {
+            List<ModeloPost> posts = new List<ModeloPost>();
+
+            string sql = $"select * from posts where eliminado = false and id_cuenta";
             this.Comando.CommandText = sql;
             this.Lector = this.Comando.ExecuteReader();
 
