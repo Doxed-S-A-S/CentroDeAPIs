@@ -42,10 +42,8 @@ namespace CapaVisual
         {
             List<PostDesdeAPI> posts = obtenerPostDesdeAPI();
 
-            
             flowLayoutPanelPosts.Controls.Clear();
 
-            
             foreach (PostDesdeAPI post in posts)
             {
                 
@@ -54,18 +52,15 @@ namespace CapaVisual
                 card.Height = 225;
                 card.Padding = new Padding(10);
 
+                
                 PictureBox pictureBox = new PictureBox();
-                pictureBox.Location = new Point(40, 24); 
-                pictureBox.Size = new Size(54, 54); 
-                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage; 
-
-                
+                pictureBox.Location = new Point(40, 24);
+                pictureBox.Size = new Size(54, 54);
+                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBox.Image = CapaVisual.Properties.Resources.Profile_Picture_by_iconSvg_co;
-
-                
                 card.Controls.Add(pictureBox);
 
-
+                
                 Label lblUsuario = new Label();
                 lblUsuario.Text = obtenerCreadorDePost(post.id_cuenta);
                 lblUsuario.Location = new Point(18, 88);
@@ -76,7 +71,6 @@ namespace CapaVisual
                 
                 TextBox txtContenido = new TextBox();
                 txtContenido.Location = new Point(128, 24);
-                
                 txtContenido.Text = post.contenido;
                 txtContenido.Multiline = true;
                 txtContenido.Width = 552;
@@ -85,9 +79,35 @@ namespace CapaVisual
                 card.Controls.Add(txtContenido);
 
                 
+                int iconYPosition = txtContenido.Bottom + 10; 
+                int iconXStart = txtContenido.Left; 
+
+                PictureBox pbLike = new PictureBox();
+                pbLike.Location = new Point(iconXStart, iconYPosition); 
+                pbLike.Size = new Size(32, 32);
+                pbLike.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbLike.Image = CapaVisual.Properties.Resources.Heart_Attack_by_iconSvg_co_4_;
+                card.Controls.Add(pbLike);
+
+                PictureBox pbComment = new PictureBox();
+                pbComment.Location = new Point(iconXStart + 40, iconYPosition); 
+                pbComment.Size = new Size(32, 32);
+                pbComment.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbComment.Image = CapaVisual.Properties.Resources.Chat_by_iconSvg_co_1_;
+                card.Controls.Add(pbComment);
+
+                PictureBox pbShare = new PictureBox();
+                pbShare.Location = new Point(iconXStart + 80, iconYPosition); 
+                pbShare.Size = new Size(32, 32);
+                pbShare.SizeMode = PictureBoxSizeMode.Normal;
+                pbShare.Image = CapaVisual.Properties.Resources.Post_by_iconSvg_co_1_;
+                card.Controls.Add(pbShare);
+
+                
                 flowLayoutPanelPosts.Controls.Add(card);
             }
         }
+
         private static List<PostDesdeAPI> obtenerPostDesdeAPI()
         {
             RestClient client = new RestClient("http://localhost:44331/");
@@ -136,14 +156,7 @@ namespace CapaVisual
             
             flowLayoutPanelPosts.Controls.Add(materialCard);
         }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
-            CrearMaterialCard("Contenido de la tarjeta 1");
-            CrearMaterialCard("Contenido de la tarjeta 2");
-            CrearMaterialCard("Contenido de la tarjeta 3");
-
-        }
+        
 
 
         private void flowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
@@ -169,8 +182,7 @@ namespace CapaVisual
 
         private void btnPostear_Click_1(object sender, EventArgs e)
         {
-            List<PostDesdeAPI> post = obtenerPostDesdeAPI();
-            txtContenido.Text = post[1].contenido;
+            
         }
     }
 

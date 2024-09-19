@@ -46,8 +46,10 @@ namespace CapaVisual
             this.panel2 = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.flowLayoutPanelPosts.SuspendLayout();
             this.materialCard1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
@@ -145,6 +147,7 @@ namespace CapaVisual
             // 
             this.flowLayoutPanelPosts.AutoScroll = true;
             this.flowLayoutPanelPosts.BackColor = System.Drawing.Color.LightGray;
+            this.flowLayoutPanelPosts.Controls.Add(this.label1);
             this.flowLayoutPanelPosts.ForeColor = System.Drawing.Color.Black;
             this.flowLayoutPanelPosts.Location = new System.Drawing.Point(224, 231);
             this.flowLayoutPanelPosts.Name = "flowLayoutPanelPosts";
@@ -248,6 +251,15 @@ namespace CapaVisual
             this.flowLayoutPanel2.Size = new System.Drawing.Size(1063, 158);
             this.flowLayoutPanel2.TabIndex = 4;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(93, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "label1";
+            // 
             // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -266,6 +278,8 @@ namespace CapaVisual
             this.Text = "LinguaLink";
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.flowLayoutPanelPosts.ResumeLayout(false);
+            this.flowLayoutPanelPosts.PerformLayout();
             this.materialCard1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
@@ -296,6 +310,7 @@ namespace CapaVisual
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Label label1;
     }
 }
 
