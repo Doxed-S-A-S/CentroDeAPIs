@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CapaVisual.DTO;
+using MaterialSkin;
 using MaterialSkin.Controls;
 using Newtonsoft.Json;
 using RestSharp;
@@ -20,22 +21,91 @@ namespace CapaVisual
         public MainPage()
         {
             InitializeComponent();
+            mostrarPostsIniciales();
+            flowLayoutPanelPosts.Scroll += new ScrollEventHandler(flowLayoutPanel1_Scroll);
+            flowLayoutPanelPosts.MouseWheel += flowLayoutPanel1_MouseWheel;
             var skinManager = MaterialSkin.MaterialSkinManager.Instance;
-
-            // Asignar el formulario en el que estás trabajando
             skinManager.AddFormToManage(this);
-
-            // Cambiar el esquema de colores (Claro u Oscuro)
-            skinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.DARK;
-
-            // Cambiar los colores primarios y de acento
+            skinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
             skinManager.ColorScheme = new MaterialSkin.ColorScheme(
-                MaterialSkin.Primary.Red600,   // Color primario
-                MaterialSkin.Primary.Red700,   // Color oscuro primario
-                MaterialSkin.Primary.Red200,   // Color claro primario
-                MaterialSkin.Accent.Green400,     // Color de acento
-                MaterialSkin.TextShade.BLACK    // Sombra del texto
-            );
+                MaterialSkin.Primary.Red600,
+                MaterialSkin.Primary.Red700,
+                MaterialSkin.Primary.Red200,
+                MaterialSkin.Accent.Green400,
+                MaterialSkin.TextShade.BLACK
+                );
+
+            
+        }
+
+        private void mostrarPostsIniciales()
+        {
+            List<PostDesdeAPI> posts = obtenerPostDesdeAPI();
+
+            flowLayoutPanelPosts.Controls.Clear();
+
+            foreach (PostDesdeAPI post in posts)
+            {
+                
+                MaterialCard card = new MaterialCard();
+                card.Width = 697;
+                card.Height = 225;
+                card.Padding = new Padding(10);
+
+                
+                PictureBox pictureBox = new PictureBox();
+                pictureBox.Location = new Point(40, 24);
+                pictureBox.Size = new Size(54, 54);
+                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox.Image = CapaVisual.Properties.Resources.Profile_Picture_by_iconSvg_co;
+                card.Controls.Add(pictureBox);
+
+                
+                Label lblUsuario = new Label();
+                lblUsuario.Text = obtenerCreadorDePost(post.id_cuenta);
+                lblUsuario.Location = new Point(18, 88);
+                lblUsuario.Font = new Font("Arial", 10, FontStyle.Bold);
+                lblUsuario.AutoSize = true;
+                card.Controls.Add(lblUsuario);
+
+                
+                TextBox txtContenido = new TextBox();
+                txtContenido.Location = new Point(128, 24);
+                txtContenido.Text = post.contenido;
+                txtContenido.Multiline = true;
+                txtContenido.Width = 552;
+                txtContenido.Height = 86;
+                txtContenido.ReadOnly = true;
+                card.Controls.Add(txtContenido);
+
+                
+                int iconYPosition = txtContenido.Bottom + 10; 
+                int iconXStart = txtContenido.Left; 
+
+                PictureBox pbLike = new PictureBox();
+                pbLike.Location = new Point(iconXStart, iconYPosition); 
+                pbLike.Size = new Size(32, 32);
+                pbLike.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbLike.Image = CapaVisual.Properties.Resources.Heart_Attack_by_iconSvg_co_4_;
+                card.Controls.Add(pbLike);
+
+                PictureBox pbComment = new PictureBox();
+                pbComment.Location = new Point(iconXStart + 40, iconYPosition); 
+                pbComment.Size = new Size(32, 32);
+                pbComment.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbComment.Image = CapaVisual.Properties.Resources.Chat_by_iconSvg_co_1_;
+                card.Controls.Add(pbComment);
+
+                PictureBox pbShare = new PictureBox();
+                pbShare.Location = new Point(iconXStart + 80, iconYPosition); 
+                pbShare.Size = new Size(32, 32);
+                pbShare.SizeMode = PictureBoxSizeMode.Normal;
+                pbShare.Image = CapaVisual.Properties.Resources.Post_by_iconSvg_co_1_;
+                card.Controls.Add(pbShare);
+
+                
+                flowLayoutPanelPosts.Controls.Add(card);
+            }
         }
 
         private static List<PostDesdeAPI> obtenerPostDesdeAPI()
@@ -50,12 +120,75 @@ namespace CapaVisual
             return posts;
         }
 
+        private static string obtenerCreadorDePost(int id_cuenta)
+        {
+            RestClient client = new RestClient("http://localhost:44331/");
+            RestRequest request = new RestRequest($"ApiPost/post/obtener-creador/{id_cuenta}", Method.Get);
+            request.AddHeader("Accept", "application/json");
+            RestResponse response = client.Execute(request);
 
-        private void btnPostear_Click(object sender, EventArgs e)
+            string content = response.Content.Trim('"');
+            return content;
+        }
+
+
+        private void CrearMaterialCard(string contenido)
+        {
+            
+            MaterialSkin.Controls.MaterialCard materialCard = new MaterialSkin.Controls.MaterialCard
+            {
+                Width = 697,
+                Height = 225,
+                BackColor = Color.White 
+            };
+
+            
+            Label lblContenido = new Label
+            {
+                Text = contenido,
+                Location = new Point(10, 10), 
+                AutoSize = true
+            };
+
+            
+            materialCard.Controls.Add(lblContenido);
+
+            
+            flowLayoutPanelPosts.Controls.Add(materialCard);
+        }
+        
+
+
+        private void flowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
+        {
+            
+            if (flowLayoutPanelPosts.VerticalScroll.Value + flowLayoutPanelPosts.ClientSize.Height >= flowLayoutPanelPosts.VerticalScroll.Maximum)
+            {
+                
+                CrearMaterialCard("Nuevo post al llegar al fondo");
+            }
+        }
+
+        
+        private void flowLayoutPanel1_MouseWheel(object sender, MouseEventArgs e)
+        {
+            
+            if (flowLayoutPanelPosts.VerticalScroll.Value + flowLayoutPanelPosts.ClientSize.Height >= flowLayoutPanelPosts.VerticalScroll.Maximum)
+            {
+                
+                CrearMaterialCard("Nuevo post al llegar al fondo usando MouseWheel");
+            }
+        }
+
+        private void btnPostear_Click_1(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void asdasdToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            List<PostDesdeAPI> post = obtenerPostDesdeAPI();
-            txtContenido.Text = post[1].contenido;
         }
     }
+
 }

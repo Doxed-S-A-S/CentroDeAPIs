@@ -11,8 +11,60 @@ using APIPost.Models;
 namespace APIPost.Controllers
 {
     public class PostController : ApiController
+
+
     {
+        [Route("ApiPost/post/obtener-posts/{id_cuenta:int}")]
+        [HttpGet]
+        public List<PostModel> ObtenerPostsDeUsuario(int id_cuenta)
+        {
+            DataTable tablaPosts = ControlPosts.Listar(id_cuenta.ToString());
+
+            List<PostModel> posts = new List<PostModel>();
+
+            foreach (DataRow post in tablaPosts.Rows)
+            {
+                PostModel p = new PostModel();
+                p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
+                p.contenido = post["contenido"].ToString();
+                p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+
+                posts.Add(p);
+            }
+            return posts;
+        }
+
+        [Route("ApiPost/post/obtener-posts")]
+        [HttpGet]
+        public List<PostModel> ObtenerPosts()
+        {
+            DataTable tablaPosts = ControlPosts.ListarPosts();
+
+            List<PostModel> posts = new List<PostModel>();
+
+            foreach (DataRow post in tablaPosts.Rows)
+            {
+                PostModel p = new PostModel();
+                p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
+                p.contenido = post["contenido"].ToString();
+                p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+
+                posts.Add(p);
+            }
+            return posts;
+        }
+
+        [Route("ApiPost/post/obtener-creador/{id_cuenta:int}")]
+        [HttpGet]
+        public IHttpActionResult ObtenerCreadorDePost(int id_cuenta)
+        {
+            string username = ControlPosts.ObtenerCreadorDePost(id_cuenta.ToString());
+            return Ok(username);
+        }
+
+
         [Route("ApiPost/post/crear/")]
+        [HttpPost]
         public IHttpActionResult CrearPost(PostModel post)
         {
             ControlPosts.CrearPost(post.contenido, post.url_contenido, post.tipo_contenido, post.id_cuenta.ToString());
@@ -155,6 +207,22 @@ namespace APIPost.Controllers
             ControlPosts.ElimiarEvento(id_post.ToString(),id_evento.ToString());
             resultado.Add("Resultado", "Evento eliminado");
             return Ok(resultado);
+        }
+
+        [Route("ApiPost/MostrarAlgoritmo")]
+        [HttpGet]
+        public Dictionary<string,string> TestingMuestraPost()
+        {
+            ControlPosts p = new ControlPosts();
+            PostModel post = new PostModel();
+            Dictionary<string, string> PostMuestra = p.AlgoritmoPost();
+            
+            post.contenido = PostMuestra["contenido"];
+            post.tipo_contenido = PostMuestra["tipo_contenido"];
+            post.Id_Post = Int32.Parse(PostMuestra["id_post"]);
+            return PostMuestra;
+
+
         }
 
 

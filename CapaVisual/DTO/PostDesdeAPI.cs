@@ -9,6 +9,7 @@ namespace CapaVisual.DTO
     class PostDesdeAPI
     {
         public int id_post;
+        public int id_cuenta;
         public string contenido;
     }
 }

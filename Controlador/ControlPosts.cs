@@ -11,6 +11,9 @@ namespace Controlador
 {
     public class ControlPosts
     {
+
+        List<int> IdPostMostrados = new List<int>();
+
         public static void CrearPost(string contenido,string url,string tipo_contenido, string idCuenta)
         {
             ModeloPost post = new ModeloPost();
@@ -114,19 +117,80 @@ namespace Controlador
             DataTable tabla = new DataTable();
             tabla.Columns.Add("id_post", typeof(int));
             tabla.Columns.Add("Contenido", typeof(string));
-
+            tabla.Columns.Add("id_cuenta", typeof(string));
 
             ModeloPost pizza = new ModeloPost();
-            foreach (ModeloPost p in pizza.ObtenerPosts(Int32.Parse(idCuenta))) 
+            foreach (ModeloPost p in pizza.ObtenerPostsDeCuenta(Int32.Parse(idCuenta))) 
             {
                 DataRow fila = tabla.NewRow();
                 fila["Id_post"] = p.id_post;
                 fila["Contenido"] = p.contenido;
+                fila["id_cuenta"] = p.id_cuenta;
                 tabla.Rows.Add(fila);
             }
 
             return tabla;
 
+        }
+
+        public static DataTable ListarPosts()
+        {
+            DataTable tabla = new DataTable();
+            tabla.Columns.Add("id_post", typeof(int));
+            tabla.Columns.Add("Contenido", typeof(string));
+            tabla.Columns.Add("id_cuenta", typeof(string));
+
+            ModeloPost pizza = new ModeloPost();
+            foreach (ModeloPost p in pizza.ObtenerPosts())
+            {
+                DataRow fila = tabla.NewRow();
+                fila["Id_post"] = p.id_post;
+                fila["Contenido"] = p.contenido;
+                fila["id_cuenta"] = p.id_cuenta;
+                tabla.Rows.Add(fila);
+            }
+
+            return tabla;
+
+        }
+
+
+        public Dictionary<string,string> AlgoritmoPost() // a ver
+        {
+            Dictionary<string, string> post = new Dictionary<string, string>();
+            ModeloPost p = new ModeloPost();
+            int IdMostrada = 0;
+            //IdPostMostrados.Add(IdMostrada);
+            bool FueMostrado = IdPostMostrados.Contains(IdMostrada);
+            Console.WriteLine(IdPostMostrados.ToString());
+
+            while (true)
+            {
+                if(!IdPostMostrados.Contains(IdMostrada) && p.BuscarPostRandom())
+                {
+                    post.Add("contenido", p.contenido);
+                    post.Add("fecha", p.fecha_post);
+                    post.Add("tipo_contenido", p.tipo_contenido);
+                    post.Add("id_cuenta", p.id_cuenta.ToString());
+                    post.Add("id_post", p.id_post.ToString());
+                    IdMostrada = Int32.Parse(p.id_post.ToString());
+                    Console.WriteLine(IdPostMostrados.ToString());
+                    IdPostMostrados.Add(IdMostrada);
+                    Console.WriteLine(IdPostMostrados.ToString());
+                    return post;
+                    break;
+                }
+                return null;
+            }
+
+        }
+
+        
+        public static string ObtenerCreadorDePost(string id_cuenta)
+        {
+            ModeloPost post = new ModeloPost();
+            post.id_cuenta = Int32.Parse(id_cuenta);
+            return post.ObtenerCreadorDePost();
         }
 
     }

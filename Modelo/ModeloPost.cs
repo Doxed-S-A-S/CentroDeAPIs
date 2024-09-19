@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +13,7 @@ namespace Modelos
         public string url_contenido = "url";
         public string tipo_contenido = "tagsito";
         public string contenido;
+        public string fecha_post;
         public int id_cuenta ;
 
         public int id_evento;
@@ -137,7 +138,7 @@ namespace Modelos
         }
 
 
-        public List<ModeloPost> ObtenerPosts(int id_cuenta)
+        public List<ModeloPost> ObtenerPostsDeCuenta(int id_cuenta)
         {
             List<ModeloPost> posts = new List<ModeloPost>();
 
@@ -150,11 +151,71 @@ namespace Modelos
                 ModeloPost post = new ModeloPost();
                 post.id_post = Int32.Parse(this.Lector["Id_post"].ToString());
                 post.contenido = this.Lector["Contenido"].ToString();
+                post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
                 posts.Add(post);
             }
             this.Lector.Close();
             return posts;
         }
+
+        public List<ModeloPost> ObtenerPosts()
+        {
+            List<ModeloPost> posts = new List<ModeloPost>();
+
+            string sql = $"select * from posts where eliminado = false and id_cuenta";
+            this.Comando.CommandText = sql;
+            this.Lector = this.Comando.ExecuteReader();
+
+            while (this.Lector.Read())
+            {
+                ModeloPost post = new ModeloPost();
+                post.id_post = Int32.Parse(this.Lector["Id_post"].ToString());
+                post.contenido = this.Lector["Contenido"].ToString();
+                post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                posts.Add(post);
+            }
+            this.Lector.Close();
+            return posts;
+        }
+
+        public bool BuscarPostRandom()
+        {
+            string sql = $"SELECT * FROM posts where eliminado = false and reports < 5 ORDER BY RAND() LIMIT 1 "; // agregar alguna logica de fecha
+            this.Comando.CommandText = sql;
+            this.Lector = this.Comando.ExecuteReader();
+
+
+            if (this.Lector.HasRows)
+            {
+                this.Lector.Read();
+                this.contenido = this.Lector["contenido"].ToString();
+                this.tipo_contenido = this.Lector["tipo_contenido"].ToString();
+                this.fecha_post = this.Lector["fecha_creacion"].ToString();
+                this.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                this.id_post = Int32.Parse(this.Lector["id_post"].ToString());
+                return true;
+            }
+            return false;
+        }
+
+
+        public string ObtenerCreadorDePost()
+        {
+            string username = null; // Inicializar la variable
+            string sql = $"select nombre_usuario from cuenta where id_cuenta = ({this.id_cuenta})"; // Definir la consulta SQL
+            this.Comando.CommandText = sql; // Asignar la consulta al comando
+
+            
+            this.Lector = this.Comando.ExecuteReader();
+            if (this.Lector.Read())
+            {
+                username = this.Lector["nombre_usuario"].ToString();
+            }
+            this.Lector.Close();
+
+            
+            return username ;
+        }
+    }
     }
 
-}
