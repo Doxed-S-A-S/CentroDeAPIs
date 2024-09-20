@@ -34,7 +34,7 @@ namespace ApiGrupos.Controllers
                 }
                 return ListaDeGrupos;
             }
-            catch (Exception q)
+            catch (Exception)
             {
                 return null;
                 throw;
@@ -64,7 +64,7 @@ namespace ApiGrupos.Controllers
                 }
                 return ListaDeIntegrantes;
             }
-            catch (Exception q)
+            catch (Exception)
             {
                 return null;
                 throw;
@@ -84,19 +84,19 @@ namespace ApiGrupos.Controllers
                 resultado.Add("mensaje", "grupo creado");
                 return Ok(resultado);
             }
-            catch (Exception q)
+            catch (Exception ex)
             {
-                if (q.Message == "DUPLICATE_ENTRY")
+                if (ex.Message == "DUPLICATE_ENTRY")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
-                if (q.Message == "ACCESS_DENIED")
+                if (ex.Message == "ACCESS_DENIED")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized,"Acceso denegado"));
-                if (q.Message == "UNKNOWN_COLUMN")
+                if (ex.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
-                if (q.Message == "ERROR_CHILD_ROW")
+                if (ex.Message == "ERROR_CHILD_ROW")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
-                if (q.Message == "UNKNOWN_DB_ERROR")
+                if (ex.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
-                if (q.Message == "UNKNOWN_ERROR")
+                if (ex.Message == "UNKNOWN_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
@@ -114,19 +114,19 @@ namespace ApiGrupos.Controllers
                 resultado.Add("mensaje", "privacidad cambiada");
                 return Ok(resultado);
             }
-            catch (Exception q)
+            catch (Exception ex)
             {
-                if (q.Message == "DUPLICATE_ENTRY")
+                if (ex.Message == "DUPLICATE_ENTRY")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
-                if (q.Message == "ACCESS_DENIED")
+                if (ex.Message == "ACCESS_DENIED")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
-                if (q.Message == "UNKNOWN_COLUMN")
+                if (ex.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
-                if (q.Message == "ERROR_CHILD_ROW")
+                if (ex.Message == "ERROR_CHILD_ROW")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
-                if (q.Message == "UNKNOWN_DB_ERROR")
+                if (ex.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
-                if (q.Message == "UNKNOWN_ERROR")
+                if (ex.Message == "UNKNOWN_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
@@ -151,19 +151,19 @@ namespace ApiGrupos.Controllers
                 string mensajeError = "la cuenta ya esta agregada a este grupo";
                 return BadRequest(mensajeError);
             }
-            catch (Exception q)
+            catch (Exception ex)
             {
-                if (q.Message == "DUPLICATE_ENTRY")
+                if (ex.Message == "DUPLICATE_ENTRY")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
-                if (q.Message == "ACCESS_DENIED")
+                if (ex.Message == "ACCESS_DENIED")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
-                if (q.Message == "UNKNOWN_COLUMN")
+                if (ex.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
-                if (q.Message == "ERROR_CHILD_ROW")
+                if (ex.Message == "ERROR_CHILD_ROW")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
-                if (q.Message == "UNKNOWN_DB_ERROR")
+                if (ex.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
-                if (q.Message == "UNKNOWN_ERROR")
+                if (ex.Message == "UNKNOWN_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
@@ -184,19 +184,19 @@ namespace ApiGrupos.Controllers
 
                 return NotFound();
             }
-            catch (Exception q)
+            catch (Exception ex)
             {
-                if (q.Message == "DUPLICATE_ENTRY")
+                if (ex.Message == "DUPLICATE_ENTRY")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
-                if (q.Message == "ACCESS_DENIED")
+                if (ex.Message == "ACCESS_DENIED")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
-                if (q.Message == "UNKNOWN_COLUMN")
+                if (ex.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
-                if (q.Message == "ERROR_CHILD_ROW")
+                if (ex.Message == "ERROR_CHILD_ROW")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
-                if (q.Message == "UNKNOWN_DB_ERROR")
+                if (ex.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
-                if (q.Message == "UNKNOWN_ERROR")
+                if (ex.Message == "UNKNOWN_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
@@ -221,19 +221,19 @@ namespace ApiGrupos.Controllers
                 string mensajeError = "No existe la cuenta indicada en el grupo indicado";
                 return BadRequest(mensajeError);
             }
-            catch (Exception q)
+            catch (Exception ex)
             {
-                if (q.Message == "DUPLICATE_ENTRY")
+                if (ex.Message == "DUPLICATE_ENTRY")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
-                if (q.Message == "ACCESS_DENIED")
+                if (ex.Message == "ACCESS_DENIED")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
-                if (q.Message == "UNKNOWN_COLUMN")
+                if (ex.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
-                if (q.Message == "ERROR_CHILD_ROW")
+                if (ex.Message == "ERROR_CHILD_ROW")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
-                if (q.Message == "UNKNOWN_DB_ERROR")
+                if (ex.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
-                if (q.Message == "UNKNOWN_ERROR")
+                if (ex.Message == "UNKNOWN_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
@@ -257,19 +257,19 @@ namespace ApiGrupos.Controllers
                 string mensajeError = "El grupo no existe";
                 return BadRequest(mensajeError);
             }
-            catch (Exception q)
+            catch (Exception ex)
             {
-                if (q.Message == "DUPLICATE_ENTRY")
+                if (ex.Message == "DUPLICATE_ENTRY")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
-                if (q.Message == "ACCESS_DENIED")
+                if (ex.Message == "ACCESS_DENIED")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
-                if (q.Message == "UNKNOWN_COLUMN")
+                if (ex.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
-                if (q.Message == "ERROR_CHILD_ROW")
+                if (ex.Message == "ERROR_CHILD_ROW")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
-                if (q.Message == "UNKNOWN_DB_ERROR")
+                if (ex.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
-                if (q.Message == "UNKNOWN_ERROR")
+                if (ex.Message == "UNKNOWN_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
@@ -292,19 +292,19 @@ namespace ApiGrupos.Controllers
                 string mensajeError = "La cuenta no existe en este grupo";
                 return BadRequest(mensajeError);
             }
-            catch (Exception q)
+            catch (Exception ex)
             {
-                if (q.Message == "DUPLICATE_ENTRY")
+                if (ex.Message == "DUPLICATE_ENTRY")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
-                if (q.Message == "ACCESS_DENIED")
+                if (ex.Message == "ACCESS_DENIED")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
-                if (q.Message == "UNKNOWN_COLUMN")
+                if (ex.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
-                if (q.Message == "ERROR_CHILD_ROW")
+                if (ex.Message == "ERROR_CHILD_ROW")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
-                if (q.Message == "UNKNOWN_DB_ERROR")
+                if (ex.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
-                if (q.Message == "UNKNOWN_ERROR")
+                if (ex.Message == "UNKNOWN_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
@@ -321,19 +321,19 @@ namespace ApiGrupos.Controllers
                 resultado.Add("mensaje", "grupo reportado");
                 return Ok(resultado);
             }
-            catch (Exception q)
+            catch (Exception ex)
             {
-                if (q.Message == "DUPLICATE_ENTRY")
+                if (ex.Message == "DUPLICATE_ENTRY")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
-                if (q.Message == "ACCESS_DENIED")
+                if (ex.Message == "ACCESS_DENIED")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
-                if (q.Message == "UNKNOWN_COLUMN")
+                if (ex.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
-                if (q.Message == "ERROR_CHILD_ROW")
+                if (ex.Message == "ERROR_CHILD_ROW")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
-                if (q.Message == "UNKNOWN_DB_ERROR")
+                if (ex.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
-                if (q.Message == "UNKNOWN_ERROR")
+                if (ex.Message == "UNKNOWN_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
@@ -349,19 +349,19 @@ namespace ApiGrupos.Controllers
 
 /*
  * 
- *             catch (Exception q)
+ *             catch (Exception ex)
             {
-                if (q.Message == "DUPLICATE_ENTRY")
+                if (ex.Message == "DUPLICATE_ENTRY")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
-                if (q.Message == "ACCESS_DENIED")
+                if (ex.Message == "ACCESS_DENIED")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized,"Acceso denegado"));
-                if (q.Message == "UNKNOWN_COLUMN")
+                if (ex.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
-                if (q.Message == "ERROR_CHILD_ROW")
+                if (ex.Message == "ERROR_CHILD_ROW")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
-                if (q.Message == "UNKNOWN_DB_ERROR")
+                if (ex.Message == "UNKNOWN_DB_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
-                if (q.Message == "UNKNOWN_ERROR")
+                if (ex.Message == "UNKNOWN_ERROR")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
