@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,47 +11,186 @@ namespace Controlador
 {
     public class ControlPosts
     {
-        public static void CrearPost(string contenido, string reacciones)
+
+        List<int> IdPostMostrados = new List<int>();
+
+        public static void CrearPost(string contenido,string url,string tipo_contenido, string idCuenta)
         {
             ModeloPost post = new ModeloPost();
-            post.Contenido = contenido;
+            post.contenido = contenido;
+            post.url_contenido = url;
+            post.tipo_contenido = tipo_contenido;
+            post.id_cuenta = Int32.Parse(idCuenta);
 
             post.GuardarPost();
+        }
+
+        public static bool CrearEvento(string nombre_evento, string imagen, string descripcion_evento, string contenido, string url, string tipo_contenido, string idCuenta)
+        {
+            ModeloPost evento = new ModeloPost();
+            try
+            {
+                evento.nombre_evento = nombre_evento;
+                evento.imagen = imagen;
+                evento.descripcion_evento = descripcion_evento;
+
+                evento.contenido = contenido;
+                evento.url_contenido = url;
+                evento.tipo_contenido = tipo_contenido;
+                evento.id_cuenta = Int32.Parse(idCuenta);
+                evento.GuardarEvento();
+                return true;
+            }
+            catch(Exception e)
+            {
+                if (e.Message == "DUPLICATE_ENTRY")
+                    throw new Exception("El evento ya existe");
+                return false;
+            }
+            
         }
 
         public static void ElimiarPost(string id)
         {
             ModeloPost post = new ModeloPost();
-            post.Id_Post = Int32.Parse(id);
+            post.id_post = Int32.Parse(id);
             post.EliminarPost();
         }
 
-        public static void ModificarPost(string id, string contenido)
+        public static void ElimiarEvento(string id_post, string id_evento)
+        {
+            ElimiarPost(id_post);
+            ModeloPost evento = new ModeloPost();
+            evento.id_evento = Int32.Parse(id_evento);
+            evento.EliminarEvento();
+        }
+
+        public static void ModificarPost(string id, string contenido,string url,string tipo_contenido)
         {
             ModeloPost post = new ModeloPost();
-            post.Id_Post = Int32.Parse(id);
-            post.Contenido = contenido;
+            post.id_post = Int32.Parse(id);
+            post.contenido = contenido;
+            post.url_contenido = url;
+            post.tipo_contenido = tipo_contenido;
             post.GuardarPost();
         }
 
-        public static DataTable Listar()  // iterar con foreach y trear contenido e i, luego agarrar el id y cargar los datos alado
+        public static void ModificarEvento(string Id_Post, string id_evento, string url_contenido, string tipo_contenido, string contenido, string nombre_evento, string imagen, string descripcion_evento, string id_cuenta)
+        {
+            ModeloPost evento = new ModeloPost();
+            evento.id_post = Int32.Parse(Id_Post);
+            evento.id_evento = Int32.Parse(id_evento);
+            evento.url_contenido = url_contenido;
+            evento.tipo_contenido = tipo_contenido;
+            evento.contenido = contenido;
+            evento.nombre_evento = nombre_evento;
+            evento.imagen = imagen;
+            evento.descripcion_evento = descripcion_evento;
+            evento.id_cuenta = Int32.Parse(id_cuenta);
+
+            evento.ActualizarEvento();
+        }
+
+        public static void CompartirPostEnMuro(string id_post, string id_muro)
+        {
+            ModeloPost post = new ModeloPost();
+
+            post.id_post = Int32.Parse(id_post);
+            post.id_muro = Int32.Parse(id_muro);
+
+            post.CompartirPostEnMuro();
+        }
+
+        public static void CompartirPostEnGrupo(string id_post, string id_grupo)
+        {
+            ModeloPost post = new ModeloPost();
+
+            post.id_post = Int32.Parse(id_post);
+            post.id_muro = Int32.Parse(id_grupo);
+
+            post.CompartirPostEnGrupo();
+        }
+
+
+        public static DataTable Listar(string idCuenta)  
         {
             DataTable tabla = new DataTable();
-            tabla.Columns.Add("Id_Post", typeof(int));
+            tabla.Columns.Add("id_post", typeof(int));
             tabla.Columns.Add("Contenido", typeof(string));
-
+            tabla.Columns.Add("id_cuenta", typeof(string));
 
             ModeloPost pizza = new ModeloPost();
-            foreach (ModeloPost p in pizza.ObtenerPosts())
+            foreach (ModeloPost p in pizza.ObtenerPostsDeCuenta(Int32.Parse(idCuenta))) 
             {
                 DataRow fila = tabla.NewRow();
-                fila["Id_post"] = p.Id_Post;
-                fila["Contenido"] = p.Contenido;
+                fila["Id_post"] = p.id_post;
+                fila["Contenido"] = p.contenido;
+                fila["id_cuenta"] = p.id_cuenta;
                 tabla.Rows.Add(fila);
             }
 
             return tabla;
 
+        }
+
+        public static DataTable ListarPosts()
+        {
+            DataTable tabla = new DataTable();
+            tabla.Columns.Add("id_post", typeof(int));
+            tabla.Columns.Add("Contenido", typeof(string));
+            tabla.Columns.Add("id_cuenta", typeof(string));
+
+            ModeloPost pizza = new ModeloPost();
+            foreach (ModeloPost p in pizza.ObtenerPosts())
+            {
+                DataRow fila = tabla.NewRow();
+                fila["Id_post"] = p.id_post;
+                fila["Contenido"] = p.contenido;
+                fila["id_cuenta"] = p.id_cuenta;
+                tabla.Rows.Add(fila);
+            }
+
+            return tabla;
+
+        }
+
+
+        public Dictionary<string,string> AlgoritmoPost() // a ver
+        {
+            Dictionary<string, string> post = new Dictionary<string, string>();
+            ModeloPost p = new ModeloPost();
+            int IdMostrada = 0;
+            //IdPostMostrados.Add(IdMostrada);
+            bool FueMostrado = IdPostMostrados.Contains(IdMostrada);
+            Console.WriteLine(IdPostMostrados.ToString());
+
+            while (true)
+            {
+                if(!IdPostMostrados.Contains(IdMostrada) && p.BuscarPostRandom())
+                {
+                    post.Add("contenido", p.contenido);
+                    post.Add("fecha", p.fecha_post);
+                    post.Add("tipo_contenido", p.tipo_contenido);
+                    post.Add("id_cuenta", p.id_cuenta.ToString());
+                    post.Add("id_post", p.id_post.ToString());
+                    IdMostrada = Int32.Parse(p.id_post.ToString());
+                    Console.WriteLine(IdPostMostrados.ToString());
+                    IdPostMostrados.Add(IdMostrada);
+                    Console.WriteLine(IdPostMostrados.ToString());
+                    return post;
+                    break;
+                }
+                return null;
+            }
+
+        }
+
+        
+        public static string ObtenerCreadorDePost(string id_cuenta)
+        {
+            ModeloPost post = new ModeloPost();
+            post.id_cuenta = Int32.Parse(id_cuenta);
+            return post.ObtenerCreadorDePost();
         }
 
     }

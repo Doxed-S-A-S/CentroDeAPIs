@@ -11,9 +11,10 @@ namespace Controlador
 {
     public class ControlComentarios
     {
-        public static void CrearComentario(string idPost,string comentario,string reacciones)
+        public static void CrearComentario(string idCuenta, string idPost,string comentario)
         {
             ModeloComentario coment = new ModeloComentario();
+            coment.idCuenta = Int32.Parse(idCuenta);
             coment.IdPost = Int32.Parse(idPost);
             coment.Contenido = comentario;
 

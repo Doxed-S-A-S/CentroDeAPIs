@@ -12,35 +12,96 @@ namespace Controlador
 {
     public class ControlCuenta
     {
-        public static void CrearCuenta(string nombreUsuario, string email)
+        public static void CrearCuenta(string nombreUsuario, string email, string contraseña)
         {
             ModeloCuenta cuenta = new ModeloCuenta();
             cuenta.nombre_usuario = nombreUsuario;
             cuenta.email = email;
-
-            cuenta.CrearCuenta();
-
-        }
-
-        public static void ModificarContraseña(string id, string contraseña)
-        {
-            ModeloCuenta cuenta = new ModeloCuenta();
-            cuenta.id_cuenta = Int32.Parse(id);
             cuenta.contraseña = contraseña;
 
-            cuenta.ModificarContraseña();
+            cuenta.Registro();
+        }
+        
+        public static bool Login (string nombre_usuario, string contraseña)
+        {
+            ModeloCuenta c = new ModeloCuenta();
+            c.nombre_usuario = nombre_usuario;
+            c.contraseña = contraseña;
+
+           return c.Autenticar();
         }
 
-        public static void ModificarCorreo(string id, string email)
+        public static bool ModificarContraseña(string id_Cuenta, string contraseña,string contraseñaAntigua)
+        {
+            ModeloCuenta c = new ModeloCuenta();
+            if (c.ModificarContraseña(Int32.Parse(id_Cuenta)) && (c.ContraseñaExiste(Int32.Parse(id_Cuenta), contraseñaAntigua)))
+            {
+                c.id_cuenta = Int32.Parse(id_Cuenta);
+                c.contraseña = contraseña;
+
+                c.ModificarContraseña(Int32.Parse(id_Cuenta));
+                return true;
+            }
+            return false;
+
+        }
+
+        public static bool ModificarCorreo(string id_cuenta, string email)
         {
             ModeloCuenta cuenta = new ModeloCuenta();
-            cuenta.id_cuenta = Int32.Parse(id);
-            cuenta.email = email;
+            if (cuenta.ModificarCorreo(Int32.Parse(id_cuenta)))
+            {
+                cuenta.id_cuenta = Int32.Parse(id_cuenta);
+                cuenta.email = email;
 
-            cuenta.ModificarCorreo();
+                cuenta.ModificarCorreo(Int32.Parse(id_cuenta));
+                return true;
+            }
+            return false;
         }
 
-        public static DataTable ListarCuentas()
+        public static bool ModificarPreferencias(string idCuenta, string idioma, Boolean recordarContraseña, string preferenciaContenido,
+    Boolean notificacionPush, Boolean privacidad, string apariencia)
+        {
+            ModeloCuenta cuenta = new ModeloCuenta();
+            if (cuenta.ObtenerDatosDeCuenta(Int32.Parse(idCuenta)))
+            {
+                cuenta.idioma_app = idioma;
+                cuenta.recordar_contraseña = recordarContraseña;
+                cuenta.preferencias_contenido = preferenciaContenido;
+                cuenta.notificaciones_push = notificacionPush;
+                cuenta.muro_privado = privacidad;
+                cuenta.tema_de_apariencia = apariencia;
+                cuenta.ModificarPreferencias();
+                return true;
+            }
+            return false;
+        }
+
+
+        public static Dictionary<string, string> BuscarUsuario(string id)
+        {
+
+            Dictionary<string, string> usuario = new Dictionary<string, string>();
+            ModeloCuenta u = new ModeloCuenta();
+            if (u.ObtenerDatosDeCuenta(Int32.Parse(id)))
+            {
+                usuario.Add("resultado", "true");
+                usuario.Add("id_usuario", u.id_cuenta.ToString());
+                usuario.Add("nombre_usuario", u.nombre_usuario);
+                usuario.Add("nombre_grupo", u.nombre);
+                usuario.Add("apellido1", u.apellido1);
+                usuario.Add("apellido2", u.apellido2);
+                usuario.Add("email", u.email);
+                usuario.Add("biografia", u.biografia);
+                usuario.Add("reports", u.reports.ToString());
+                return usuario;
+            }
+            usuario.Add("resultado", "false");
+            return usuario;
+        }
+
+            public static DataTable ListarCuentas()
         {
             DataTable tabla = new DataTable();
             tabla.Columns.Add("id_cuenta", typeof(int));
@@ -57,6 +118,25 @@ namespace Controlador
                 tabla.Rows.Add(fila);
             }
             return tabla;
+        }
+
+        public static Dictionary<string,string> BuscarPreferencia(string idCuenta)
+        {
+            Dictionary<string, string> preferencia = new Dictionary<string, string>();
+            ModeloCuenta cuenta = new ModeloCuenta();
+            if (cuenta.BuscarPreferencias(Int32.Parse(idCuenta)))
+            {
+                preferencia.Add("resultado", "true");
+                preferencia.Add("tema de apariencia", cuenta.tema_de_apariencia);
+                preferencia.Add("idioma", cuenta.idioma_app);
+                preferencia.Add("preferencias", cuenta.preferencias_contenido);
+                preferencia.Add("recordar contraseña", cuenta.recordar_contraseña.ToString());
+                preferencia.Add("notificaciones push", cuenta.notificaciones_push.ToString());
+                preferencia.Add("muro privado", cuenta.muro_privado.ToString());
+                return preferencia;
+            }
+            preferencia.Add("resultado", "true");
+            return preferencia;
         }
     }
 }
