@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Modelos;
 using System.Data;
-using Newtonsoft.Json;
-using RestSharp;
+
 
 namespace Controlador
 {

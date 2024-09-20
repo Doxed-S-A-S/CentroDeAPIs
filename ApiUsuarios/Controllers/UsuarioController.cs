@@ -7,6 +7,7 @@ using System.Web.Http;
 using Controlador;
 using System.Data;
 using ApiUsuarios.Models;
+using ApiUsuarios.DTO;
 
 namespace ApiUsuario.Controllers
 {
@@ -15,48 +16,93 @@ namespace ApiUsuario.Controllers
 
         [Route("ApiUsuarios/ListarUsuarios")]
         [HttpGet]
-        public List<UsuarioModel> ListarUsuarios()
+        public List<ListarCuentasDto> ListarUsuarios()
         {
-            DataTable usuarios = ControlCuenta.ListarCuentas();
-
-            List<UsuarioModel> ListaDeGrupos = new List<UsuarioModel>();
-
-            foreach (DataRow usuario in usuarios.Rows)
+            try
             {
-                UsuarioModel u = new UsuarioModel();
+                DataTable usuarios = ControlCuenta.ListarCuentas();
 
-                u.nombre_usuario = usuario["Usuario"].ToString();
-                u.email = usuario["Correo"].ToString();
+                List<ListarCuentasDto> ListaDeGrupos = new List<ListarCuentasDto>();
+
+                foreach (DataRow usuario in usuarios.Rows)
+                {
+                    ListarCuentasDto u = new ListarCuentasDto();
+
+                    u.id_cuenta = usuario["ID"].ToString();
+                    u.nombre_usuario = usuario["Usuario"].ToString();
+                    u.rol_cuenta = usuario["Rol"].ToString();
+                    u.miembro_desde = usuario["Miembro desde"].ToString();
 
 
-                ListaDeGrupos.Add(u);
+                    ListaDeGrupos.Add(u);
+                }
+                return ListaDeGrupos;
             }
-            return ListaDeGrupos;
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
-        [Route("LinguaLink/CrearUsuario/")]
+        [Route("ApiUsuarios/CrearUsuario/")]
         [HttpPost]
-        public IHttpActionResult Post(UsuarioModel usuario)
+        public IHttpActionResult CrearUsuario(UsuarioModel usuario)
         {
-            ControlCuenta.CrearCuenta(usuario.nombre_usuario, usuario.email, usuario.contraseña);
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-            resultado.Add("mensaje", "usuario creado");
-            return Ok(resultado);
+            try
+            {
+                ControlCuenta.CrearCuenta(usuario.nombre_usuario, usuario.email, usuario.contraseña);
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "usuario creado"));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
 
-        [Route("LinguaLink/Usuarios/verificar/")]
+        [Route("ApiUsuarios/Usuarios/verificar/")]
         [HttpPut]
         public IHttpActionResult VerificarUser(UsuarioModel usuario)
         {
-            bool existe = ControlCuenta.Login(usuario.nombre_usuario, usuario.contraseña);
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-
-            if (existe)
+            try
             {
-                resultado.Add("Mensaje", "Login aprobado");
-                return Ok(resultado);
+                bool existe = ControlCuenta.Login(usuario.nombre_usuario, usuario.contraseña);
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+
+                if (existe)
+                {
+                    resultado.Add("Mensaje", "Login aprobado");
+                    return Ok(resultado);
+                }
+                return NotFound();
             }
-            return NotFound();
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
         
         
@@ -65,75 +111,151 @@ namespace ApiUsuario.Controllers
         [HttpGet]
         public IHttpActionResult PreferenciasGet(int idCuenta)
         {
-            PreferenciasModel preferencias = new PreferenciasModel();
-            Dictionary<string, string> resultado = ControlCuenta.BuscarPreferencia(idCuenta.ToString());
-
-            if (resultado["resultado"] == "true")
+            try
             {
-                preferencias.tema_de_apariencia = resultado["tema de apariencia"];
-                preferencias.idioma_app = resultado["idioma"];
-                preferencias.preferencias_contenido = resultado["preferencias"];
-                preferencias.recordar_contraseña = bool.Parse(resultado["recordar contraseña"]);
-                preferencias.notificaciones_push = bool.Parse(resultado["notificaciones push"]);
-                preferencias.muro_privado = bool.Parse(resultado["muro privado"]);
-                return Ok(preferencias);
+                PreferenciasModel preferencias = new PreferenciasModel();
+                Dictionary<string, string> resultado = ControlCuenta.BuscarPreferencia(idCuenta.ToString());
+
+                if (resultado["resultado"] == "true")
+                {
+                    preferencias.tema_de_apariencia = resultado["tema de apariencia"];
+                    preferencias.idioma_app = resultado["idioma"];
+                    preferencias.preferencias_contenido = resultado["preferencias"];
+                    preferencias.recordar_contraseña = bool.Parse(resultado["recordar contraseña"]);
+                    preferencias.notificaciones_push = bool.Parse(resultado["notificaciones push"]);
+                    preferencias.muro_privado = bool.Parse(resultado["muro privado"]);
+                    return Ok(preferencias);
+                }
+                return NotFound();
             }
-            return NotFound();
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
 
         [Route("ApiUsuarios/usuarios/preferencias/{idCuenta:int}")]
         [HttpPut]
         public IHttpActionResult PreferenciasPut(int idCuenta, PreferenciasModel Pref)
         {
-            Dictionary<string, string> preferencias = new Dictionary<string, string>();
-            bool existe = ControlCuenta.ModificarPreferencias(idCuenta.ToString(), Pref.idioma_app, Pref.recordar_contraseña, Pref.preferencias_contenido,
-                Pref.notificaciones_push, Pref.muro_privado, Pref.tema_de_apariencia);
-            if (existe)
+            try
             {
-                preferencias.Add("resultado", "true");
-                preferencias.Add("tema de apariencia", Pref.tema_de_apariencia);
-                preferencias.Add("idioma", Pref.idioma_app);
-                preferencias.Add("preferencias", Pref.preferencias_contenido);
-                preferencias.Add("recordar contraseña", Pref.recordar_contraseña.ToString());
-                preferencias.Add("notificaciones push", Pref.notificaciones_push.ToString());
-                preferencias.Add("muro privado", Pref.muro_privado.ToString());
-                return Ok(preferencias);
-            }
+                Dictionary<string, string> preferencias = new Dictionary<string, string>();
+                bool existe = ControlCuenta.ModificarPreferencias(idCuenta.ToString(), Pref.idioma_app, Pref.recordar_contraseña, Pref.preferencias_contenido,
+                    Pref.notificaciones_push, Pref.muro_privado, Pref.tema_de_apariencia);
+                if (existe)
+                {
+                    preferencias.Add("resultado", "true");
+                    preferencias.Add("tema de apariencia", Pref.tema_de_apariencia);
+                    preferencias.Add("idioma", Pref.idioma_app);
+                    preferencias.Add("preferencias", Pref.preferencias_contenido);
+                    preferencias.Add("recordar contraseña", Pref.recordar_contraseña.ToString());
+                    preferencias.Add("notificaciones push", Pref.notificaciones_push.ToString());
+                    preferencias.Add("muro privado", Pref.muro_privado.ToString());
+                    return Ok(preferencias);
+                }
 
-            return NotFound();
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
 
-         [Route("LinguaLink/usuarios/Pass/{id:int}")]
+         [Route("ApiUsuarios/usuarios/Pass/{id:int}")]
          [HttpPost]
          public IHttpActionResult ModificarContraseña(int id, UsuarioModel usuario)
          {
-             Dictionary<string, string> resultado = new Dictionary<string, string>();
-             bool existe = ControlCuenta.ModificarContraseña(id.ToString(), usuario.contraseña,usuario.contraseñaAntigua);
-
-             if (existe)
+            try
             {
-                resultado.Add("mensaje", "Contraseña modificada");
-                return Ok(resultado);
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                bool existe = ControlCuenta.ModificarContraseña(id.ToString(), usuario.contraseña, usuario.contraseñaAntigua);
+
+                if (existe)
+                {
+                    resultado.Add("mensaje", "Contraseña modificada");
+                    return Ok(resultado);
+                }
+                return NotFound();
             }
-            return NotFound();
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
 
-         }
+        }
 
 
 
-        [Route("LinguaLink/usuarios/Correo/{id:int}")]
+        [Route("ApiUsuarios/usuarios/Correo/{id:int}")]
         [HttpPost]
         public IHttpActionResult ModificarCorreo(int id, UsuarioModel usuario)
         {
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-            bool existe = ControlCuenta.ModificarCorreo(id.ToString(), usuario.email);
-
-            if (existe)
+            try
             {
-                resultado.Add("mensaje", "Correo modificado");
-                return Ok(resultado);
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                bool existe = ControlCuenta.ModificarCorreo(id.ToString(), usuario.email);
+
+                if (existe)
+                {
+                    resultado.Add("mensaje", "Correo modificado");
+                    return Ok(resultado);
+                }
+                return NotFound();
             }
-            return NotFound();
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
     }
 }
