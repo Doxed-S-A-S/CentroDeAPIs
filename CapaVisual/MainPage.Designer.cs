@@ -38,6 +38,7 @@ namespace CapaVisual
             this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
             this.flowLayoutPanelPosts = new System.Windows.Forms.FlowLayoutPanel();
             this.materialCard1 = new MaterialSkin.Controls.MaterialCard();
+            this.btnAdjuntar = new System.Windows.Forms.PictureBox();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.btnPostear = new System.Windows.Forms.PictureBox();
             this.txtContenido = new System.Windows.Forms.RichTextBox();
@@ -52,6 +53,7 @@ namespace CapaVisual
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.materialCard1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnAdjuntar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPostear)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -155,6 +157,7 @@ namespace CapaVisual
             // materialCard1
             // 
             this.materialCard1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialCard1.Controls.Add(this.btnAdjuntar);
             this.materialCard1.Controls.Add(this.materialLabel1);
             this.materialCard1.Controls.Add(this.btnPostear);
             this.materialCard1.Controls.Add(this.txtContenido);
@@ -168,6 +171,18 @@ namespace CapaVisual
             this.materialCard1.Padding = new System.Windows.Forms.Padding(14, 0, 14, 14);
             this.materialCard1.Size = new System.Drawing.Size(762, 158);
             this.materialCard1.TabIndex = 0;
+            // 
+            // btnAdjuntar
+            // 
+            this.btnAdjuntar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAdjuntar.Image = global::CapaVisual.Properties.Resources.Attach_by_iconSvg_co_1_;
+            this.btnAdjuntar.Location = new System.Drawing.Point(440, 75);
+            this.btnAdjuntar.Name = "btnAdjuntar";
+            this.btnAdjuntar.Size = new System.Drawing.Size(41, 38);
+            this.btnAdjuntar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.btnAdjuntar.TabIndex = 9;
+            this.btnAdjuntar.TabStop = false;
+            this.btnAdjuntar.Click += new System.EventHandler(this.btnAdjuntar_Click);
             // 
             // materialLabel1
             // 
@@ -203,6 +218,7 @@ namespace CapaVisual
             // 
             this.menuStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.asdasdToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(14, 120);
@@ -254,7 +270,7 @@ namespace CapaVisual
             this.textBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.textBox1.Location = new System.Drawing.Point(328, 32);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(245, 20);
+            this.textBox1.Size = new System.Drawing.Size(936, 20);
             this.textBox1.TabIndex = 7;
             // 
             // flowLayoutPanel2
@@ -289,6 +305,7 @@ namespace CapaVisual
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.materialCard1.ResumeLayout(false);
             this.materialCard1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnAdjuntar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPostear)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -319,6 +336,7 @@ namespace CapaVisual
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem contenidoMenuItem1;
+        private System.Windows.Forms.PictureBox btnAdjuntar;
     }
 }
 

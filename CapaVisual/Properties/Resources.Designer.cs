@@ -63,6 +63,26 @@ namespace CapaVisual.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Attach_by_iconSvg_co {
+            get {
+                object obj = ResourceManager.GetObject("Attach by iconSvg.co", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Attach_by_iconSvg_co_1_ {
+            get {
+                object obj = ResourceManager.GetObject("Attach by iconSvg.co(1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Chat_by_iconSvg_co_1_ {
             get {
                 object obj = ResourceManager.GetObject("Chat by iconSvg.co(1)", resourceCulture);

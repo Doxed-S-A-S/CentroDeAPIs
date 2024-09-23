@@ -18,10 +18,13 @@ namespace CapaVisual
 {
     public partial class MainPage : MaterialForm
     {
+
+        private OpenFileDialog ofd;
         public MainPage()
         {
             InitializeComponent();
             mostrarPostsIniciales();
+            ofd = new OpenFileDialog();
             flowLayoutPanelPosts.Scroll += new ScrollEventHandler(flowLayoutPanel1_Scroll);
             flowLayoutPanelPosts.MouseWheel += flowLayoutPanel1_MouseWheel;
             var skinManager = MaterialSkin.MaterialSkinManager.Instance;
@@ -188,6 +191,11 @@ namespace CapaVisual
         private void asdasdToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnAdjuntar_Click(object sender, EventArgs e)
+        {
+            ofd.ShowDialog();
         }
     }
 
