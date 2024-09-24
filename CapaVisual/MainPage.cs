@@ -197,6 +197,11 @@ namespace CapaVisual
         {
             ofd.ShowDialog();
         }
+
+        private void imagenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }

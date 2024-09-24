@@ -38,9 +38,7 @@ namespace CapaVisual
             this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
             this.flowLayoutPanelPosts = new System.Windows.Forms.FlowLayoutPanel();
             this.materialCard1 = new MaterialSkin.Controls.MaterialCard();
-            this.btnAdjuntar = new System.Windows.Forms.PictureBox();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
-            this.btnPostear = new System.Windows.Forms.PictureBox();
             this.txtContenido = new System.Windows.Forms.RichTextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.asdasdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,11 +48,14 @@ namespace CapaVisual
             this.panel2 = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.imagenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.linkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.materialButton1 = new MaterialSkin.Controls.MaterialButton();
+            this.contenidoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.materialButton2 = new MaterialSkin.Controls.MaterialButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.materialCard1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnAdjuntar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnPostear)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -157,9 +158,9 @@ namespace CapaVisual
             // materialCard1
             // 
             this.materialCard1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard1.Controls.Add(this.btnAdjuntar);
+            this.materialCard1.Controls.Add(this.materialButton2);
+            this.materialCard1.Controls.Add(this.materialButton1);
             this.materialCard1.Controls.Add(this.materialLabel1);
-            this.materialCard1.Controls.Add(this.btnPostear);
             this.materialCard1.Controls.Add(this.txtContenido);
             this.materialCard1.Controls.Add(this.menuStrip1);
             this.materialCard1.Depth = 0;
@@ -172,18 +173,6 @@ namespace CapaVisual
             this.materialCard1.Size = new System.Drawing.Size(762, 158);
             this.materialCard1.TabIndex = 0;
             // 
-            // btnAdjuntar
-            // 
-            this.btnAdjuntar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAdjuntar.Image = global::CapaVisual.Properties.Resources.Attach_by_iconSvg_co_1_;
-            this.btnAdjuntar.Location = new System.Drawing.Point(440, 75);
-            this.btnAdjuntar.Name = "btnAdjuntar";
-            this.btnAdjuntar.Size = new System.Drawing.Size(41, 38);
-            this.btnAdjuntar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.btnAdjuntar.TabIndex = 9;
-            this.btnAdjuntar.TabStop = false;
-            this.btnAdjuntar.Click += new System.EventHandler(this.btnAdjuntar_Click);
-            // 
             // materialLabel1
             // 
             this.materialLabel1.Depth = 0;
@@ -194,17 +183,6 @@ namespace CapaVisual
             this.materialLabel1.Size = new System.Drawing.Size(79, 23);
             this.materialLabel1.TabIndex = 7;
             this.materialLabel1.Text = "Crear Post";
-            // 
-            // btnPostear
-            // 
-            this.btnPostear.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPostear.Image = global::CapaVisual.Properties.Resources.Write_Articles_by_iconSvg_co_2_;
-            this.btnPostear.Location = new System.Drawing.Point(449, 37);
-            this.btnPostear.Name = "btnPostear";
-            this.btnPostear.Size = new System.Drawing.Size(32, 32);
-            this.btnPostear.TabIndex = 1;
-            this.btnPostear.TabStop = false;
-            this.btnPostear.Click += new System.EventHandler(this.btnPostear_Click_1);
             // 
             // txtContenido
             // 
@@ -220,6 +198,9 @@ namespace CapaVisual
             this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contenidoToolStripMenuItem,
+            this.imagenToolStripMenuItem,
+            this.linkToolStripMenuItem,
             this.asdasdToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(14, 120);
             this.menuStrip1.Name = "menuStrip1";
@@ -283,6 +264,65 @@ namespace CapaVisual
             this.flowLayoutPanel2.Size = new System.Drawing.Size(1063, 158);
             this.flowLayoutPanel2.TabIndex = 4;
             // 
+            // imagenToolStripMenuItem
+            // 
+            this.imagenToolStripMenuItem.Name = "imagenToolStripMenuItem";
+            this.imagenToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
+            this.imagenToolStripMenuItem.Text = "Imagen & Video";
+            this.imagenToolStripMenuItem.Click += new System.EventHandler(this.imagenToolStripMenuItem_Click);
+            // 
+            // linkToolStripMenuItem
+            // 
+            this.linkToolStripMenuItem.Name = "linkToolStripMenuItem";
+            this.linkToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.linkToolStripMenuItem.Text = "Link";
+            // 
+            // materialButton1
+            // 
+            this.materialButton1.AutoSize = false;
+            this.materialButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialButton1.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.materialButton1.Depth = 0;
+            this.materialButton1.HighEmphasis = true;
+            this.materialButton1.Icon = null;
+            this.materialButton1.Location = new System.Drawing.Point(441, 37);
+            this.materialButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialButton1.Name = "materialButton1";
+            this.materialButton1.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.materialButton1.Size = new System.Drawing.Size(100, 36);
+            this.materialButton1.TabIndex = 10;
+            this.materialButton1.Text = "Postear";
+            this.materialButton1.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.materialButton1.UseAccentColor = false;
+            this.materialButton1.UseVisualStyleBackColor = true;
+            // 
+            // contenidoToolStripMenuItem
+            // 
+            this.contenidoToolStripMenuItem.Name = "contenidoToolStripMenuItem";
+            this.contenidoToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
+            this.contenidoToolStripMenuItem.Text = "Contenido";
+            // 
+            // materialButton2
+            // 
+            this.materialButton2.AutoSize = false;
+            this.materialButton2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialButton2.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.materialButton2.Depth = 0;
+            this.materialButton2.HighEmphasis = true;
+            this.materialButton2.Icon = null;
+            this.materialButton2.Location = new System.Drawing.Point(441, 78);
+            this.materialButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialButton2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialButton2.Name = "materialButton2";
+            this.materialButton2.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.materialButton2.Size = new System.Drawing.Size(91, 26);
+            this.materialButton2.TabIndex = 11;
+            this.materialButton2.Text = "Compartir";
+            this.materialButton2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.materialButton2.UseAccentColor = false;
+            this.materialButton2.UseVisualStyleBackColor = true;
+            // 
             // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -305,8 +345,6 @@ namespace CapaVisual
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.materialCard1.ResumeLayout(false);
             this.materialCard1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnAdjuntar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnPostear)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -325,7 +363,6 @@ namespace CapaVisual
         private MaterialSkin.Controls.MaterialDivider materialDivider1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelPosts;
         private MaterialSkin.Controls.MaterialCard materialCard1;
-        private System.Windows.Forms.PictureBox btnPostear;
         private System.Windows.Forms.RichTextBox txtContenido;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TextBox textBox1;
@@ -336,7 +373,11 @@ namespace CapaVisual
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem contenidoMenuItem1;
-        private System.Windows.Forms.PictureBox btnAdjuntar;
+        private System.Windows.Forms.ToolStripMenuItem imagenToolStripMenuItem;
+        private MaterialSkin.Controls.MaterialButton materialButton2;
+        private MaterialSkin.Controls.MaterialButton materialButton1;
+        private System.Windows.Forms.ToolStripMenuItem contenidoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem linkToolStripMenuItem;
     }
 }
 
