@@ -13,6 +13,7 @@ namespace Modelos
         public string NombreBase;
         public string NombreDeUsuario;
         public string Password;
+        public string Puerto;
 
         public MySqlConnection Conexion;
         public MySqlCommand Comando;
@@ -24,12 +25,13 @@ namespace Modelos
             this.NombreBase = "LinguaLinkDB";
             this.Password = "1234";
             this.NombreDeUsuario = "root";
-
+            
             this.Conexion = new MySqlConnection(
                 $"server={this.IP};" +
                 $"user={this.NombreDeUsuario};" +
                 $"password={this.Password};" +
                 $"database={this.NombreBase};"
+                
             );
 
             try

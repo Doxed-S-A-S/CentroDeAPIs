@@ -38,25 +38,32 @@ namespace CapaVisual
             this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
             this.flowLayoutPanelPosts = new System.Windows.Forms.FlowLayoutPanel();
             this.materialCard1 = new MaterialSkin.Controls.MaterialCard();
+            this.panelTextoPost = new System.Windows.Forms.Panel();
+            this.txtContenidoPost = new System.Windows.Forms.RichTextBox();
+            this.botonCompartir = new MaterialSkin.Controls.MaterialButton();
+            this.botonPostear = new MaterialSkin.Controls.MaterialButton();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
-            this.txtContenido = new System.Windows.Forms.RichTextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.contenidoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnImagenVideo = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnLink = new System.Windows.Forms.ToolStripMenuItem();
             this.asdasdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.contenidoMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnContenidoIntercambioCultural = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnContenidoLenguaje = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnContenidoEducacion = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.imagenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.linkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.materialButton1 = new MaterialSkin.Controls.MaterialButton();
-            this.contenidoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.materialButton2 = new MaterialSkin.Controls.MaterialButton();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.pboxImagenVideo = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.flowLayoutPanelPosts.SuspendLayout();
             this.materialCard1.SuspendLayout();
+            this.panelTextoPost.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pboxImagenVideo)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -148,6 +155,7 @@ namespace CapaVisual
             // 
             this.flowLayoutPanelPosts.AutoScroll = true;
             this.flowLayoutPanelPosts.BackColor = System.Drawing.Color.LightGray;
+            this.flowLayoutPanelPosts.Controls.Add(this.panel3);
             this.flowLayoutPanelPosts.ForeColor = System.Drawing.Color.Black;
             this.flowLayoutPanelPosts.Location = new System.Drawing.Point(224, 231);
             this.flowLayoutPanelPosts.Name = "flowLayoutPanelPosts";
@@ -158,10 +166,10 @@ namespace CapaVisual
             // materialCard1
             // 
             this.materialCard1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard1.Controls.Add(this.materialButton2);
-            this.materialCard1.Controls.Add(this.materialButton1);
+            this.materialCard1.Controls.Add(this.panelTextoPost);
+            this.materialCard1.Controls.Add(this.botonCompartir);
+            this.materialCard1.Controls.Add(this.botonPostear);
             this.materialCard1.Controls.Add(this.materialLabel1);
-            this.materialCard1.Controls.Add(this.txtContenido);
             this.materialCard1.Controls.Add(this.menuStrip1);
             this.materialCard1.Depth = 0;
             this.materialCard1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -173,24 +181,73 @@ namespace CapaVisual
             this.materialCard1.Size = new System.Drawing.Size(762, 158);
             this.materialCard1.TabIndex = 0;
             // 
+            // panelTextoPost
+            // 
+            this.panelTextoPost.Controls.Add(this.txtContenidoPost);
+            this.panelTextoPost.Location = new System.Drawing.Point(14, 26);
+            this.panelTextoPost.Name = "panelTextoPost";
+            this.panelTextoPost.Size = new System.Drawing.Size(431, 91);
+            this.panelTextoPost.TabIndex = 12;
+            this.panelTextoPost.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint);
+            // 
+            // txtContenidoPost
+            // 
+            this.txtContenidoPost.Location = new System.Drawing.Point(3, 11);
+            this.txtContenidoPost.Name = "txtContenidoPost";
+            this.txtContenidoPost.Size = new System.Drawing.Size(420, 67);
+            this.txtContenidoPost.TabIndex = 0;
+            this.txtContenidoPost.Text = "";
+            // 
+            // botonCompartir
+            // 
+            this.botonCompartir.AutoSize = false;
+            this.botonCompartir.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.botonCompartir.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.botonCompartir.Depth = 0;
+            this.botonCompartir.HighEmphasis = true;
+            this.botonCompartir.Icon = null;
+            this.botonCompartir.Location = new System.Drawing.Point(458, 78);
+            this.botonCompartir.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.botonCompartir.MouseState = MaterialSkin.MouseState.HOVER;
+            this.botonCompartir.Name = "botonCompartir";
+            this.botonCompartir.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.botonCompartir.Size = new System.Drawing.Size(91, 26);
+            this.botonCompartir.TabIndex = 11;
+            this.botonCompartir.Text = "Compartir";
+            this.botonCompartir.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.botonCompartir.UseAccentColor = false;
+            this.botonCompartir.UseVisualStyleBackColor = true;
+            // 
+            // botonPostear
+            // 
+            this.botonPostear.AutoSize = false;
+            this.botonPostear.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.botonPostear.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.botonPostear.Depth = 0;
+            this.botonPostear.HighEmphasis = true;
+            this.botonPostear.Icon = null;
+            this.botonPostear.Location = new System.Drawing.Point(458, 37);
+            this.botonPostear.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.botonPostear.MouseState = MaterialSkin.MouseState.HOVER;
+            this.botonPostear.Name = "botonPostear";
+            this.botonPostear.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.botonPostear.Size = new System.Drawing.Size(100, 36);
+            this.botonPostear.TabIndex = 10;
+            this.botonPostear.Text = "Postear";
+            this.botonPostear.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.botonPostear.UseAccentColor = false;
+            this.botonPostear.UseVisualStyleBackColor = true;
+            // 
             // materialLabel1
             // 
             this.materialLabel1.Depth = 0;
             this.materialLabel1.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel1.Location = new System.Drawing.Point(17, 11);
+            this.materialLabel1.Location = new System.Drawing.Point(17, 0);
             this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel1.Name = "materialLabel1";
             this.materialLabel1.Size = new System.Drawing.Size(79, 23);
             this.materialLabel1.TabIndex = 7;
             this.materialLabel1.Text = "Crear Post";
-            // 
-            // txtContenido
-            // 
-            this.txtContenido.Location = new System.Drawing.Point(14, 37);
-            this.txtContenido.Name = "txtContenido";
-            this.txtContenido.Size = new System.Drawing.Size(420, 67);
-            this.txtContenido.TabIndex = 0;
-            this.txtContenido.Text = "";
             // 
             // menuStrip1
             // 
@@ -199,8 +256,8 @@ namespace CapaVisual
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.contenidoToolStripMenuItem,
-            this.imagenToolStripMenuItem,
-            this.linkToolStripMenuItem,
+            this.btnImagenVideo,
+            this.btnLink,
             this.asdasdToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(14, 120);
             this.menuStrip1.Name = "menuStrip1";
@@ -209,34 +266,54 @@ namespace CapaVisual
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // contenidoToolStripMenuItem
+            // 
+            this.contenidoToolStripMenuItem.Name = "contenidoToolStripMenuItem";
+            this.contenidoToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
+            this.contenidoToolStripMenuItem.Text = "Contenido";
+            this.contenidoToolStripMenuItem.Click += new System.EventHandler(this.contenidoToolStripMenuItem_Click);
+            // 
+            // btnImagenVideo
+            // 
+            this.btnImagenVideo.Name = "btnImagenVideo";
+            this.btnImagenVideo.Size = new System.Drawing.Size(95, 20);
+            this.btnImagenVideo.Text = "Imagen & Video";
+            this.btnImagenVideo.Click += new System.EventHandler(this.imagenToolStripMenuItem_Click);
+            // 
+            // btnLink
+            // 
+            this.btnLink.Name = "btnLink";
+            this.btnLink.Size = new System.Drawing.Size(41, 20);
+            this.btnLink.Text = "Link";
+            // 
             // asdasdToolStripMenuItem
             // 
             this.asdasdToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.toolStripMenuItem2,
-            this.contenidoMenuItem1});
+            this.btnContenidoIntercambioCultural,
+            this.btnContenidoLenguaje,
+            this.btnContenidoEducacion});
             this.asdasdToolStripMenuItem.Name = "asdasdToolStripMenuItem";
             this.asdasdToolStripMenuItem.Size = new System.Drawing.Size(99, 20);
             this.asdasdToolStripMenuItem.Text = "Tipo contenido";
             this.asdasdToolStripMenuItem.Click += new System.EventHandler(this.asdasdToolStripMenuItem_Click);
             // 
-            // toolStripMenuItem1
+            // btnContenidoIntercambioCultural
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(183, 22);
-            this.toolStripMenuItem1.Text = "Intercambio Cultural";
+            this.btnContenidoIntercambioCultural.Name = "btnContenidoIntercambioCultural";
+            this.btnContenidoIntercambioCultural.Size = new System.Drawing.Size(183, 22);
+            this.btnContenidoIntercambioCultural.Text = "Intercambio Cultural";
             // 
-            // toolStripMenuItem2
+            // btnContenidoLenguaje
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(183, 22);
-            this.toolStripMenuItem2.Text = "Lenguaje";
+            this.btnContenidoLenguaje.Name = "btnContenidoLenguaje";
+            this.btnContenidoLenguaje.Size = new System.Drawing.Size(183, 22);
+            this.btnContenidoLenguaje.Text = "Lenguaje";
             // 
-            // contenidoMenuItem1
+            // btnContenidoEducacion
             // 
-            this.contenidoMenuItem1.Name = "contenidoMenuItem1";
-            this.contenidoMenuItem1.Size = new System.Drawing.Size(183, 22);
-            this.contenidoMenuItem1.Text = "Educacion";
+            this.btnContenidoEducacion.Name = "btnContenidoEducacion";
+            this.btnContenidoEducacion.Size = new System.Drawing.Size(183, 22);
+            this.btnContenidoEducacion.Text = "Educacion";
             // 
             // panel2
             // 
@@ -264,64 +341,22 @@ namespace CapaVisual
             this.flowLayoutPanel2.Size = new System.Drawing.Size(1063, 158);
             this.flowLayoutPanel2.TabIndex = 4;
             // 
-            // imagenToolStripMenuItem
+            // panel3
             // 
-            this.imagenToolStripMenuItem.Name = "imagenToolStripMenuItem";
-            this.imagenToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
-            this.imagenToolStripMenuItem.Text = "Imagen & Video";
-            this.imagenToolStripMenuItem.Click += new System.EventHandler(this.imagenToolStripMenuItem_Click);
+            this.panel3.Controls.Add(this.pboxImagenVideo);
+            this.panel3.Location = new System.Drawing.Point(93, 3);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(431, 91);
+            this.panel3.TabIndex = 13;
             // 
-            // linkToolStripMenuItem
+            // pboxImagenVideo
             // 
-            this.linkToolStripMenuItem.Name = "linkToolStripMenuItem";
-            this.linkToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
-            this.linkToolStripMenuItem.Text = "Link";
-            // 
-            // materialButton1
-            // 
-            this.materialButton1.AutoSize = false;
-            this.materialButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.materialButton1.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.materialButton1.Depth = 0;
-            this.materialButton1.HighEmphasis = true;
-            this.materialButton1.Icon = null;
-            this.materialButton1.Location = new System.Drawing.Point(441, 37);
-            this.materialButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialButton1.Name = "materialButton1";
-            this.materialButton1.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.materialButton1.Size = new System.Drawing.Size(100, 36);
-            this.materialButton1.TabIndex = 10;
-            this.materialButton1.Text = "Postear";
-            this.materialButton1.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.materialButton1.UseAccentColor = false;
-            this.materialButton1.UseVisualStyleBackColor = true;
-            // 
-            // contenidoToolStripMenuItem
-            // 
-            this.contenidoToolStripMenuItem.Name = "contenidoToolStripMenuItem";
-            this.contenidoToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
-            this.contenidoToolStripMenuItem.Text = "Contenido";
-            // 
-            // materialButton2
-            // 
-            this.materialButton2.AutoSize = false;
-            this.materialButton2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.materialButton2.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.materialButton2.Depth = 0;
-            this.materialButton2.HighEmphasis = true;
-            this.materialButton2.Icon = null;
-            this.materialButton2.Location = new System.Drawing.Point(441, 78);
-            this.materialButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialButton2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialButton2.Name = "materialButton2";
-            this.materialButton2.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.materialButton2.Size = new System.Drawing.Size(91, 26);
-            this.materialButton2.TabIndex = 11;
-            this.materialButton2.Text = "Compartir";
-            this.materialButton2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.materialButton2.UseAccentColor = false;
-            this.materialButton2.UseVisualStyleBackColor = true;
+            this.pboxImagenVideo.Location = new System.Drawing.Point(11, 9);
+            this.pboxImagenVideo.Name = "pboxImagenVideo";
+            this.pboxImagenVideo.Size = new System.Drawing.Size(409, 67);
+            this.pboxImagenVideo.TabIndex = 0;
+            this.pboxImagenVideo.TabStop = false;
+            this.pboxImagenVideo.Click += new System.EventHandler(this.pboxImagenVideo_Click);
             // 
             // MainPage
             // 
@@ -343,10 +378,14 @@ namespace CapaVisual
             this.Text = "LinguaLink";
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.flowLayoutPanelPosts.ResumeLayout(false);
             this.materialCard1.ResumeLayout(false);
             this.materialCard1.PerformLayout();
+            this.panelTextoPost.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pboxImagenVideo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -363,21 +402,24 @@ namespace CapaVisual
         private MaterialSkin.Controls.MaterialDivider materialDivider1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelPosts;
         private MaterialSkin.Controls.MaterialCard materialCard1;
-        private System.Windows.Forms.RichTextBox txtContenido;
+        private System.Windows.Forms.RichTextBox txtContenidoPost;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private MaterialSkin.Controls.MaterialLabel materialLabel1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem asdasdToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem contenidoMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem imagenToolStripMenuItem;
-        private MaterialSkin.Controls.MaterialButton materialButton2;
-        private MaterialSkin.Controls.MaterialButton materialButton1;
+        private System.Windows.Forms.ToolStripMenuItem btnContenidoIntercambioCultural;
+        private System.Windows.Forms.ToolStripMenuItem btnContenidoLenguaje;
+        private System.Windows.Forms.ToolStripMenuItem btnContenidoEducacion;
+        private System.Windows.Forms.ToolStripMenuItem btnImagenVideo;
+        private MaterialSkin.Controls.MaterialButton botonCompartir;
+        private MaterialSkin.Controls.MaterialButton botonPostear;
         private System.Windows.Forms.ToolStripMenuItem contenidoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem linkToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem btnLink;
+        private System.Windows.Forms.Panel panelTextoPost;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.PictureBox pboxImagenVideo;
     }
 }
 

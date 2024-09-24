@@ -38,7 +38,40 @@ namespace CapaVisual
                 MaterialSkin.TextShade.BLACK
                 );
 
+            pboxImagenVideo.AllowDrop = true;
+
+            pboxImagenVideo.DragEnter += new DragEventHandler(pboxImagenVideo_DragEnter);
+            pboxImagenVideo.DragDrop += new DragEventHandler(pboxImagenVideo_DragDrop);
+
+        }
+
+        private void pboxImagenVideo_DragEnter(object sender, DragEventArgs e)
+        {
             
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        
+        private void pboxImagenVideo_DragDrop(object sender, DragEventArgs e)
+        {
+            
+            string[] archivos = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (archivos != null && archivos.Length > 0)
+            {
+
+                pictureBox1.Image = Image.FromFile(archivos[0]);
+
+                
+                //SubirImagenAlServidorFTP(archivos[0]);
+            }
         }
 
         private void mostrarPostsIniciales()
@@ -199,6 +232,21 @@ namespace CapaVisual
         }
 
         private void imagenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void contenidoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pboxImagenVideo_Click(object sender, EventArgs e)
         {
 
         }
