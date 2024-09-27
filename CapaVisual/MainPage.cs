@@ -24,6 +24,9 @@ namespace CapaVisual
         {
             InitializeComponent();
             mostrarPostsIniciales();
+
+            panelImagenVideo.Visible = false;
+
             ofd = new OpenFileDialog();
             flowLayoutPanelPosts.Scroll += new ScrollEventHandler(flowLayoutPanel1_Scroll);
             flowLayoutPanelPosts.MouseWheel += flowLayoutPanel1_MouseWheel;
@@ -88,7 +91,8 @@ namespace CapaVisual
                 card.Height = 225;
                 card.Padding = new Padding(10);
 
-                
+                pboxImagenVideo.BackColor = Color.Red;
+
                 PictureBox pictureBox = new PictureBox();
                 pictureBox.Location = new Point(40, 24);
                 pictureBox.Size = new Size(54, 54);
@@ -233,7 +237,8 @@ namespace CapaVisual
 
         private void imagenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            panelTextoPost.Visible = false;
+            panelImagenVideo.Visible = true;
         }
 
         private void panel3_Paint(object sender, PaintEventArgs e)
@@ -243,7 +248,9 @@ namespace CapaVisual
 
         private void contenidoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            pboxImagenVideo.BackColor = Color.Red;
+            panelTextoPost.Visible = true;
+            panelImagenVideo.Visible = false;
         }
 
         private void pboxImagenVideo_Click(object sender, EventArgs e)

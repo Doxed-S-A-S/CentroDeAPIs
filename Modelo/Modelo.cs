@@ -44,7 +44,7 @@ namespace Modelos
             }
             catch (Exception sqlex)
             {
-                throw new Exception("CANNOT_CONNECT_TO_DB");
+                throw new Exception(sqlex.Message);
             }
 
 

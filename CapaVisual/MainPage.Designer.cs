@@ -37,6 +37,8 @@ namespace CapaVisual
             this.btnPrincipal = new System.Windows.Forms.Button();
             this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
             this.flowLayoutPanelPosts = new System.Windows.Forms.FlowLayoutPanel();
+            this.panelImagenVideo = new System.Windows.Forms.Panel();
+            this.pboxImagenVideo = new System.Windows.Forms.PictureBox();
             this.materialCard1 = new MaterialSkin.Controls.MaterialCard();
             this.panelTextoPost = new System.Windows.Forms.Panel();
             this.txtContenidoPost = new System.Windows.Forms.RichTextBox();
@@ -54,16 +56,15 @@ namespace CapaVisual
             this.panel2 = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.pboxImagenVideo = new System.Windows.Forms.PictureBox();
+            this.lblAñadirImagen = new System.Windows.Forms.Label();
+            this.btnBrowse = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.flowLayoutPanelPosts.SuspendLayout();
+            this.panelImagenVideo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pboxImagenVideo)).BeginInit();
             this.materialCard1.SuspendLayout();
             this.panelTextoPost.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pboxImagenVideo)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -155,7 +156,6 @@ namespace CapaVisual
             // 
             this.flowLayoutPanelPosts.AutoScroll = true;
             this.flowLayoutPanelPosts.BackColor = System.Drawing.Color.LightGray;
-            this.flowLayoutPanelPosts.Controls.Add(this.panel3);
             this.flowLayoutPanelPosts.ForeColor = System.Drawing.Color.Black;
             this.flowLayoutPanelPosts.Location = new System.Drawing.Point(224, 231);
             this.flowLayoutPanelPosts.Name = "flowLayoutPanelPosts";
@@ -163,9 +163,31 @@ namespace CapaVisual
             this.flowLayoutPanelPosts.Size = new System.Drawing.Size(1063, 579);
             this.flowLayoutPanelPosts.TabIndex = 2;
             // 
+            // panelImagenVideo
+            // 
+            this.panelImagenVideo.Controls.Add(this.lblAñadirImagen);
+            this.panelImagenVideo.Controls.Add(this.btnBrowse);
+            this.panelImagenVideo.Controls.Add(this.pboxImagenVideo);
+            this.panelImagenVideo.Location = new System.Drawing.Point(14, 26);
+            this.panelImagenVideo.Name = "panelImagenVideo";
+            this.panelImagenVideo.Size = new System.Drawing.Size(431, 91);
+            this.panelImagenVideo.TabIndex = 13;
+            // 
+            // pboxImagenVideo
+            // 
+            this.pboxImagenVideo.BackColor = System.Drawing.Color.Red;
+            this.pboxImagenVideo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pboxImagenVideo.Location = new System.Drawing.Point(3, 11);
+            this.pboxImagenVideo.Name = "pboxImagenVideo";
+            this.pboxImagenVideo.Size = new System.Drawing.Size(420, 67);
+            this.pboxImagenVideo.TabIndex = 0;
+            this.pboxImagenVideo.TabStop = false;
+            this.pboxImagenVideo.Click += new System.EventHandler(this.pboxImagenVideo_Click);
+            // 
             // materialCard1
             // 
             this.materialCard1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialCard1.Controls.Add(this.panelImagenVideo);
             this.materialCard1.Controls.Add(this.panelTextoPost);
             this.materialCard1.Controls.Add(this.botonCompartir);
             this.materialCard1.Controls.Add(this.botonPostear);
@@ -259,31 +281,31 @@ namespace CapaVisual
             this.btnImagenVideo,
             this.btnLink,
             this.asdasdToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(14, 120);
+            this.menuStrip1.Location = new System.Drawing.Point(14, 116);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip1.Size = new System.Drawing.Size(734, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(734, 28);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // contenidoToolStripMenuItem
             // 
             this.contenidoToolStripMenuItem.Name = "contenidoToolStripMenuItem";
-            this.contenidoToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
+            this.contenidoToolStripMenuItem.Size = new System.Drawing.Size(92, 24);
             this.contenidoToolStripMenuItem.Text = "Contenido";
             this.contenidoToolStripMenuItem.Click += new System.EventHandler(this.contenidoToolStripMenuItem_Click);
             // 
             // btnImagenVideo
             // 
             this.btnImagenVideo.Name = "btnImagenVideo";
-            this.btnImagenVideo.Size = new System.Drawing.Size(95, 20);
+            this.btnImagenVideo.Size = new System.Drawing.Size(120, 24);
             this.btnImagenVideo.Text = "Imagen & Video";
             this.btnImagenVideo.Click += new System.EventHandler(this.imagenToolStripMenuItem_Click);
             // 
             // btnLink
             // 
             this.btnLink.Name = "btnLink";
-            this.btnLink.Size = new System.Drawing.Size(41, 20);
+            this.btnLink.Size = new System.Drawing.Size(49, 24);
             this.btnLink.Text = "Link";
             // 
             // asdasdToolStripMenuItem
@@ -293,26 +315,26 @@ namespace CapaVisual
             this.btnContenidoLenguaje,
             this.btnContenidoEducacion});
             this.asdasdToolStripMenuItem.Name = "asdasdToolStripMenuItem";
-            this.asdasdToolStripMenuItem.Size = new System.Drawing.Size(99, 20);
+            this.asdasdToolStripMenuItem.Size = new System.Drawing.Size(124, 24);
             this.asdasdToolStripMenuItem.Text = "Tipo contenido";
             this.asdasdToolStripMenuItem.Click += new System.EventHandler(this.asdasdToolStripMenuItem_Click);
             // 
             // btnContenidoIntercambioCultural
             // 
             this.btnContenidoIntercambioCultural.Name = "btnContenidoIntercambioCultural";
-            this.btnContenidoIntercambioCultural.Size = new System.Drawing.Size(183, 22);
+            this.btnContenidoIntercambioCultural.Size = new System.Drawing.Size(227, 26);
             this.btnContenidoIntercambioCultural.Text = "Intercambio Cultural";
             // 
             // btnContenidoLenguaje
             // 
             this.btnContenidoLenguaje.Name = "btnContenidoLenguaje";
-            this.btnContenidoLenguaje.Size = new System.Drawing.Size(183, 22);
+            this.btnContenidoLenguaje.Size = new System.Drawing.Size(227, 26);
             this.btnContenidoLenguaje.Text = "Lenguaje";
             // 
             // btnContenidoEducacion
             // 
             this.btnContenidoEducacion.Name = "btnContenidoEducacion";
-            this.btnContenidoEducacion.Size = new System.Drawing.Size(183, 22);
+            this.btnContenidoEducacion.Size = new System.Drawing.Size(227, 26);
             this.btnContenidoEducacion.Text = "Educacion";
             // 
             // panel2
@@ -328,7 +350,7 @@ namespace CapaVisual
             this.textBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.textBox1.Location = new System.Drawing.Point(328, 32);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(936, 20);
+            this.textBox1.Size = new System.Drawing.Size(936, 23);
             this.textBox1.TabIndex = 7;
             // 
             // flowLayoutPanel2
@@ -341,26 +363,27 @@ namespace CapaVisual
             this.flowLayoutPanel2.Size = new System.Drawing.Size(1063, 158);
             this.flowLayoutPanel2.TabIndex = 4;
             // 
-            // panel3
+            // lblAñadirImagen
             // 
-            this.panel3.Controls.Add(this.pboxImagenVideo);
-            this.panel3.Location = new System.Drawing.Point(93, 3);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(431, 91);
-            this.panel3.TabIndex = 13;
+            this.lblAñadirImagen.AutoSize = true;
+            this.lblAñadirImagen.Location = new System.Drawing.Point(36, 36);
+            this.lblAñadirImagen.Name = "lblAñadirImagen";
+            this.lblAñadirImagen.Size = new System.Drawing.Size(212, 17);
+            this.lblAñadirImagen.TabIndex = 1;
+            this.lblAñadirImagen.Text = "Arrastra una imagen o sube una";
             // 
-            // pboxImagenVideo
+            // btnBrowse
             // 
-            this.pboxImagenVideo.Location = new System.Drawing.Point(11, 9);
-            this.pboxImagenVideo.Name = "pboxImagenVideo";
-            this.pboxImagenVideo.Size = new System.Drawing.Size(409, 67);
-            this.pboxImagenVideo.TabIndex = 0;
-            this.pboxImagenVideo.TabStop = false;
-            this.pboxImagenVideo.Click += new System.EventHandler(this.pboxImagenVideo_Click);
+            this.btnBrowse.Location = new System.Drawing.Point(264, 30);
+            this.btnBrowse.Name = "btnBrowse";
+            this.btnBrowse.Size = new System.Drawing.Size(75, 23);
+            this.btnBrowse.TabIndex = 2;
+            this.btnBrowse.Text = "Browse";
+            this.btnBrowse.UseVisualStyleBackColor = true;
             // 
             // MainPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(175)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1499, 815);
@@ -378,14 +401,14 @@ namespace CapaVisual
             this.Text = "LinguaLink";
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.flowLayoutPanelPosts.ResumeLayout(false);
+            this.panelImagenVideo.ResumeLayout(false);
+            this.panelImagenVideo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pboxImagenVideo)).EndInit();
             this.materialCard1.ResumeLayout(false);
             this.materialCard1.PerformLayout();
             this.panelTextoPost.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pboxImagenVideo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -418,8 +441,10 @@ namespace CapaVisual
         private System.Windows.Forms.ToolStripMenuItem contenidoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem btnLink;
         private System.Windows.Forms.Panel panelTextoPost;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panelImagenVideo;
         private System.Windows.Forms.PictureBox pboxImagenVideo;
+        private System.Windows.Forms.Label lblAñadirImagen;
+        private System.Windows.Forms.Button btnBrowse;
     }
 }
 
