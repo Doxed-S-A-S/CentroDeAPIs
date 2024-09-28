@@ -53,9 +53,13 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -109,9 +113,13 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -124,9 +132,13 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -138,9 +150,13 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -152,9 +168,13 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -166,9 +186,13 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -180,9 +204,13 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -208,10 +236,14 @@ namespace Modelos
                 this.Lector.Close();
                 return posts;
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
                 return null;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -236,10 +268,14 @@ namespace Modelos
                 this.Lector.Close();
                 return posts;
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
                 return null;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -264,10 +300,14 @@ namespace Modelos
                 }
                 return false;
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
                 return false;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -300,9 +340,13 @@ namespace Modelos
                 this.id_upvote = this.Comando.LastInsertedId;
                 LikeDeCuenta();
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -314,9 +358,13 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -332,9 +380,13 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
 
@@ -346,27 +398,27 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.likes = Int32.Parse(this.Comando.ExecuteScalar().ToString());
             }
-            catch (Exception e)
+            catch (MySqlException sqlx)
             {
-                ErrorHandle(e);
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
             }
         }
-
-
-        private static void ErrorHandle(Exception ex)
+        private void MySqlErrorCatch(MySqlException sqlx)
         {
-            if (ex.Message == "DUPLICATE_ENTRY")
+            if (sqlx.Number == MYSQL_DUPLICATE_ENTRY)
                 throw new Exception("DUPLICATE_ENTRY");
-            if (ex.Message == "ACCESS_DENIED")
+            if (sqlx.Number == MYSQL_ACCESS_DENIED)
                 throw new Exception("ACCESS_DENIED");
-            if (ex.Message == "UNKNOWN_COLUMN")
+            if (sqlx.Number == MYSQL_UNKNOWN_COLUMN)
                 throw new Exception("UNKNOWN_COLUMN");
-            if (ex.Message == "UNKNOWN_DB_ERROR")
-                throw new Exception("UNKNOWN_DB_ERROR");
-            if (ex.Message == "ERROR_CHILD_ROW")
+            if (sqlx.Number == MYSQL_ERROR_CHILD_ROW)
                 throw new Exception("ERROR_CHILD_ROW");
 
-            throw new Exception("UNKNOWN_ERROR");
+            throw new Exception("UNKNOWN_DB_ERROR");
         }
     }
 }

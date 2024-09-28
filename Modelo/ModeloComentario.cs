@@ -13,6 +13,7 @@ namespace Modelos
         public int idCuenta;
         public long IdComentario;
         public string Contenido;
+        public long idUpvote;
 
         const int MYSQL_DUPLICATE_ENTRY = 1062;
         const int MYSQL_ACCESS_DENIED = 1045;
@@ -131,6 +132,69 @@ namespace Modelos
                 throw new Exception("UNKNOWN_ERROR");
             }
         }
+
+        public void ComentarioLikeDeCuenta()
+        {
+            try
+            {
+                string sql = $"insert into LikeComent (id_comentario,id_upvote) values ({this.IdComentario},{this.idUpvote})";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+        public void AñadirLikeComent()
+        {
+            try
+            {
+                string sql = $"insert into upvote (id_post,id_upvote) values ({this.IdPost}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+                this.idUpvote = this.Comando.LastInsertedId;
+                ComentarioLikeDeCuenta();
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+
+        public void EliminarLikeComent()
+        {
+            try
+            {
+                string sql = $"delete from LikeComent where id_comentario = {this.IdComentario} and id_upvote = {this.idUpvote}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+
+                sql = $"delete from upvote where id_upvote = {this.idUpvote} and id_post = {this.IdPost}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+
 
         private void MySqlErrorCatch(MySqlException sqlx)
         {

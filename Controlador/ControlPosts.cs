@@ -26,13 +26,9 @@ namespace Controlador
 
                 post.GuardarPost();
             }
-            catch (MySqlException sqlx)
+            catch (Exception e)
             {
-                MySqlErrorCatch(sqlx);
-            }
-            catch (Exception)
-            {
-                throw new Exception("UNKNOWN_ERROR");
+                ErrorHandle(e);
             }
         }
 
@@ -69,13 +65,9 @@ namespace Controlador
                 post.id_post = Int32.Parse(id);
                 post.EliminarPost();
             }
-            catch (MySqlException sqlx)
+            catch (Exception e)
             {
-                MySqlErrorCatch(sqlx);
-            }
-            catch (Exception)
-            {
-                throw new Exception("UNKNOWN_ERROR");
+                ErrorHandle(e);
             }
         }
 
@@ -88,13 +80,9 @@ namespace Controlador
                 evento.id_evento = Int32.Parse(id_evento);
                 evento.EliminarEvento();
             }
-            catch (MySqlException sqlx)
+            catch (Exception e)
             {
-                MySqlErrorCatch(sqlx);
-            }
-            catch (Exception)
-            {
-                throw new Exception("UNKNOWN_ERROR");
+                ErrorHandle(e);
             }
         }
 
@@ -109,13 +97,9 @@ namespace Controlador
                 post.tipo_contenido = tipo_contenido;
                 post.GuardarPost();
             }
-            catch (MySqlException sqlx)
+            catch (Exception e)
             {
-                MySqlErrorCatch(sqlx);
-            }
-            catch (Exception)
-            {
-                throw new Exception("UNKNOWN_ERROR");
+                ErrorHandle(e);
             }
         }
 
@@ -136,13 +120,9 @@ namespace Controlador
 
                 evento.ActualizarEvento();
             }
-            catch (MySqlException sqlx)
+            catch (Exception e)
             {
-                MySqlErrorCatch(sqlx);
-            }
-            catch (Exception)
-            {
-                throw new Exception("UNKNOWN_ERROR");
+                ErrorHandle(e);
             }
         }
 
@@ -157,13 +137,9 @@ namespace Controlador
 
                 post.CompartirPostEnMuro();
             }
-            catch (MySqlException sqlx)
+            catch (Exception e)
             {
-                MySqlErrorCatch(sqlx);
-            }
-            catch (Exception)
-            {
-                throw new Exception("UNKNOWN_ERROR");
+                ErrorHandle(e);
             }
         }
 
@@ -178,13 +154,9 @@ namespace Controlador
 
                 post.CompartirPostEnGrupo();
             }
-            catch (MySqlException sqlx)
+            catch (Exception e)
             {
-                MySqlErrorCatch(sqlx);
-            }
-            catch (Exception)
-            {
-                throw new Exception("UNKNOWN_ERROR");
+                ErrorHandle(e);
             }
         }
 
@@ -210,13 +182,10 @@ namespace Controlador
 
                 return tabla;
             }
-            catch (MySqlException sqlx)
+            catch (Exception e)
             {
-                MySqlErrorCatch(sqlx);
-            }
-            catch (Exception)
-            {
-                throw new Exception("UNKNOWN_ERROR");
+                ErrorHandle(e);
+                return null;
             }
 
         }
@@ -242,13 +211,10 @@ namespace Controlador
 
                 return tabla;
             }
-            catch (MySqlException sqlx)
+            catch (Exception e)
             {
-                MySqlErrorCatch(sqlx);
-            }
-            catch (Exception)
-            {
-                throw new Exception("UNKNOWN_ERROR");
+                ErrorHandle(e);
+                return null;
             }
 
         }
@@ -293,13 +259,10 @@ namespace Controlador
                 post.id_cuenta = Int32.Parse(id_cuenta);
                 return post.ObtenerCreadorDePost();
             }
-            catch (MySqlException sqlx)
+            catch (Exception e)
             {
-                MySqlErrorCatch(sqlx);
-            }
-            catch (Exception)
-            {
-                throw new Exception("UNKNOWN_ERROR");
+                ErrorHandle(e);
+                return null;
             }
         }
 
@@ -313,13 +276,9 @@ namespace Controlador
 
                 post.AñadirLike();
             }
-            catch (MySqlException sqlx)
+            catch (Exception e)
             {
-                MySqlErrorCatch(sqlx);
-            }
-            catch (Exception)
-            {
-                throw new Exception("UNKNOWN_ERROR");
+                ErrorHandle(e);
             }
         }
 
@@ -334,13 +293,9 @@ namespace Controlador
 
                 post.EliminarLike();
             }
-            catch (MySqlException sqlx)
+            catch (Exception e)
             {
-                MySqlErrorCatch(sqlx);
-            }
-            catch (Exception)
-            {
-                throw new Exception("UNKNOWN_ERROR");
+                ErrorHandle(e);
             }
         }
 

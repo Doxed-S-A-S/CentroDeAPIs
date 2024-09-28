@@ -68,7 +68,6 @@ namespace Controlador
                 tabla.Columns.Add("IdPost", typeof(int));
                 tabla.Columns.Add("Comentario", typeof(string));
 
-
                 ModeloComentario coment = new ModeloComentario();
                 foreach (ModeloComentario p in coment.ObtenerComentarios(idPost))
                 {
@@ -78,15 +77,39 @@ namespace Controlador
                     fila["Comentario"] = p.Contenido;
                     tabla.Rows.Add(fila);
                 }
-
-                return tabla;
-
+                return tabla
             }
             catch (Exception e)
             {
                 ErrorHandle(e);
                 return null;
             }
+        }
+
+        public static void AñadirLikeComentario(string id_comentario,string id_post)
+        {
+            try
+            {
+                ModeloComentario coment = new ModeloComentario();
+                coment.IdComentario = Int32.Parse(id_comentario);
+                coment.IdPost = Int32.Parse(id_post);
+
+                coment.AñadirLikeComent();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
+        }
+
+        public static void EliminarLikeComent(string id_comentario, string id_post,string id_upvote)
+        {
+            ModeloComentario coment = new ModeloComentario();
+            coment.IdComentario = Int32.Parse(id_comentario);
+            coment.IdPost = Int32.Parse(id_post);
+            coment.idUpvote = Int32.Parse(id_upvote);
+
+            coment.EliminarLikeComent();
         }
 
         private static void ErrorHandle(Exception ex)
