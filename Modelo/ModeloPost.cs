@@ -1,9 +1,9 @@
-using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace Modelos
 {
@@ -14,7 +14,9 @@ namespace Modelos
         public string tipo_contenido = "tagsito";
         public string contenido;
         public string fecha_post;
-        public int id_cuenta ;
+        public int id_cuenta;
+
+        public long id_upvote;
         public int likes;
 
         public int id_evento;
@@ -23,11 +25,13 @@ namespace Modelos
         public string descripcion_evento;
         public string fecha_evento = "2022-04-22 10:34:53";
 
-
         public int id_muro;
         public int id_grupo;
 
         const int MYSQL_DUPLICATE_ENTRY = 1062;
+        const int MYSQL_ACCESS_DENIED = 1045;
+        const int MYSQL_UNKNOWN_COLUMN = 1054;
+        const int MYSQL_ERROR_CHILD_ROW = 1452;
 
         public void GuardarPost()
         {
@@ -43,11 +47,16 @@ namespace Modelos
 
         private void InsertarPost()
         {
-            string sql = $"insert into posts (contenido,url_contenido,tipo_contenido,id_cuenta) values('{this.contenido}','{this.url_contenido}','{this.tipo_contenido}',{this.id_cuenta})";
-            PrintDesktop(sql);
-            this.Comando.CommandText = sql;
-            this.Comando.ExecuteNonQuery();
-            PrintDesktop(sql);
+            try
+            {
+                string sql = $"insert into posts (contenido,url_contenido,tipo_contenido,id_cuenta) values('{this.contenido}','{this.url_contenido}','{this.tipo_contenido}',{this.id_cuenta})";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
 
@@ -69,7 +78,8 @@ namespace Modelos
         {
             InsertarPost();
             this.id_post = this.Comando.LastInsertedId;
-            try {
+            try
+            {
                 VerificarEventoEnBD();
                 this.Comando.Parameters.Clear();
                 string sql = $"INSERT INTO evento (id_post, nombre_evento,imagen,fecha_evento, descripcion_evento) " +
@@ -82,120 +92,183 @@ namespace Modelos
                 this.Comando.Prepare();
                 this.Comando.ExecuteNonQuery();
             }
-            catch(MySqlException e)
+            catch (MySqlException e)
             {
                 if (e.Number == MYSQL_DUPLICATE_ENTRY)
                     throw new Exception("DUPLICATE_ENTRY");
             }
-
-
-
         }
+
+        
         public void ActualizarPost()
         {
-            string sql = $"update posts set contenido ='{this.contenido}',tipo_contenido = '{this.tipo_contenido}'," +
-                $"url_contenido = '{this.url_contenido}' where id_post ={this.id_post}";
-            this.Comando.CommandText = sql;
-            this.Comando.ExecuteNonQuery();
+            try
+            {
+                string sql = $"update posts set contenido ='{this.contenido}',tipo_contenido = '{this.tipo_contenido}'," +
+    $"url_contenido = '{this.url_contenido}' where id_post ={this.id_post}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public void ActualizarEvento()
         {
-
             ActualizarPost();
-            string sql = $"update evento set nombre_evento='{this.nombre_evento}',imagen='{this.imagen}',descripcion_evento='{this.descripcion_evento}' where id_evento ={this.id_evento}";
-            this.Comando.CommandText = sql;
-            this.Comando.ExecuteNonQuery();
+            try
+            {
+                string sql = $"update evento set nombre_evento='{this.nombre_evento}',imagen='{this.imagen}',descripcion_evento='{this.descripcion_evento}' where id_evento ={this.id_evento}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public void EliminarPost()
         {
-            string sql = $"update posts set eliminado = true where id_post ='{this.id_post}'";
-            this.Comando.CommandText = sql;
-            this.Comando.ExecuteNonQuery();
+            try
+            {
+                string sql = $"update posts set eliminado = true where id_post ='{this.id_post}'";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public void EliminarEvento()
         {
-            
-            string sql = $"update evento set eliminado = true where id_evento ='{this.id_evento}'";
-            this.Comando.CommandText = sql;
-            this.Comando.ExecuteNonQuery();
+            try
+            {
+                string sql = $"update evento set eliminado = true where id_evento ='{this.id_evento}'";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public void CompartirPostEnMuro()
         {
-            string sql = $"insert into postea_muro (id_muro,id_post) values({this.id_muro},{this.id_post})";
-            this.Comando.CommandText = sql;
-            this.Comando.ExecuteNonQuery();
+            try
+            {
+                string sql = $"insert into postea_muro (id_muro,id_post) values({this.id_muro},{this.id_post})";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public void CompartirPostEnGrupo()
         {
-            string sql = $"insert into postea_grupos (id_muro,id_post) values({this.id_grupo},{this.id_post})";
-            this.Comando.CommandText = sql;
-            this.Comando.ExecuteNonQuery();
+            try
+            {
+                string sql = $"insert into postea_grupos (id_muro,id_post) values({this.id_grupo},{this.id_post})";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
 
         public List<ModeloPost> ObtenerPostsDeCuenta(int id_cuenta)
         {
-            List<ModeloPost> posts = new List<ModeloPost>();
-
-            string sql = $"select * from posts where eliminado = false and id_cuenta = {id_cuenta}";
-            this.Comando.CommandText = sql;
-            this.Lector = this.Comando.ExecuteReader();
-
-            while (this.Lector.Read())
+            try
             {
-                ModeloPost post = new ModeloPost();
-                post.id_post = Int32.Parse(this.Lector["Id_post"].ToString());
-                post.contenido = this.Lector["Contenido"].ToString();
-                post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
-                posts.Add(post);
+                List<ModeloPost> posts = new List<ModeloPost>();
+
+                string sql = $"select * from posts where eliminado = false and id_cuenta = {id_cuenta}";
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                while (this.Lector.Read())
+                {
+                    ModeloPost post = new ModeloPost();
+                    post.id_post = Int32.Parse(this.Lector["Id_post"].ToString());
+                    post.contenido = this.Lector["Contenido"].ToString();
+                    post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                    posts.Add(post);
+                }
+                this.Lector.Close();
+                return posts;
             }
-            this.Lector.Close();
-            return posts;
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
         }
 
         public List<ModeloPost> ObtenerPosts()
         {
-            List<ModeloPost> posts = new List<ModeloPost>();
-
-            string sql = $"select * from posts where eliminado = false and id_cuenta";
-            this.Comando.CommandText = sql;
-            this.Lector = this.Comando.ExecuteReader();
-
-            while (this.Lector.Read())
+            try
             {
-                ModeloPost post = new ModeloPost();
-                post.id_post = Int32.Parse(this.Lector["Id_post"].ToString());
-                post.contenido = this.Lector["Contenido"].ToString();
-                post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
-                posts.Add(post);
+                List<ModeloPost> posts = new List<ModeloPost>();
+
+                string sql = $"select * from posts where eliminado = false and id_cuenta";
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                while (this.Lector.Read())
+                {
+                    ModeloPost post = new ModeloPost();
+                    post.id_post = Int32.Parse(this.Lector["Id_post"].ToString());
+                    post.contenido = this.Lector["Contenido"].ToString();
+                    post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                    posts.Add(post);
+                }
+                this.Lector.Close();
+                return posts;
             }
-            this.Lector.Close();
-            return posts;
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
         }
 
         public bool BuscarPostRandom()
         {
-            string sql = $"SELECT * FROM posts where eliminado = false and reports < 5 ORDER BY RAND() LIMIT 1 "; // agregar alguna logica de fecha
-            this.Comando.CommandText = sql;
-            this.Lector = this.Comando.ExecuteReader();
-
-
-            if (this.Lector.HasRows)
+            try
             {
-                this.Lector.Read();
-                this.contenido = this.Lector["contenido"].ToString();
-                this.tipo_contenido = this.Lector["tipo_contenido"].ToString();
-                this.fecha_post = this.Lector["fecha_creacion"].ToString();
-                this.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
-                this.id_post = Int32.Parse(this.Lector["id_post"].ToString());
-                return true;
+                string sql = $"SELECT * FROM posts where eliminado = false and reports < 5 ORDER BY RAND() LIMIT 1 "; // agregar alguna logica de fecha
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+
+                if (this.Lector.HasRows)
+                {
+                    this.Lector.Read();
+                    this.contenido = this.Lector["contenido"].ToString();
+                    this.tipo_contenido = this.Lector["tipo_contenido"].ToString();
+                    this.fecha_post = this.Lector["fecha_creacion"].ToString();
+                    this.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                    this.id_post = Int32.Parse(this.Lector["id_post"].ToString());
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return false;
+            }
         }
 
 
@@ -205,7 +278,7 @@ namespace Modelos
             string sql = $"select nombre_usuario from cuenta where id_cuenta = ({this.id_cuenta})"; // Definir la consulta SQL
             this.Comando.CommandText = sql; // Asignar la consulta al comando
 
-            
+
             this.Lector = this.Comando.ExecuteReader();
             if (this.Lector.Read())
             {
@@ -213,30 +286,89 @@ namespace Modelos
             }
             this.Lector.Close();
 
-            
-            return username ;
+
+            return username;
         }
 
         public void AñadirLike()
         {
-            string sql = $"insert into upvote (id_post,id_upvote) values ({this.id_post}";
-            this.Comando.CommandText = sql;
-            this.likes = Int32.Parse(this.Comando.ExecuteScalar().ToString());
+            try
+            {
+                string sql = $"insert into upvote (id_post,id_upvote) values ({this.id_post}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+                this.id_upvote = this.Comando.LastInsertedId;
+                LikeDeCuenta();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
+        }
+
+        public void LikeDeCuenta()
+        {
+            try
+            {
+                string sql = $"insert into da_upvote (id_cuenta,id_upvote) values ({this.id_cuenta},{this.id_upvote})";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public void EliminarLike()
         {
-            string sql = $"select count(*) from upvote where id_post={this.id_post}";
-            this.Comando.CommandText = sql;
-            this.likes = Int32.Parse(this.Comando.ExecuteScalar().ToString());
+            try
+            {
+                string sql = $"delete from da_upvote where id_cuenta = {this.id_cuenta} and id_upvote = {this.id_upvote}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+
+                sql = $"delete from upvote where id_upvote = {this.id_upvote} and id_post = {this.id_post}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public void NumeroDeLikes()
         {
-            string sql = $"select count(*) from upvote where id_post={this.id_post}";
-            this.Comando.CommandText = sql;
-            this.likes = Int32.Parse(this.Comando.ExecuteScalar().ToString());
+            try
+            {
+                string sql = $"select count(*) from upvote where id_post={this.id_post}";
+                this.Comando.CommandText = sql;
+                this.likes = Int32.Parse(this.Comando.ExecuteScalar().ToString());
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
+        }
+
+
+        private static void ErrorHandle(Exception ex)
+        {
+            if (ex.Message == "DUPLICATE_ENTRY")
+                throw new Exception("DUPLICATE_ENTRY");
+            if (ex.Message == "ACCESS_DENIED")
+                throw new Exception("ACCESS_DENIED");
+            if (ex.Message == "UNKNOWN_COLUMN")
+                throw new Exception("UNKNOWN_COLUMN");
+            if (ex.Message == "UNKNOWN_DB_ERROR")
+                throw new Exception("UNKNOWN_DB_ERROR");
+            if (ex.Message == "ERROR_CHILD_ROW")
+                throw new Exception("ERROR_CHILD_ROW");
+
+            throw new Exception("UNKNOWN_ERROR");
         }
     }
 }
+
 

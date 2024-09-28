@@ -48,7 +48,7 @@ namespace Modelos
             catch (MySqlException sqlx)
             {
                 MySqlErrorCatch(sqlx);
-            }catch (Exception ex)
+            }catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -69,7 +69,7 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -88,7 +88,7 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -107,7 +107,7 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -125,7 +125,7 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -144,7 +144,7 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -161,7 +161,7 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -192,7 +192,7 @@ namespace Modelos
                 MySqlErrorCatch(sqlx);
                 return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -228,7 +228,7 @@ namespace Modelos
                 MySqlErrorCatch(sqlx);
                 return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -261,7 +261,7 @@ namespace Modelos
                 MySqlErrorCatch(sqlx);
                 return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -286,7 +286,7 @@ namespace Modelos
                 MySqlErrorCatch(sqlx);
                 return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -303,7 +303,7 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -320,7 +320,7 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -338,7 +338,7 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -356,7 +356,7 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -374,7 +374,7 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
