@@ -15,12 +15,14 @@ namespace Modelos
         public string contenido;
         public string fecha_post;
         public int id_cuenta ;
+        public int likes;
 
         public int id_evento;
         public string nombre_evento;
         public string imagen = "url imagen";
         public string descripcion_evento;
         public string fecha_evento = "2022-04-22 10:34:53";
+
 
         public int id_muro;
         public int id_grupo;
@@ -95,7 +97,6 @@ namespace Modelos
                 $"url_contenido = '{this.url_contenido}' where id_post ={this.id_post}";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
-            PrintDesktop(sql);
         }
 
         public void ActualizarEvento()
@@ -105,7 +106,6 @@ namespace Modelos
             string sql = $"update evento set nombre_evento='{this.nombre_evento}',imagen='{this.imagen}',descripcion_evento='{this.descripcion_evento}' where id_evento ={this.id_evento}";
             this.Comando.CommandText = sql;
             this.Comando.ExecuteNonQuery();
-            PrintDesktop(sql);
         }
 
         public void EliminarPost()
@@ -216,6 +216,27 @@ namespace Modelos
             
             return username ;
         }
+
+        public void AñadirLike()
+        {
+            string sql = $"insert into upvote (id_post,id_upvote) values ({this.id_post}";
+            this.Comando.CommandText = sql;
+            this.likes = Int32.Parse(this.Comando.ExecuteScalar().ToString());
+        }
+
+        public void EliminarLike()
+        {
+            string sql = $"select count(*) from upvote where id_post={this.id_post}";
+            this.Comando.CommandText = sql;
+            this.likes = Int32.Parse(this.Comando.ExecuteScalar().ToString());
+        }
+
+        public void NumeroDeLikes()
+        {
+            string sql = $"select count(*) from upvote where id_post={this.id_post}";
+            this.Comando.CommandText = sql;
+            this.likes = Int32.Parse(this.Comando.ExecuteScalar().ToString());
+        }
     }
-    }
+}
 
