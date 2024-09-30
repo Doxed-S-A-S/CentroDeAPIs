@@ -18,48 +18,83 @@ namespace APIPost.Controllers
         [HttpGet]
         public List<PostModel> ObtenerPostsDeUsuario(int id_cuenta)
         {
-            DataTable tablaPosts = ControlPosts.Listar(id_cuenta.ToString());
-
-            List<PostModel> posts = new List<PostModel>();
-
-            foreach (DataRow post in tablaPosts.Rows)
+            try
             {
-                PostModel p = new PostModel();
-                p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
-                p.contenido = post["contenido"].ToString();
-                p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+                DataTable tablaPosts = ControlPosts.Listar(id_cuenta.ToString());
 
-                posts.Add(p);
+                List<PostModel> posts = new List<PostModel>();
+
+                foreach (DataRow post in tablaPosts.Rows)
+                {
+                    PostModel p = new PostModel();
+                    p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
+                    p.contenido = post["contenido"].ToString();
+                    p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+
+                    posts.Add(p);
+                }
+                return posts;
             }
-            return posts;
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
         }
 
         [Route("ApiPost/post/obtener-posts")]
         [HttpGet]
         public List<PostModel> ObtenerPosts()
         {
-            DataTable tablaPosts = ControlPosts.ListarPosts();
-
-            List<PostModel> posts = new List<PostModel>();
-
-            foreach (DataRow post in tablaPosts.Rows)
+            try
             {
-                PostModel p = new PostModel();
-                p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
-                p.contenido = post["contenido"].ToString();
-                p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+                DataTable tablaPosts = ControlPosts.ListarPosts();
 
-                posts.Add(p);
+                List<PostModel> posts = new List<PostModel>();
+
+                foreach (DataRow post in tablaPosts.Rows)
+                {
+                    PostModel p = new PostModel();
+                    p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
+                    p.contenido = post["contenido"].ToString();
+                    p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+
+                    posts.Add(p);
+                }
+                return posts;
             }
-            return posts;
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
         }
 
         [Route("ApiPost/post/obtener-creador/{id_cuenta:int}")]
         [HttpGet]
         public IHttpActionResult ObtenerCreadorDePost(int id_cuenta)
         {
-            string username = ControlPosts.ObtenerCreadorDePost(id_cuenta.ToString());
-            return Ok(username);
+            try
+            {
+                string username = ControlPosts.ObtenerCreadorDePost(id_cuenta.ToString());
+                return Ok(username);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
 
 
@@ -67,10 +102,29 @@ namespace APIPost.Controllers
         [HttpPost]
         public IHttpActionResult CrearPost(PostModel post)
         {
-            ControlPosts.CrearPost(post.contenido, post.url_contenido, post.tipo_contenido, post.id_cuenta.ToString());
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-            resultado.Add("mensaje", "post creado");
-            return Ok(resultado);
+            try
+            {
+                ControlPosts.CrearPost(post.contenido, post.url_contenido, post.tipo_contenido, post.id_cuenta.ToString());
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                resultado.Add("mensaje", "post creado");
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
 
 
@@ -95,8 +149,27 @@ namespace APIPost.Controllers
         [HttpPost]
         public IHttpActionResult CrearComentario(int idPost, PostModel post)
         {
-            ControlComentarios.CrearComentario(post.id_cuenta.ToString(), idPost.ToString(), post.comentario);
-            return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Comentario Creado"));
+            try
+            {
+                ControlComentarios.CrearComentario(post.id_cuenta.ToString(), idPost.ToString(), post.comentario);
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Comentario Creado"));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
 
         [Route("ApiPost/post/eliminar-comentario/{idComentario:int}")]
@@ -138,20 +211,58 @@ namespace APIPost.Controllers
         [HttpPost]
         public IHttpActionResult CompartirPostEnMuro(int id_post, int id_muro)
         {
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-            ControlPosts.CompartirPostEnMuro(id_post.ToString(), id_muro.ToString());
-            resultado.Add("Resultado", "Post compartido");
-            return Ok(resultado);
+            try
+            {
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                ControlPosts.CompartirPostEnMuro(id_post.ToString(), id_muro.ToString());
+                resultado.Add("Resultado", "Post compartido");
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
 
         [Route("ApiPost/post/compartir-en-muro/{id_post:int}/{id_muro:int}")]
         [HttpPost]
         public IHttpActionResult CompartirPostEnGrupo(int id_post, int id_grupo)
         {
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-            ControlPosts.CompartirPostEnMuro(id_post.ToString(), id_grupo.ToString());
-            resultado.Add("Resultado", "Post compartido");
-            return Ok(resultado);
+            try
+            {
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                ControlPosts.CompartirPostEnMuro(id_post.ToString(), id_grupo.ToString());
+                resultado.Add("Resultado", "Post compartido");
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
 
 
@@ -160,13 +271,32 @@ namespace APIPost.Controllers
         [HttpPut]
         public IHttpActionResult ModificarPost(int idPost, PostModel post)
         {
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-            ControlPosts.ModificarPost(idPost.ToString(), post.contenido, post.url_contenido, post.tipo_contenido);
+            try
+            {
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                ControlPosts.ModificarPost(idPost.ToString(), post.contenido, post.url_contenido, post.tipo_contenido);
 
-            resultado.Add("Contenido", post.contenido);
-            resultado.Add("url", post.url_contenido);
-            resultado.Add("tipo_contenido", post.tipo_contenido);
-            return Ok(resultado);
+                resultado.Add("Contenido", post.contenido);
+                resultado.Add("url", post.url_contenido);
+                resultado.Add("tipo_contenido", post.tipo_contenido);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
 
 
@@ -175,17 +305,36 @@ namespace APIPost.Controllers
 
         public IHttpActionResult ModificarEvento(int id_evento, PostModel evento)
         {
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-            ControlPosts.ModificarEvento(evento.Id_Post.ToString(), id_evento.ToString(), evento.url_contenido, evento.tipo_contenido, evento.contenido, evento.nombre_evento, evento.imagen, evento.descripcion_evento, evento.id_cuenta.ToString()); ;
+            try
+            {
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                ControlPosts.ModificarEvento(evento.Id_Post.ToString(), id_evento.ToString(), evento.url_contenido, evento.tipo_contenido, evento.contenido, evento.nombre_evento, evento.imagen, evento.descripcion_evento, evento.id_cuenta.ToString()); ;
 
-            resultado.Add("url", evento.url_contenido);
-            resultado.Add("tipo_contenido", evento.tipo_contenido);
-            resultado.Add("contenido", evento.contenido);
-            resultado.Add("nombre_evento", evento.nombre_evento);
-            resultado.Add("imagen", evento.imagen);
-            resultado.Add("descripcion_evento", evento.descripcion_evento);
+                resultado.Add("url", evento.url_contenido);
+                resultado.Add("tipo_contenido", evento.tipo_contenido);
+                resultado.Add("contenido", evento.contenido);
+                resultado.Add("nombre_evento", evento.nombre_evento);
+                resultado.Add("imagen", evento.imagen);
+                resultado.Add("descripcion_evento", evento.descripcion_evento);
 
-            return Ok(resultado);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
 
 
@@ -193,36 +342,80 @@ namespace APIPost.Controllers
         [HttpDelete]
         public IHttpActionResult EliminarPost(int idPost)
         {
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-            ControlPosts.ElimiarPost(idPost.ToString());
-            resultado.Add("Resultado", "Post eliminado");
-            return Ok(resultado);
+            try
+            {
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                ControlPosts.ElimiarPost(idPost.ToString());
+                resultado.Add("Resultado", "Post eliminado");
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
 
         [Route("ApiPost/post/eliminar-evento/{id_evento:int}/{id_post:int}")]
         [HttpDelete]
         public IHttpActionResult EliminarEvento(int id_evento,int id_post)
         {
-            Dictionary<string, string> resultado = new Dictionary<string, string>();
-            ControlPosts.ElimiarEvento(id_post.ToString(),id_evento.ToString());
-            resultado.Add("Resultado", "Evento eliminado");
-            return Ok(resultado);
+            try
+            {
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                ControlPosts.ElimiarEvento(id_post.ToString(), id_evento.ToString());
+                resultado.Add("Resultado", "Evento eliminado");
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
         }
 
         [Route("ApiPost/MostrarAlgoritmo")]
         [HttpGet]
         public Dictionary<string,string> TestingMuestraPost()
         {
-            ControlPosts p = new ControlPosts();
-            PostModel post = new PostModel();
-            Dictionary<string, string> PostMuestra = p.AlgoritmoPost();
-            
-            post.contenido = PostMuestra["contenido"];
-            post.tipo_contenido = PostMuestra["tipo_contenido"];
-            post.Id_Post = Int32.Parse(PostMuestra["id_post"]);
-            return PostMuestra;
+            try
+            {
+                ControlPosts p = new ControlPosts();
+                PostModel post = new PostModel();
+                Dictionary<string, string> PostMuestra = p.AlgoritmoPost();
 
-
+                post.contenido = PostMuestra["contenido"];
+                post.tipo_contenido = PostMuestra["tipo_contenido"];
+                post.Id_Post = Int32.Parse(PostMuestra["id_post"]);
+                return PostMuestra;
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
         }
 
 
