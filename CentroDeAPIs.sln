@@ -14,6 +14,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiPost", "APIPost\ApiPost.csproj", "{2C06F79A-03B3-40B0-9B27-8B16F652AB99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAutenticar", "APIAutenticar\APIAutenticar.csproj", "{291DA869-E2FA-4F0C-A115-095133AE9BA1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{01107451-8512-419B-AAD7-CE6A7C422A5A} = {01107451-8512-419B-AAD7-CE6A7C422A5A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaVisual", "CapaVisual\CapaVisual.csproj", "{E2BCE062-DAFB-4110-9810-5E07DCF1DF53}"
 EndProject
