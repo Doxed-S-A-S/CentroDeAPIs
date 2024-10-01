@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -183,6 +184,33 @@ namespace CapaVisual
             }
         }
 
+        public async Task EnviarImagenComoArchivo(string filePath)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                using (var form = new MultipartFormDataContent())
+                {
+                    var imageContent = new ByteArrayContent(System.IO.File.ReadAllBytes(filePath));
+                    imageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
+                    form.Add(imageContent, "image", "imagen.jpg");
+
+                    HttpResponseMessage response = await client.PostAsync("https://tuapi.com/api/uploadimage", form);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Imagen subida correctamente
+                        MessageBox.Show("Imagen subida correctamente.");
+                    }
+                    else
+                    {
+                        // Error al subir la imagen
+                        MessageBox.Show("Error al subir la imagen.");
+                    }
+                }
+            }
+        }
+
+
         private void btnPostear_Click_1(object sender, EventArgs e)
         {
             
@@ -199,6 +227,11 @@ namespace CapaVisual
         }
 
         private void imagenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materialButton1_Click(object sender, EventArgs e)
         {
 
         }

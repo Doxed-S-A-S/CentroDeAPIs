@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Modelos
 {
@@ -13,6 +16,7 @@ namespace Modelos
         public string NombreBase;
         public string NombreDeUsuario;
         public string Password;
+        public string Puerto;
 
         public MySqlConnection Conexion;
         public MySqlCommand Comando;
@@ -24,12 +28,14 @@ namespace Modelos
             this.NombreBase = "LinguaLinkDB";
             this.Password = "1234";
             this.NombreDeUsuario = "root";
+            this.Puerto = "3306";
 
             this.Conexion = new MySqlConnection(
                 $"server={this.IP};" +
                 $"user={this.NombreDeUsuario};" +
                 $"password={this.Password};" +
-                $"database={this.NombreBase};"
+                $"database={this.NombreBase};" +
+                $"port={this.Puerto};"
             );
 
             try
@@ -47,7 +53,6 @@ namespace Modelos
 
 
         }
-
 
         // Funcion que agarra la salida de sql desde el programa y la guarda en un .txt en el escritorio,
         // crea el archivo de forma automatica en el escritorio, y se puede activar o desactivar cambiando el bool de abajo
