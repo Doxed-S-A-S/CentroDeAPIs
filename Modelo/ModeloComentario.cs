@@ -14,6 +14,7 @@ namespace Modelos
         public long IdComentario;
         public string Contenido;
         public long idUpvote;
+        public int numUpvote;
 
         const int MYSQL_DUPLICATE_ENTRY = 1062;
         const int MYSQL_ACCESS_DENIED = 1045;
@@ -187,6 +188,25 @@ namespace Modelos
             catch (MySqlException sqlx)
             {
                 MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+        public int NumeroLikesComentario(long idComentaro)
+        {
+            try
+            {
+                string sql = $"select count(*) from LikeComent where id_comentario = {idComentaro}";
+                this.Comando.CommandText = sql;
+                return Int32.Parse(this.Comando.ExecuteScalar().ToString());
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return 0;
             }
             catch (Exception)
             {

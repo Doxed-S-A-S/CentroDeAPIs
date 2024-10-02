@@ -16,20 +16,21 @@ namespace APIPost.Controllers
     {
         [Route("ApiPost/post/obtener-posts/{id_cuenta:int}")]
         [HttpGet]
-        public List<PostModel> ObtenerPostsDeUsuario(int id_cuenta)
+        public List<PostDTO> ObtenerPostsDeUsuario(int id_cuenta)
         {
             try
             {
-                DataTable tablaPosts = ControlPosts.Listar(id_cuenta.ToString());
+                DataTable tablaPosts = ControlPosts.ListarPostDeCuenta(id_cuenta.ToString());
 
-                List<PostModel> posts = new List<PostModel>();
+                List<PostDTO> posts = new List<PostDTO>();
 
                 foreach (DataRow post in tablaPosts.Rows)
                 {
-                    PostModel p = new PostModel();
+                    PostDTO p = new PostDTO();
                     p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
                     p.contenido = post["contenido"].ToString();
                     p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+                    p.likes = Int32.Parse(post["Likes"].ToString());
 
                     posts.Add(p);
                 }
@@ -48,7 +49,7 @@ namespace APIPost.Controllers
         {
             try
             {
-                DataTable tablaPosts = ControlPosts.ListarPosts();
+                DataTable tablaPosts = ControlPosts.ListarTodosLosPost();
 
                 List<PostModel> posts = new List<PostModel>();
 
@@ -58,6 +59,7 @@ namespace APIPost.Controllers
                     p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
                     p.contenido = post["contenido"].ToString();
                     p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+                    p.likes = Int32.Parse(post["Likes"].ToString());
 
                     posts.Add(p);
                 }

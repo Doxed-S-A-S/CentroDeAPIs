@@ -67,6 +67,7 @@ namespace Controlador
                 tabla.Columns.Add("IdComentario", typeof(int));
                 tabla.Columns.Add("IdPost", typeof(int));
                 tabla.Columns.Add("Comentario", typeof(string));
+                tabla.Columns.Add("Likes", typeof(int));
 
                 ModeloComentario coment = new ModeloComentario();
                 foreach (ModeloComentario p in coment.ObtenerComentarios(idPost))
@@ -75,9 +76,10 @@ namespace Controlador
                     fila["IdComentario"] = p.IdComentario;
                     fila["IdPost"] = p.IdPost;
                     fila["Comentario"] = p.Contenido;
+                    fila["Likes"] = p.NumeroLikesComentario(p.IdComentario);
                     tabla.Rows.Add(fila);
                 }
-                return tabla
+                return tabla;
             }
             catch (Exception e)
             {

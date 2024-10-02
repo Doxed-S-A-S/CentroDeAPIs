@@ -161,7 +161,7 @@ namespace Controlador
         }
 
 
-        public static DataTable Listar(string idCuenta)  
+        public static DataTable ListarPostDeCuenta(string idCuenta)  
         {
             try
             {
@@ -169,14 +169,16 @@ namespace Controlador
                 tabla.Columns.Add("id_post", typeof(int));
                 tabla.Columns.Add("Contenido", typeof(string));
                 tabla.Columns.Add("id_cuenta", typeof(string));
+                tabla.Columns.Add("Likes", typeof(int));
 
-                ModeloPost pizza = new ModeloPost();
-                foreach (ModeloPost p in pizza.ObtenerPostsDeCuenta(Int32.Parse(idCuenta)))
+                ModeloPost post = new ModeloPost();
+                foreach (ModeloPost p in post.ObtenerPostsDeCuenta(Int32.Parse(idCuenta)))
                 {
                     DataRow fila = tabla.NewRow();
                     fila["Id_post"] = p.id_post;
                     fila["Contenido"] = p.contenido;
                     fila["id_cuenta"] = p.id_cuenta;
+                    fila["Likes"] = p.NumeroDeLikes(p.id_post);
                     tabla.Rows.Add(fila);
                 }
 
@@ -190,7 +192,7 @@ namespace Controlador
 
         }
 
-        public static DataTable ListarPosts()
+        public static DataTable ListarTodosLosPost()
         {
             try
             {
@@ -198,14 +200,16 @@ namespace Controlador
                 tabla.Columns.Add("id_post", typeof(int));
                 tabla.Columns.Add("Contenido", typeof(string));
                 tabla.Columns.Add("id_cuenta", typeof(string));
+                tabla.Columns.Add("Likes", typeof(int));
 
-                ModeloPost pizza = new ModeloPost();
-                foreach (ModeloPost p in pizza.ObtenerPosts())
+                ModeloPost post = new ModeloPost();
+                foreach (ModeloPost p in post.ObtenerPosts())
                 {
                     DataRow fila = tabla.NewRow();
                     fila["Id_post"] = p.id_post;
                     fila["Contenido"] = p.contenido;
                     fila["id_cuenta"] = p.id_cuenta;
+                    fila["Likes"] = p.NumeroDeLikes(p.id_post);
                     tabla.Rows.Add(fila);
                 }
 

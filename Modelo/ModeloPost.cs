@@ -228,7 +228,7 @@ namespace Modelos
                 while (this.Lector.Read())
                 {
                     ModeloPost post = new ModeloPost();
-                    post.id_post = Int32.Parse(this.Lector["Id_post"].ToString());
+                    post.id_post = Int32.Parse(this.Lector["id_post"].ToString());
                     post.contenido = this.Lector["Contenido"].ToString();
                     post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
                     posts.Add(post);
@@ -260,7 +260,7 @@ namespace Modelos
                 while (this.Lector.Read())
                 {
                     ModeloPost post = new ModeloPost();
-                    post.id_post = Int32.Parse(this.Lector["Id_post"].ToString());
+                    post.id_post = Int32.Parse(this.Lector["id_post"].ToString());
                     post.contenido = this.Lector["Contenido"].ToString();
                     post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
                     posts.Add(post);
@@ -390,17 +390,19 @@ namespace Modelos
             }
         }
 
-        public void NumeroDeLikes()
+        public int NumeroDeLikes(long idPost)
         {
             try
             {
-                string sql = $"select count(*) from upvote where id_post={this.id_post}";
+                string sql = $"select count(*) from upvote where id_post = {idPost}";
                 this.Comando.CommandText = sql;
-                this.likes = Int32.Parse(this.Comando.ExecuteScalar().ToString());
+                string likes = this.Comando.ExecuteScalar().ToString();
+                return Int32.Parse(likes);
             }
             catch (MySqlException sqlx)
             {
                 MySqlErrorCatch(sqlx);
+                return 0;
             }
             catch (Exception)
             {
