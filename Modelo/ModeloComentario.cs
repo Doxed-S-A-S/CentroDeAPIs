@@ -15,6 +15,7 @@ namespace Modelos
         public string Contenido;
         public long idUpvote;
         public int numUpvote;
+        public string fechaCreacion;
 
         const int MYSQL_DUPLICATE_ENTRY = 1062;
         const int MYSQL_ACCESS_DENIED = 1045;
@@ -118,6 +119,7 @@ namespace Modelos
                     coment.IdComentario = Int32.Parse(this.Lector["id_comentario"].ToString());
                     coment.IdPost = Int32.Parse(this.Lector["id_post"].ToString());
                     coment.Contenido = this.Lector["contenido"].ToString();
+                    coment.fechaCreacion = this.Lector["fecha_creacion"].ToString();
                     comentarios.Add(coment);
                 }
                 this.Lector.Close();

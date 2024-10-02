@@ -67,16 +67,18 @@ namespace Controlador
                 tabla.Columns.Add("IdComentario", typeof(int));
                 tabla.Columns.Add("IdPost", typeof(int));
                 tabla.Columns.Add("Comentario", typeof(string));
+                tabla.Columns.Add("Fecha de creacion", typeof(string));
                 tabla.Columns.Add("Likes", typeof(int));
 
                 ModeloComentario coment = new ModeloComentario();
-                foreach (ModeloComentario p in coment.ObtenerComentarios(idPost))
+                foreach (ModeloComentario c in coment.ObtenerComentarios(idPost))
                 {
                     DataRow fila = tabla.NewRow();
-                    fila["IdComentario"] = p.IdComentario;
-                    fila["IdPost"] = p.IdPost;
-                    fila["Comentario"] = p.Contenido;
-                    fila["Likes"] = p.NumeroLikesComentario(p.IdComentario);
+                    fila["IdComentario"] = c.IdComentario;
+                    fila["IdPost"] = c.IdPost;
+                    fila["Comentario"] = c.Contenido;
+                    fila["Fecha de creacion"] = c.fechaCreacion;
+                    fila["Likes"] = c.NumeroLikesComentario(c.IdComentario);
                     tabla.Rows.Add(fila);
                 }
                 return tabla;
