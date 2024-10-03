@@ -13,11 +13,15 @@ namespace Modelos
         public int idCuenta;
         public long IdComentario;
         public string Contenido;
+        public long idUpvote;
+        public int numUpvote;
+        public string fechaCreacion;
 
         const int MYSQL_DUPLICATE_ENTRY = 1062;
         const int MYSQL_ACCESS_DENIED = 1045;
         const int MYSQL_UNKNOWN_COLUMN = 1054;
         const int MYSQL_ERROR_CHILD_ROW = 1452;
+        const int MYSQL_TABLE_NOT_EXIST = 1146;
 
         public void GuardarComentario()
         {
@@ -116,6 +120,7 @@ namespace Modelos
                     coment.IdComentario = Int32.Parse(this.Lector["id_comentario"].ToString());
                     coment.IdPost = Int32.Parse(this.Lector["id_post"].ToString());
                     coment.Contenido = this.Lector["contenido"].ToString();
+                    coment.fechaCreacion = this.Lector["fecha_creacion"].ToString();
                     comentarios.Add(coment);
                 }
                 this.Lector.Close();
@@ -132,6 +137,89 @@ namespace Modelos
             }
         }
 
+        public void ComentarioLikeDeCuenta()
+        {
+            try
+            {
+                string sql = $"insert into LikeComent (id_comentario,id_upvote) values ({this.IdComentario},{this.idUpvote})";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+        public void AñadirLikeComent()
+        {
+            try
+            {
+                string sql = $"insert into upvote (id_post,id_upvote) values ({this.IdPost}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+                this.idUpvote = this.Comando.LastInsertedId;
+                ComentarioLikeDeCuenta();
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+
+        public void EliminarLikeComent()
+        {
+            try
+            {
+                string sql = $"delete from LikeComent where id_comentario = {this.IdComentario} and id_upvote = {this.idUpvote}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+
+                sql = $"delete from upvote where id_upvote = {this.idUpvote} and id_post = {this.IdPost}";
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+        public int NumeroLikesComentario(long idComentaro)
+        {
+            try
+            {
+                string sql = $"select count(*) from like_coment where id_comentario = {idComentaro}";
+                this.Comando.CommandText = sql;
+                string likes = this.Comando.ExecuteScalar().ToString();
+                return Int32.Parse(likes);
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return 0;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+
+
         private void MySqlErrorCatch(MySqlException sqlx)
         {
             if (sqlx.Number == MYSQL_DUPLICATE_ENTRY)
@@ -142,6 +230,8 @@ namespace Modelos
                 throw new Exception("UNKNOWN_COLUMN");
             if (sqlx.Number == MYSQL_ERROR_CHILD_ROW)
                 throw new Exception("ERROR_CHILD_ROW");
+            if (sqlx.Number == MYSQL_TABLE_NOT_EXIST)
+                throw new Exception(" MYSQL_TABLE_NOT_EXIST");
 
             throw new Exception("UNKNOWN_DB_ERROR");
         }

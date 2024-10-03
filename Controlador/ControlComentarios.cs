@@ -67,26 +67,53 @@ namespace Controlador
                 tabla.Columns.Add("IdComentario", typeof(int));
                 tabla.Columns.Add("IdPost", typeof(int));
                 tabla.Columns.Add("Comentario", typeof(string));
-
+                tabla.Columns.Add("Fecha de creacion", typeof(string));
+                tabla.Columns.Add("Likes", typeof(int));
 
                 ModeloComentario coment = new ModeloComentario();
-                foreach (ModeloComentario p in coment.ObtenerComentarios(idPost))
+                foreach (ModeloComentario c in coment.ObtenerComentarios(idPost))
                 {
                     DataRow fila = tabla.NewRow();
-                    fila["IdComentario"] = p.IdComentario;
-                    fila["IdPost"] = p.IdPost;
-                    fila["Comentario"] = p.Contenido;
+                    fila["IdComentario"] = c.IdComentario;
+                    fila["IdPost"] = c.IdPost;
+                    fila["Comentario"] = c.Contenido;
+                    fila["Fecha de creacion"] = c.fechaCreacion;
+                    fila["Likes"] = c.NumeroLikesComentario(c.IdComentario);
                     tabla.Rows.Add(fila);
                 }
-
                 return tabla;
-
             }
             catch (Exception e)
             {
                 ErrorHandle(e);
                 return null;
             }
+        }
+
+        public static void AñadirLikeComentario(string id_comentario,string id_post)
+        {
+            try
+            {
+                ModeloComentario coment = new ModeloComentario();
+                coment.IdComentario = Int32.Parse(id_comentario);
+                coment.IdPost = Int32.Parse(id_post);
+
+                coment.AñadirLikeComent();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
+        }
+
+        public static void EliminarLikeComent(string id_comentario, string id_post,string id_upvote)
+        {
+            ModeloComentario coment = new ModeloComentario();
+            coment.IdComentario = Int32.Parse(id_comentario);
+            coment.IdPost = Int32.Parse(id_post);
+            coment.idUpvote = Int32.Parse(id_upvote);
+
+            coment.EliminarLikeComent();
         }
 
         private static void ErrorHandle(Exception ex)

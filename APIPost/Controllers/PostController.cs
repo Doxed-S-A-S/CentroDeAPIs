@@ -16,20 +16,21 @@ namespace APIPost.Controllers
     {
         [Route("ApiPost/post/obtener-posts/{id_cuenta:int}")]
         [HttpGet]
-        public List<PostModel> ObtenerPostsDeUsuario(int id_cuenta)
+        public List<PostDTO> ObtenerPostsDeUsuario(int id_cuenta)
         {
             try
             {
-                DataTable tablaPosts = ControlPosts.Listar(id_cuenta.ToString());
+                DataTable tablaPosts = ControlPosts.ListarPostDeCuenta(id_cuenta.ToString());
 
-                List<PostModel> posts = new List<PostModel>();
+                List<PostDTO> posts = new List<PostDTO>();
 
                 foreach (DataRow post in tablaPosts.Rows)
                 {
-                    PostModel p = new PostModel();
+                    PostDTO p = new PostDTO();
                     p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
                     p.contenido = post["contenido"].ToString();
                     p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+                    p.likes = Int32.Parse(post["Likes"].ToString());
 
                     posts.Add(p);
                 }
@@ -48,7 +49,7 @@ namespace APIPost.Controllers
         {
             try
             {
-                DataTable tablaPosts = ControlPosts.ListarPosts();
+                DataTable tablaPosts = ControlPosts.ListarTodosLosPost();
 
                 List<PostModel> posts = new List<PostModel>();
 
@@ -58,6 +59,7 @@ namespace APIPost.Controllers
                     p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
                     p.contenido = post["contenido"].ToString();
                     p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+                    p.likes = Int32.Parse(post["Likes"].ToString());
 
                     posts.Add(p);
                 }
@@ -172,7 +174,38 @@ namespace APIPost.Controllers
             }
         }
 
-        [Route("ApiPost/post/eliminar-comentario/{idComentario:int}")]
+
+        [Route("ApiPost/post/{idPost:int}/comentario")]
+        [HttpGet]
+        public List<ComentarioDTO> ObtenerComentarios(int idPost)
+        {
+            try
+            {
+                DataTable comentarios = ControlComentarios.ListarComentarios(idPost.ToString());
+
+                List<ComentarioDTO> coments = new List<ComentarioDTO>();
+
+                foreach (DataRow coment in comentarios.Rows)
+                {
+                    ComentarioDTO c = new ComentarioDTO();
+                    c.id_Post = Int32.Parse(coment["IdPost"].ToString());
+                    c.id_comentario = Int32.Parse(coment["IdComentario"].ToString());
+                    c.comentario = coment["Comentario"].ToString();
+                    c.fecha = coment["Fecha de creacion"].ToString();
+                    c.likes = Int32.Parse(coment["Likes"].ToString());
+
+                    coments.Add(c);
+                }
+                return coments;
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
+        }
+
+        [Route("ApiPost/post/comentario/{idComentario:int}")]
         [HttpDelete]
         public IHttpActionResult EliminarComentario(int idComentario) 
         {
@@ -188,7 +221,7 @@ namespace APIPost.Controllers
             
         }
 
-        [Route("ApiPost/post/modificar-comentario/{idComentario:int}")]
+        [Route("ApiPost/post/comentario/{idComentario:int}")]
         [HttpPut]
 
         public IHttpActionResult ModificarComentario(int idComentario, PostModel comenatrio) 

@@ -16,13 +16,20 @@ namespace Controlador
 
         public static void CrearPost(string contenido,string url,string tipo_contenido, string idCuenta)
         {
-            ModeloPost post = new ModeloPost();
-            post.contenido = contenido;
-            post.url_contenido = url;
-            post.tipo_contenido = tipo_contenido;
-            post.id_cuenta = Int32.Parse(idCuenta);
+            try
+            {
+                ModeloPost post = new ModeloPost();
+                post.contenido = contenido;
+                post.url_contenido = url;
+                post.tipo_contenido = tipo_contenido;
+                post.id_cuenta = Int32.Parse(idCuenta);
 
-            post.GuardarPost();
+                post.GuardarPost();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public static bool CrearEvento(string nombre_evento, string imagen, string descripcion_evento, string contenido, string url, string tipo_contenido, string idCuenta)
@@ -52,110 +59,172 @@ namespace Controlador
 
         public static void ElimiarPost(string id)
         {
-            ModeloPost post = new ModeloPost();
-            post.id_post = Int32.Parse(id);
-            post.EliminarPost();
+            try
+            {
+                ModeloPost post = new ModeloPost();
+                post.id_post = Int32.Parse(id);
+                post.EliminarPost();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public static void ElimiarEvento(string id_post, string id_evento)
         {
-            ElimiarPost(id_post);
-            ModeloPost evento = new ModeloPost();
-            evento.id_evento = Int32.Parse(id_evento);
-            evento.EliminarEvento();
+            try
+            {
+                ElimiarPost(id_post);
+                ModeloPost evento = new ModeloPost();
+                evento.id_evento = Int32.Parse(id_evento);
+                evento.EliminarEvento();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public static void ModificarPost(string id, string contenido,string url,string tipo_contenido)
         {
-            ModeloPost post = new ModeloPost();
-            post.id_post = Int32.Parse(id);
-            post.contenido = contenido;
-            post.url_contenido = url;
-            post.tipo_contenido = tipo_contenido;
-            post.GuardarPost();
+            try
+            {
+                ModeloPost post = new ModeloPost();
+                post.id_post = Int32.Parse(id);
+                post.contenido = contenido;
+                post.url_contenido = url;
+                post.tipo_contenido = tipo_contenido;
+                post.GuardarPost();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public static void ModificarEvento(string Id_Post, string id_evento, string url_contenido, string tipo_contenido, string contenido, string nombre_evento, string imagen, string descripcion_evento, string id_cuenta)
         {
-            ModeloPost evento = new ModeloPost();
-            evento.id_post = Int32.Parse(Id_Post);
-            evento.id_evento = Int32.Parse(id_evento);
-            evento.url_contenido = url_contenido;
-            evento.tipo_contenido = tipo_contenido;
-            evento.contenido = contenido;
-            evento.nombre_evento = nombre_evento;
-            evento.imagen = imagen;
-            evento.descripcion_evento = descripcion_evento;
-            evento.id_cuenta = Int32.Parse(id_cuenta);
+            try
+            {
+                ModeloPost evento = new ModeloPost();
+                evento.id_post = Int32.Parse(Id_Post);
+                evento.id_evento = Int32.Parse(id_evento);
+                evento.url_contenido = url_contenido;
+                evento.tipo_contenido = tipo_contenido;
+                evento.contenido = contenido;
+                evento.nombre_evento = nombre_evento;
+                evento.imagen = imagen;
+                evento.descripcion_evento = descripcion_evento;
+                evento.id_cuenta = Int32.Parse(id_cuenta);
 
-            evento.ActualizarEvento();
+                evento.ActualizarEvento();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public static void CompartirPostEnMuro(string id_post, string id_muro)
         {
-            ModeloPost post = new ModeloPost();
+            try
+            {
+                ModeloPost post = new ModeloPost();
 
-            post.id_post = Int32.Parse(id_post);
-            post.id_muro = Int32.Parse(id_muro);
+                post.id_post = Int32.Parse(id_post);
+                post.id_muro = Int32.Parse(id_muro);
 
-            post.CompartirPostEnMuro();
+                post.CompartirPostEnMuro();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
         public static void CompartirPostEnGrupo(string id_post, string id_grupo)
         {
-            ModeloPost post = new ModeloPost();
+            try
+            {
+                ModeloPost post = new ModeloPost();
 
-            post.id_post = Int32.Parse(id_post);
-            post.id_muro = Int32.Parse(id_grupo);
+                post.id_post = Int32.Parse(id_post);
+                post.id_muro = Int32.Parse(id_grupo);
 
-            post.CompartirPostEnGrupo();
+                post.CompartirPostEnGrupo();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
         }
 
 
-        public static DataTable Listar(string idCuenta)  
+        public static DataTable ListarPostDeCuenta(string idCuenta)  
         {
-            DataTable tabla = new DataTable();
-            tabla.Columns.Add("id_post", typeof(int));
-            tabla.Columns.Add("Contenido", typeof(string));
-            tabla.Columns.Add("id_cuenta", typeof(string));
-
-            ModeloPost pizza = new ModeloPost();
-            foreach (ModeloPost p in pizza.ObtenerPostsDeCuenta(Int32.Parse(idCuenta))) 
+            try
             {
-                DataRow fila = tabla.NewRow();
-                fila["Id_post"] = p.id_post;
-                fila["Contenido"] = p.contenido;
-                fila["id_cuenta"] = p.id_cuenta;
-                tabla.Rows.Add(fila);
+                DataTable tabla = new DataTable();
+                tabla.Columns.Add("id_post", typeof(int));
+                tabla.Columns.Add("Contenido", typeof(string));
+                tabla.Columns.Add("id_cuenta", typeof(string));
+                tabla.Columns.Add("Likes", typeof(int));
+
+                ModeloPost post = new ModeloPost();
+                foreach (ModeloPost p in post.ObtenerPostsDeCuenta(Int32.Parse(idCuenta)))
+                {
+                    DataRow fila = tabla.NewRow();
+                    fila["Id_post"] = p.id_post;
+                    fila["Contenido"] = p.contenido;
+                    fila["id_cuenta"] = p.id_cuenta;
+                    fila["Likes"] = p.NumeroDeLikes(p.id_post);
+                    tabla.Rows.Add(fila);
+                }
+
+                return tabla;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
             }
 
-            return tabla;
-
         }
 
-        public static DataTable ListarPosts()
+        public static DataTable ListarTodosLosPost()
         {
-            DataTable tabla = new DataTable();
-            tabla.Columns.Add("id_post", typeof(int));
-            tabla.Columns.Add("Contenido", typeof(string));
-            tabla.Columns.Add("id_cuenta", typeof(string));
-
-            ModeloPost pizza = new ModeloPost();
-            foreach (ModeloPost p in pizza.ObtenerPosts())
+            try
             {
-                DataRow fila = tabla.NewRow();
-                fila["Id_post"] = p.id_post;
-                fila["Contenido"] = p.contenido;
-                fila["id_cuenta"] = p.id_cuenta;
-                tabla.Rows.Add(fila);
+                DataTable tabla = new DataTable();
+                tabla.Columns.Add("id_post", typeof(int));
+                tabla.Columns.Add("Contenido", typeof(string));
+                tabla.Columns.Add("id_cuenta", typeof(string));
+                tabla.Columns.Add("Likes", typeof(int));
+
+                ModeloPost post = new ModeloPost();
+                foreach (ModeloPost p in post.ObtenerPosts())
+                {
+                    DataRow fila = tabla.NewRow();
+                    fila["Id_post"] = p.id_post;
+                    fila["Contenido"] = p.contenido;
+                    fila["id_cuenta"] = p.id_cuenta;
+                    fila["Likes"] = p.NumeroDeLikes(p.id_post);
+                    tabla.Rows.Add(fila);
+                }
+
+                return tabla;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
             }
 
-            return tabla;
-
         }
 
 
-        public Dictionary<string,string> AlgoritmoPost() // a ver
+        public Dictionary<string,string> AlgoritmoPost() // a ver----------
         {
             Dictionary<string, string> post = new Dictionary<string, string>();
             ModeloPost p = new ModeloPost();
@@ -188,9 +257,67 @@ namespace Controlador
         
         public static string ObtenerCreadorDePost(string id_cuenta)
         {
-            ModeloPost post = new ModeloPost();
-            post.id_cuenta = Int32.Parse(id_cuenta);
-            return post.ObtenerCreadorDePost();
+            try
+            {
+                ModeloPost post = new ModeloPost();
+                post.id_cuenta = Int32.Parse(id_cuenta);
+                return post.ObtenerCreadorDePost();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
+
+        public static void AñadirLike(string id_cuenta,string id_post)
+        {
+            try
+            {
+                ModeloPost post = new ModeloPost();
+                post.id_cuenta = Int32.Parse(id_cuenta);
+                post.id_post = Int32.Parse(id_post);
+
+                post.AñadirLike();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
+        }
+
+        public static void EliminarLike(string id_cuenta, string id_post, string id_upvote)
+        {
+            try
+            {
+                ModeloPost post = new ModeloPost();
+                post.id_cuenta = Int32.Parse(id_cuenta);
+                post.id_post = Int32.Parse(id_post);
+                post.id_upvote = Int32.Parse(id_upvote);
+
+                post.EliminarLike();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
+        }
+
+
+                private static void ErrorHandle(Exception ex)
+        {
+            if (ex.Message == "DUPLICATE_ENTRY")
+                throw new Exception("DUPLICATE_ENTRY");
+            if (ex.Message == "ACCESS_DENIED")
+                throw new Exception("ACCESS_DENIED");
+            if (ex.Message == "UNKNOWN_COLUMN")
+                throw new Exception("UNKNOWN_COLUMN");
+            if (ex.Message == "UNKNOWN_DB_ERROR")
+                throw new Exception("UNKNOWN_DB_ERROR");
+            if (ex.Message == "ERROR_CHILD_ROW")
+                throw new Exception("ERROR_CHILD_ROW");
+
+            throw new Exception("UNKNOWN_ERROR");
         }
 
     }

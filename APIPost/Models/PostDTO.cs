@@ -5,7 +5,7 @@ using System.Web;
 
 namespace APIPost.Models
 {
-    public class PostModel
+    public class PostDTO
     {
         public int Id_Post;
         public string url_contenido;
@@ -14,9 +14,5 @@ namespace APIPost.Models
         public int id_cuenta;
         public string comentario;
         public int likes;
-
-        public string nombre_evento;
-        public string imagen ;
-        public string descripcion_evento;
     }
 }
