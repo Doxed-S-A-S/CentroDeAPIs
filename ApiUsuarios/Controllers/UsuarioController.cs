@@ -259,32 +259,3 @@ namespace ApiUsuario.Controllers
         }
     }
 }
-/*
-[Route("ApiPost/post/obtener-posts/{id_cuenta:int}")]
-[HttpGet]
-public List<PostDTO> ObtenerPostsDeUsuario(int id_cuenta)
-{
-    try
-    {
-        DataTable tablaPosts = ControlPosts.ListarPostDeCuenta(id_cuenta.ToString());
-
-        List<PostDTO> posts = new List<PostDTO>();
-
-        foreach (DataRow post in tablaPosts.Rows)
-        {
-            PostDTO p = new PostDTO();
-            p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
-            p.contenido = post["contenido"].ToString();
-            p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
-            p.likes = Int32.Parse(post["Likes"].ToString());
-
-            posts.Add(p);
-        }
-        return posts;
-    }
-    catch (Exception)
-    {
-        return null;
-        throw;
-    }
-}
