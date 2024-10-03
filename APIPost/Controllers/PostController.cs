@@ -189,7 +189,7 @@ namespace APIPost.Controllers
                 {
                     ComentarioDTO c = new ComentarioDTO();
                     c.id_Post = Int32.Parse(coment["IdPost"].ToString());
-                    c.id_comentario = Int32.Parse(coment["id_comentario"].ToString());
+                    c.id_comentario = Int32.Parse(coment["IdComentario"].ToString());
                     c.comentario = coment["Comentario"].ToString();
                     c.fecha = coment["Fecha de creacion"].ToString();
                     c.likes = Int32.Parse(coment["Likes"].ToString());

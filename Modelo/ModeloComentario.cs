@@ -21,6 +21,7 @@ namespace Modelos
         const int MYSQL_ACCESS_DENIED = 1045;
         const int MYSQL_UNKNOWN_COLUMN = 1054;
         const int MYSQL_ERROR_CHILD_ROW = 1452;
+        const int MYSQL_TABLE_NOT_EXIST = 1146;
 
         public void GuardarComentario()
         {
@@ -201,9 +202,10 @@ namespace Modelos
         {
             try
             {
-                string sql = $"select count(*) from LikeComent where id_comentario = {idComentaro}";
+                string sql = $"select count(*) from like_coment where id_comentario = {idComentaro}";
                 this.Comando.CommandText = sql;
-                return Int32.Parse(this.Comando.ExecuteScalar().ToString());
+                string likes = this.Comando.ExecuteScalar().ToString();
+                return Int32.Parse(likes);
             }
             catch (MySqlException sqlx)
             {
@@ -228,6 +230,8 @@ namespace Modelos
                 throw new Exception("UNKNOWN_COLUMN");
             if (sqlx.Number == MYSQL_ERROR_CHILD_ROW)
                 throw new Exception("ERROR_CHILD_ROW");
+            if (sqlx.Number == MYSQL_TABLE_NOT_EXIST)
+                throw new Exception(" MYSQL_TABLE_NOT_EXIST");
 
             throw new Exception("UNKNOWN_DB_ERROR");
         }
