@@ -279,11 +279,21 @@ namespace Modelos
             }
         }
 
+        private HashSet<int> id_postUtilizados = new HashSet<int>();
+
         public bool BuscarPostRandom()
         {
             try
             {
-                string sql = $"SELECT * FROM posts where eliminado = false and reports < 5 ORDER BY RAND() LIMIT 1 "; // agregar alguna logica de fecha
+                string idsUsadas = string.Join(", ", id_postUtilizados);
+
+                string sql = $"SELECT * FROM posts where eliminado = false and reports < 5 "; // agregar alguna logica de fecha
+
+                if (id_postUtilizados.Count > 0)
+                    sql += $"and id_post not in {idsUsadas})";
+
+                sql += $"ORDER BY RAND() LIMIT 1";
+                
                 this.Comando.CommandText = sql;
                 this.Lector = this.Comando.ExecuteReader();
 

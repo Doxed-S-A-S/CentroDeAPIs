@@ -12,7 +12,6 @@ namespace Controlador
     public class ControlPosts
     {
 
-        List<int> IdPostMostrados = new List<int>();
 
         public static void CrearPost(string contenido,string url,string tipo_contenido, string idCuenta)
         {
@@ -224,34 +223,24 @@ namespace Controlador
         }
 
 
+        HashSet<int> PostIds = new HashSet<int>();
+
         public Dictionary<string,string> AlgoritmoPost() // a ver----------
         {
             Dictionary<string, string> post = new Dictionary<string, string>();
             ModeloPost p = new ModeloPost();
-            int IdMostrada = 0;
-            //IdPostMostrados.Add(IdMostrada);
-            bool FueMostrado = IdPostMostrados.Contains(IdMostrada);
-            Console.WriteLine(IdPostMostrados.ToString());
 
-            while (true)
+            if (p.BuscarPostRandom())
             {
-                if(!IdPostMostrados.Contains(IdMostrada) && p.BuscarPostRandom())
-                {
-                    post.Add("contenido", p.contenido);
-                    post.Add("fecha", p.fecha_post);
-                    post.Add("tipo_contenido", p.tipo_contenido);
-                    post.Add("id_cuenta", p.id_cuenta.ToString());
-                    post.Add("id_post", p.id_post.ToString());
-                    IdMostrada = Int32.Parse(p.id_post.ToString());
-                    Console.WriteLine(IdPostMostrados.ToString());
-                    IdPostMostrados.Add(IdMostrada);
-                    Console.WriteLine(IdPostMostrados.ToString());
-                    return post;
-                    break;
-                }
-                return null;
+                post.Add("contenido", p.contenido);
+                post.Add("fecha", p.fecha_post);
+                post.Add("tipo_contenido", p.tipo_contenido);
+                post.Add("id_cuenta", p.id_cuenta.ToString());
+                post.Add("id_post", p.id_post.ToString());
+                return post;
             }
-
+            post.Add("Error", "encontrado");
+            return post;
         }
 
         
