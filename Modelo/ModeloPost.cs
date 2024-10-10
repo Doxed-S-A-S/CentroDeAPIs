@@ -279,31 +279,36 @@ namespace Modelos
             }
         }
 
-        public bool BuscarPostRandom()
+
+        public List<ModeloPost> BuscarPostRandom()
         {
+            // agregar alguna logica de fecha, buscar por tags y amigos
             try
             {
-                string sql = $"SELECT * FROM posts where eliminado = false and reports < 5 ORDER BY RAND() LIMIT 1 "; // agregar alguna logica de fecha
+                List<ModeloPost> posts = new List<ModeloPost>();
+
+                string sql = $"SELECT * FROM posts " +
+                    $"where eliminado = false and reports < 5 ORDER BY RAND() LIMIT 5"; 
                 this.Comando.CommandText = sql;
                 this.Lector = this.Comando.ExecuteReader();
 
-
-                if (this.Lector.HasRows)
+                while (this.Lector.Read())
                 {
-                    this.Lector.Read();
-                    this.contenido = this.Lector["contenido"].ToString();
-                    this.tipo_contenido = this.Lector["tipo_contenido"].ToString();
-                    this.fecha_post = this.Lector["fecha_creacion"].ToString();
-                    this.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
-                    this.id_post = Int32.Parse(this.Lector["id_post"].ToString());
-                    return true;
+                    ModeloPost post = new ModeloPost();
+                    post.id_post = Int32.Parse(this.Lector["id_post"].ToString());
+                    post.contenido = this.Lector["Contenido"].ToString();
+                    post.tipo_contenido = this.Lector["tipo_contenido"].ToString();
+                    post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                    post.likes = NumeroDeLikes(this.id_post);
+                    posts.Add(post);
                 }
-                return false;
+                this.Lector.Close();
+                return posts;
             }
             catch (MySqlException sqlx)
             {
                 MySqlErrorCatch(sqlx);
-                return false;
+                return null;
             }
             catch (Exception)
             {

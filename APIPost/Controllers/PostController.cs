@@ -431,18 +431,25 @@ namespace APIPost.Controllers
 
         [Route("ApiPost/MostrarAlgoritmo")]
         [HttpGet]
-        public Dictionary<string,string> TestingMuestraPost()
+        public List<PostModel> TestingMuestraPost()
         {
             try
             {
-                ControlPosts p = new ControlPosts();
-                PostModel post = new PostModel();
-                Dictionary<string, string> PostMuestra = p.AlgoritmoPost();
+                DataTable tablaPosts = ControlPosts.AlgoritmoPost();
 
-                post.contenido = PostMuestra["contenido"];
-                post.tipo_contenido = PostMuestra["tipo_contenido"];
-                post.Id_Post = Int32.Parse(PostMuestra["id_post"]);
-                return PostMuestra;
+                List<PostModel> posts = new List<PostModel>();
+
+                foreach (DataRow post in tablaPosts.Rows)
+                {
+                    PostModel p = new PostModel();
+                    p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
+                    p.contenido = post["contenido"].ToString();
+                    p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+                    p.likes = Int32.Parse(post["Likes"].ToString());
+
+                    posts.Add(p);
+                }
+                return posts;
             }
             catch (Exception)
             {

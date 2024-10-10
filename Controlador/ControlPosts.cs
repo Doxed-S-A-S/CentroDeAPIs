@@ -12,7 +12,6 @@ namespace Controlador
     public class ControlPosts
     {
 
-        List<int> IdPostMostrados = new List<int>();
 
         public static void CrearPost(string contenido,string url,string tipo_contenido, string idCuenta)
         {
@@ -224,37 +223,31 @@ namespace Controlador
         }
 
 
-        public Dictionary<string,string> AlgoritmoPost() // a ver----------
+
+        public static DataTable AlgoritmoPost() // a ver----------
         {
-            Dictionary<string, string> post = new Dictionary<string, string>();
-            ModeloPost p = new ModeloPost();
-            int IdMostrada = 0;
-            //IdPostMostrados.Add(IdMostrada);
-            bool FueMostrado = IdPostMostrados.Contains(IdMostrada);
-            Console.WriteLine(IdPostMostrados.ToString());
+            DataTable tabla = new DataTable();
+            tabla.Columns.Add("id_post", typeof(int));
+            tabla.Columns.Add("Contenido", typeof(string));
+            tabla.Columns.Add("Tipo_Contenido", typeof(string));
+            tabla.Columns.Add("id_cuenta", typeof(string));
+            tabla.Columns.Add("Likes", typeof(int));
 
-            while (true)
+            ModeloPost post = new ModeloPost();
+            foreach (ModeloPost p in post.ObtenerPosts())
             {
-                if(!IdPostMostrados.Contains(IdMostrada) && p.BuscarPostRandom())
-                {
-                    post.Add("contenido", p.contenido);
-                    post.Add("fecha", p.fecha_post);
-                    post.Add("tipo_contenido", p.tipo_contenido);
-                    post.Add("id_cuenta", p.id_cuenta.ToString());
-                    post.Add("id_post", p.id_post.ToString());
-                    IdMostrada = Int32.Parse(p.id_post.ToString());
-                    Console.WriteLine(IdPostMostrados.ToString());
-                    IdPostMostrados.Add(IdMostrada);
-                    Console.WriteLine(IdPostMostrados.ToString());
-                    return post;
-                    break;
-                }
-                return null;
+                DataRow fila = tabla.NewRow();
+                fila["Id_post"] = p.id_post;
+                fila["Contenido"] = p.contenido;
+                fila["Tipo_Contenido"] = p.tipo_contenido;
+                fila["id_cuenta"] = p.id_cuenta;
+                fila["Likes"] = p.NumeroDeLikes(p.id_post);
+                tabla.Rows.Add(fila);
             }
-
+            return tabla;
         }
-
         
+
         public static string ObtenerCreadorDePost(string id_cuenta)
         {
             try
