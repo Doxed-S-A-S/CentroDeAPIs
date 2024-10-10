@@ -224,7 +224,7 @@ namespace Controlador
 
 
 
-        public DataTable AlgoritmoPost() // a ver----------
+        public static DataTable AlgoritmoPost() // a ver----------
         {
             DataTable tabla = new DataTable();
             tabla.Columns.Add("id_post", typeof(int));
