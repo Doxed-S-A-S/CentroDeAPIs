@@ -223,27 +223,31 @@ namespace Controlador
         }
 
 
-        HashSet<int> PostIds = new HashSet<int>();
 
-        public Dictionary<string,string> AlgoritmoPost() // a ver----------
+        public DataTable AlgoritmoPost() // a ver----------
         {
-            Dictionary<string, string> post = new Dictionary<string, string>();
-            ModeloPost p = new ModeloPost();
+            DataTable tabla = new DataTable();
+            tabla.Columns.Add("id_post", typeof(int));
+            tabla.Columns.Add("Contenido", typeof(string));
+            tabla.Columns.Add("Tipo_Contenido", typeof(string));
+            tabla.Columns.Add("id_cuenta", typeof(string));
+            tabla.Columns.Add("Likes", typeof(int));
 
-            if (p.BuscarPostRandom())
+            ModeloPost post = new ModeloPost();
+            foreach (ModeloPost p in post.ObtenerPosts())
             {
-                post.Add("contenido", p.contenido);
-                post.Add("fecha", p.fecha_post);
-                post.Add("tipo_contenido", p.tipo_contenido);
-                post.Add("id_cuenta", p.id_cuenta.ToString());
-                post.Add("id_post", p.id_post.ToString());
-                return post;
+                DataRow fila = tabla.NewRow();
+                fila["Id_post"] = p.id_post;
+                fila["Contenido"] = p.contenido;
+                fila["Tipo_Contenido"] = p.tipo_contenido;
+                fila["id_cuenta"] = p.id_cuenta;
+                fila["Likes"] = p.NumeroDeLikes(p.id_post);
+                tabla.Rows.Add(fila);
             }
-            post.Add("Error", "encontrado");
-            return post;
+            return tabla;
         }
-
         
+
         public static string ObtenerCreadorDePost(string id_cuenta)
         {
             try
