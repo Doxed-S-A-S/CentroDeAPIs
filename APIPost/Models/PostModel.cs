@@ -12,9 +12,9 @@ namespace APIPost.Models
         public string tipo_contenido;
         public string contenido;
         public int id_cuenta;
-        public string comentario;
         public string url_imagen;
         public string fecha_creacion;
+        public byte[] contenidoImagen;
         public int likes;
 
         public string nombre_evento;
