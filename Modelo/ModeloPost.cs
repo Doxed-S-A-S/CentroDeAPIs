@@ -14,6 +14,7 @@ namespace Modelos
         public string tipo_contenido = "tagsito";
         public string contenido;
         public string fecha_post;
+        public string url_imagen;
         public int id_cuenta;
 
         public long id_upvote;
@@ -299,6 +300,9 @@ namespace Modelos
                     post.contenido = this.Lector["Contenido"].ToString();
                     post.tipo_contenido = this.Lector["tipo_contenido"].ToString();
                     post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                    post.url_contenido = this.Lector["url_contenido"].ToString();
+                    post.url_imagen = this.Lector["url_imagen"].ToString();
+                    post.fecha_post = this.Lector["fecha_creacion"].ToString();
                     post.likes = NumeroDeLikes(this.id_post);
                     posts.Add(post);
                 }

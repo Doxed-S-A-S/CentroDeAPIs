@@ -445,6 +445,9 @@ namespace APIPost.Controllers
                     p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
                     p.contenido = post["contenido"].ToString();
                     p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+                    p.url_contenido = post["url_contenido"].ToString();
+                    p.url_imagen = post["url_imagen"].ToString();
+                    p.fecha_creacion = post["fecha_creacion"].ToString();
                     p.likes = Int32.Parse(post["Likes"].ToString());
 
                     posts.Add(p);

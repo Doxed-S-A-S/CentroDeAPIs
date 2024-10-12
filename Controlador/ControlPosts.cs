@@ -231,7 +231,11 @@ namespace Controlador
             tabla.Columns.Add("Contenido", typeof(string));
             tabla.Columns.Add("Tipo_Contenido", typeof(string));
             tabla.Columns.Add("id_cuenta", typeof(string));
+            tabla.Columns.Add("url_contenido", typeof(string));
+            tabla.Columns.Add("url_imagen", typeof(string));
+            tabla.Columns.Add("fecha_creacion", typeof(string));
             tabla.Columns.Add("Likes", typeof(int));
+
 
             ModeloPost post = new ModeloPost();
             foreach (ModeloPost p in post.ObtenerPosts())
