@@ -7,6 +7,7 @@ using System.Web.Http;
 using Controlador;
 using System.Data;
 using APIPost.Models;
+using System.Web;
 
 namespace APIPost.Controllers
 {
@@ -102,11 +103,41 @@ namespace APIPost.Controllers
 
         [Route("ApiPost/post/crear/")]
         [HttpPost]
-        public IHttpActionResult CrearPost(PostModel post)
+        public IHttpActionResult CrearPost()
         {
             try
             {
-                ControlPosts.CrearPost(post.contenido, post.url_contenido, post.tipo_contenido, post.id_cuenta.ToString());
+                
+                var httpRequest = HttpContext.Current.Request;
+
+                
+                string url_contenido = httpRequest.Form["url_contenido"];
+                string tipo_contenido = httpRequest.Form["tipo_contenido"];
+                string contenido = httpRequest.Form["contenido"];
+                int id_cuenta = Convert.ToInt32(httpRequest.Form["id_cuenta"]);
+
+                
+                if (httpRequest.Files.Count > 0)
+                {
+                    var postedFile = httpRequest.Files["imagencita"];
+                    if (postedFile != null && postedFile.ContentLength > 0)
+                    {
+                        try
+                        {
+                            var filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{postedFile.FileName}");
+                            postedFile.SaveAs(filePath);
+                        }
+                        catch (Exception ex)
+                        {
+                            return null;
+                        }
+                    }
+                }
+
+                // Ahora llamamos al método que crea el post usando los parámetros recibidos
+                ControlPosts.CrearPost(contenido, url_contenido, tipo_contenido, id_cuenta.ToString());
+
+                // Retornamos un resultado de éxito
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
                 resultado.Add("mensaje", "post creado");
                 return Ok(resultado);
@@ -128,6 +159,7 @@ namespace APIPost.Controllers
                 throw;
             }
         }
+
 
 
         [Route("ApiPost/evento/crear")]

@@ -14,6 +14,7 @@ namespace APIPost.Models
         public int id_cuenta;
         public string url_imagen;
         public string fecha_creacion;
+        public string comentario;
         public byte[] contenidoImagen;
         public int likes;
 

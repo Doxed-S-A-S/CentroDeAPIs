@@ -14,7 +14,7 @@ namespace Modelos
         public string tipo_contenido = "tagsito";
         public string contenido;
         public string fecha_post;
-        public string url_imagen;
+        public string url_imagen = "imagencita";
         public int id_cuenta;
 
         public long id_upvote;
@@ -50,12 +50,13 @@ namespace Modelos
         {
             try
             {
-                string sql = $"insert into posts (contenido,url_contenido,tipo_contenido,id_cuenta) values('{this.contenido}','{this.url_contenido}','{this.tipo_contenido}',{this.id_cuenta})";
+                string sql = $"insert into posts (contenido,url_contenido, url_imagen,tipo_contenido,id_cuenta) values('{this.contenido}','{this.url_contenido}','{this.url_imagen}','{this.tipo_contenido}',{this.id_cuenta})";
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
             }
             catch (MySqlException sqlx)
             {
+                Console.Write(sqlx.Message);
                 MySqlErrorCatch(sqlx);
             }
             catch (Exception)
