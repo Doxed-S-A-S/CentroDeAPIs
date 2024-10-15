@@ -105,6 +105,7 @@ namespace APIPost.Controllers
         [HttpPost]
         public IHttpActionResult CrearPost()
         {
+            string filePath = "";
             try
             {
                 
@@ -117,6 +118,7 @@ namespace APIPost.Controllers
                 int id_cuenta = Convert.ToInt32(httpRequest.Form["id_cuenta"]);
 
                 
+                
                 if (httpRequest.Files.Count > 0)
                 {
                     var postedFile = httpRequest.Files["imagencita"];
@@ -124,8 +126,9 @@ namespace APIPost.Controllers
                     {
                         try
                         {
-                            var filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{postedFile.FileName}");
+                            filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{postedFile.FileName}");
                             postedFile.SaveAs(filePath);
+                            
                         }
                         catch (Exception ex)
                         {
@@ -134,10 +137,11 @@ namespace APIPost.Controllers
                     }
                 }
 
-                // Ahora llamamos al método que crea el post usando los parámetros recibidos
-                ControlPosts.CrearPost(contenido, url_contenido, tipo_contenido, id_cuenta.ToString());
+                
+                ControlPosts.CrearPost(contenido, url_contenido, filePath, tipo_contenido, id_cuenta.ToString());
 
-                // Retornamos un resultado de éxito
+
+
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
                 resultado.Add("mensaje", "post creado");
                 return Ok(resultado);

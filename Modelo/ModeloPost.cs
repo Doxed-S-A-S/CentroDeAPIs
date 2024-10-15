@@ -10,11 +10,11 @@ namespace Modelos
     public class ModeloPost : Modelo
     {
         public long id_post;
-        public string url_contenido = "url";
-        public string tipo_contenido = "tagsito";
+        public string url_contenido;
+        public string tipo_contenido;
         public string contenido;
         public string fecha_post;
-        public string url_imagen = "imagencita";
+        public string url_imagen;
         public int id_cuenta;
 
         public long id_upvote;
