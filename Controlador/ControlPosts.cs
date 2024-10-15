@@ -13,13 +13,14 @@ namespace Controlador
     {
 
 
-        public static void CrearPost(string contenido,string url,string tipo_contenido, string idCuenta)
+        public static void CrearPost(string contenido,string url_contenido, string url_imagen,string tipo_contenido, string idCuenta)
         {
             try
             {
                 ModeloPost post = new ModeloPost();
                 post.contenido = contenido;
-                post.url_contenido = url;
+                post.url_contenido = url_contenido;
+                post.url_imagen = url_imagen;
                 post.tipo_contenido = tipo_contenido;
                 post.id_cuenta = Int32.Parse(idCuenta);
 
@@ -231,7 +232,11 @@ namespace Controlador
             tabla.Columns.Add("Contenido", typeof(string));
             tabla.Columns.Add("Tipo_Contenido", typeof(string));
             tabla.Columns.Add("id_cuenta", typeof(string));
+            tabla.Columns.Add("url_contenido", typeof(string));
+            tabla.Columns.Add("url_imagen", typeof(string));
+            tabla.Columns.Add("fecha_creacion", typeof(string));
             tabla.Columns.Add("Likes", typeof(int));
+
 
             ModeloPost post = new ModeloPost();
             foreach (ModeloPost p in post.ObtenerPosts())

@@ -115,6 +115,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModeloChat.cs" />
     <Compile Include="ModeloREST.cs" />
     <Compile Include="ModeloCuenta.cs" />
     <Compile Include="ModeloComentario.cs" />

@@ -7,6 +7,7 @@ using System.Web.Http;
 using Controlador;
 using System.Data;
 using APIPost.Models;
+using System.Web;
 
 namespace APIPost.Controllers
 {
@@ -102,11 +103,45 @@ namespace APIPost.Controllers
 
         [Route("ApiPost/post/crear/")]
         [HttpPost]
-        public IHttpActionResult CrearPost(PostModel post)
+        public IHttpActionResult CrearPost()
         {
+            string filePath = "";
             try
             {
-                ControlPosts.CrearPost(post.contenido, post.url_contenido, post.tipo_contenido, post.id_cuenta.ToString());
+                
+                var httpRequest = HttpContext.Current.Request;
+
+                
+                string url_contenido = httpRequest.Form["url_contenido"];
+                string tipo_contenido = httpRequest.Form["tipo_contenido"];
+                string contenido = httpRequest.Form["contenido"];
+                int id_cuenta = Convert.ToInt32(httpRequest.Form["id_cuenta"]);
+
+                
+                
+                if (httpRequest.Files.Count > 0)
+                {
+                    var postedFile = httpRequest.Files["imagencita"];
+                    if (postedFile != null && postedFile.ContentLength > 0)
+                    {
+                        try
+                        {
+                            filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{postedFile.FileName}");
+                            postedFile.SaveAs(filePath);
+                            
+                        }
+                        catch (Exception ex)
+                        {
+                            return null;
+                        }
+                    }
+                }
+
+                
+                ControlPosts.CrearPost(contenido, url_contenido, filePath, tipo_contenido, id_cuenta.ToString());
+
+
+
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
                 resultado.Add("mensaje", "post creado");
                 return Ok(resultado);
@@ -128,6 +163,7 @@ namespace APIPost.Controllers
                 throw;
             }
         }
+
 
 
         [Route("ApiPost/evento/crear")]
@@ -445,6 +481,9 @@ namespace APIPost.Controllers
                     p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
                     p.contenido = post["contenido"].ToString();
                     p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+                    p.url_contenido = post["url_contenido"].ToString();
+                    p.url_imagen = post["url_imagen"].ToString();
+                    p.fecha_creacion = post["fecha_creacion"].ToString();
                     p.likes = Int32.Parse(post["Likes"].ToString());
 
                     posts.Add(p);

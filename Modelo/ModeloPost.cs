@@ -10,10 +10,11 @@ namespace Modelos
     public class ModeloPost : Modelo
     {
         public long id_post;
-        public string url_contenido = "url";
-        public string tipo_contenido = "tagsito";
+        public string url_contenido;
+        public string tipo_contenido;
         public string contenido;
         public string fecha_post;
+        public string url_imagen;
         public int id_cuenta;
 
         public long id_upvote;
@@ -49,12 +50,13 @@ namespace Modelos
         {
             try
             {
-                string sql = $"insert into posts (contenido,url_contenido,tipo_contenido,id_cuenta) values('{this.contenido}','{this.url_contenido}','{this.tipo_contenido}',{this.id_cuenta})";
+                string sql = $"insert into posts (contenido,url_contenido, url_imagen,tipo_contenido,id_cuenta) values('{this.contenido}','{this.url_contenido}','{this.url_imagen}','{this.tipo_contenido}',{this.id_cuenta})";
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
             }
             catch (MySqlException sqlx)
             {
+                Console.Write(sqlx.Message);
                 MySqlErrorCatch(sqlx);
             }
             catch (Exception)
@@ -299,6 +301,9 @@ namespace Modelos
                     post.contenido = this.Lector["Contenido"].ToString();
                     post.tipo_contenido = this.Lector["tipo_contenido"].ToString();
                     post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                    post.url_contenido = this.Lector["url_contenido"].ToString();
+                    post.url_imagen = this.Lector["url_imagen"].ToString();
+                    post.fecha_post = this.Lector["fecha_creacion"].ToString();
                     post.likes = NumeroDeLikes(this.id_post);
                     posts.Add(post);
                 }
