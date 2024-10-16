@@ -106,41 +106,35 @@ namespace APIPost.Controllers
         public IHttpActionResult CrearPost()
         {
             string filePath = "";
+            string fileUrl = "";
             try
             {
-                
-                var httpRequest = HttpContext.Current.Request;
+                HttpRequest httpRequest = HttpContext.Current.Request;
 
-                
                 string url_contenido = httpRequest.Form["url_contenido"];
                 string tipo_contenido = httpRequest.Form["tipo_contenido"];
                 string contenido = httpRequest.Form["contenido"];
                 int id_cuenta = Convert.ToInt32(httpRequest.Form["id_cuenta"]);
 
-                
-                
-                if (httpRequest.Files.Count > 0)
+                HttpPostedFile postedFile = httpRequest.Files["imagencita"];
+                if (postedFile != null && postedFile.ContentLength > 0)
                 {
-                    var postedFile = httpRequest.Files["imagencita"];
-                    if (postedFile != null && postedFile.ContentLength > 0)
+                    try
                     {
-                        try
-                        {
-                            filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{postedFile.FileName}");
-                            postedFile.SaveAs(filePath);
-                            
-                        }
-                        catch (Exception ex)
-                        {
-                            return null;
-                        }
+                        string fileName = postedFile.FileName;
+                        filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{fileName}");
+                        postedFile.SaveAs(filePath);
+                        HttpRequest request = HttpContext.Current.Request;
+                        string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
+                        fileUrl = $"{baseUrl}Uploads/{fileName}";
+                    }
+                    catch (Exception ex)
+                    {
+                        return InternalServerError(ex);
                     }
                 }
 
-                
-                ControlPosts.CrearPost(contenido, url_contenido, filePath, tipo_contenido, id_cuenta.ToString());
-
-
+                ControlPosts.CrearPost(contenido, url_contenido, fileUrl, tipo_contenido, id_cuenta.ToString());
 
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
                 resultado.Add("mensaje", "post creado");
@@ -164,8 +158,6 @@ namespace APIPost.Controllers
             }
         }
 
-
-
         [Route("ApiPost/evento/crear")]
         [HttpPost]
         public IHttpActionResult CrearEvento(PostModel evento)
@@ -174,7 +166,7 @@ namespace APIPost.Controllers
             try
             {
                 ControlPosts.CrearEvento(evento.nombre_evento, evento.imagen, evento.descripcion_evento, evento.contenido, evento.url_contenido, evento.tipo_contenido, evento.id_cuenta.ToString());
-                string resultado = "evento creado"; 
+                string resultado = "evento creado";
                 return Ok(resultado);
             }
             catch (Exception e)
@@ -243,7 +235,7 @@ namespace APIPost.Controllers
 
         [Route("ApiPost/post/comentario/{idComentario:int}")]
         [HttpDelete]
-        public IHttpActionResult EliminarComentario(int idComentario) 
+        public IHttpActionResult EliminarComentario(int idComentario)
         {
             try
             {
@@ -254,17 +246,17 @@ namespace APIPost.Controllers
             {
                 return BadRequest(e.Message);
             }
-            
+
         }
 
         [Route("ApiPost/post/comentario/{idComentario:int}")]
         [HttpPut]
 
-        public IHttpActionResult ModificarComentario(int idComentario, PostModel comenatrio) 
+        public IHttpActionResult ModificarComentario(int idComentario, PostModel comenatrio)
         {
             try
             {
-                ControlComentarios.ModificarComentario(idComentario.ToString(), comenatrio.comentario); 
+                ControlComentarios.ModificarComentario(idComentario.ToString(), comenatrio.comentario);
                 return Ok();
             }
             catch (Exception e)
@@ -274,7 +266,7 @@ namespace APIPost.Controllers
 
         }
 
-    
+
 
         [Route("ApiPost/post/compartir-en-muro/{id_post:int}/{id_muro:int}")]
         [HttpPost]
@@ -438,7 +430,7 @@ namespace APIPost.Controllers
 
         [Route("ApiPost/post/eliminar-evento/{id_evento:int}/{id_post:int}")]
         [HttpDelete]
-        public IHttpActionResult EliminarEvento(int id_evento,int id_post)
+        public IHttpActionResult EliminarEvento(int id_evento, int id_post)
         {
             try
             {
