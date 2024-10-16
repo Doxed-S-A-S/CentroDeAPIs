@@ -265,6 +265,7 @@ namespace Modelos
                     post.id_post = Int32.Parse(this.Lector["id_post"].ToString());
                     post.contenido = this.Lector["Contenido"].ToString();
                     post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                    post.url_imagen = this.Lector["Url_imagen"].ToString();
                     posts.Add(post);
                 }
                 this.Lector.Close();

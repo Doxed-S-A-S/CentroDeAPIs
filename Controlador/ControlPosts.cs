@@ -201,6 +201,7 @@ namespace Controlador
                 tabla.Columns.Add("Contenido", typeof(string));
                 tabla.Columns.Add("id_cuenta", typeof(string));
                 tabla.Columns.Add("Likes", typeof(int));
+                tabla.Columns.Add("Url_imagen", typeof(string));
 
                 ModeloPost post = new ModeloPost();
                 foreach (ModeloPost p in post.ObtenerPosts())
@@ -210,6 +211,7 @@ namespace Controlador
                     fila["Contenido"] = p.contenido;
                     fila["id_cuenta"] = p.id_cuenta;
                     fila["Likes"] = p.NumeroDeLikes(p.id_post);
+                    fila["Url_imagen"] = p.url_imagen;
                     tabla.Rows.Add(fila);
                 }
 
