@@ -44,31 +44,38 @@ namespace ApiGrupos.Controllers
 
         [Route("ApiGrupos/grupo/{id_grupo:int}")]
         [HttpGet]
-        public GrupoModel GetGrupo(int id_grupo)
+        public GetGrupoDTO GetGrupo(int id_grupo)
         {
             try
             {
-                
                 DataTable grupo = ControlGrupo.ObtenerGrupo(id_grupo.ToString());
 
-                GrupoModel g = new GrupoModel();
+                if (grupo.Rows.Count > 0)
+                {
+                    DataRow row = grupo.Rows[0];
 
-                DataRow row = grupo.Rows[0];
-                g.nombre_grupo = row["nombre_grupo"].ToString();
-                g.nombre_grupo = row["nombre_grupo"].ToString();
-                g.descripcion = row["descripcion"].ToString();
-                g.url_imagen = row["url_imagen"].ToString();
-                g.imagen_banner = row["imagen_banner"].ToString();
+                    GetGrupoDTO g = new GetGrupoDTO
+                    {
+                        nombre_grupo = row["nombre_grupo"].ToString(),
+                        descripcion = row["descripcion"].ToString(),
+                        url_imagen = row["url_imagen"].ToString(),
+                        imagen_banner = row["imagen_banner"].ToString()
 
-                return g;
+                    };
+                    return g;
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception e)
             {
-                Console.Write(e.Message);
                 return null;
-                throw;
             }
         }
+
+
 
 
         [Route("ApiGrupos/grupo/{id_grupo:int}/integrantes")]

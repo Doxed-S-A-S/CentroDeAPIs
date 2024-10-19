@@ -159,6 +159,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DTO\AgregarCuentaDto.cs" />
+    <Compile Include="DTO\GetGrupoDTO.cs" />
     <Compile Include="DTO\EventoSenderDTO.cs" />
     <Compile Include="DTO\ModificarRolDeCuentaEnGrupoDTO.cs" />
     <Compile Include="DTO\GetGruposDTO.cs" />
