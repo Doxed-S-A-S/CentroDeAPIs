@@ -11,7 +11,7 @@ namespace Controlador
 {
     public class ControlGrupo
     {
-        public static void CrearGrupo(string id_cuenta, string nombreGrupo, string descripcion,string privacidad, string banner)
+        public static void CrearGrupo(string id_cuenta, string nombreGrupo, string descripcion,string privacidad, string imagen_banner, string url_iamgen)
         {
             try
             {
@@ -19,8 +19,9 @@ namespace Controlador
                 grupo.nombre_grupo = nombreGrupo;
                 grupo.descripcion = descripcion;
                 grupo.privacidad = bool.Parse(privacidad);
-                grupo.banner = banner;
+                grupo.imagen_banner = imagen_banner;
                 grupo.id_cuenta = Int32.Parse(id_cuenta);
+                grupo.url_imagen = url_iamgen;
 
                 grupo.CrearGrupo();
             }
@@ -30,7 +31,7 @@ namespace Controlador
             }
         }
 
-        public static bool ModificarGrupo(string id, string nombre, string descripcion, string banner)
+        public static bool ModificarGrupo(string id, string nombre, string descripcion, string imagen_banner, string url_imagen)
         {
             try
             {
@@ -39,7 +40,9 @@ namespace Controlador
                 {
                     grupo.nombre_grupo = nombre;
                     grupo.descripcion = descripcion;
-                    grupo.banner = banner;
+                    grupo.imagen_banner = imagen_banner;
+                    grupo.url_imagen = url_imagen;
+
 
                     grupo.Guardar();
                     return true;
@@ -205,7 +208,7 @@ namespace Controlador
                     resultado.Add("id", grupo.id_grupo.ToString());
                     resultado.Add("nombre_grupo", grupo.nombre_grupo);
                     resultado.Add("descripcion", grupo.descripcion);
-                    resultado.Add("banner", grupo.banner);
+                    resultado.Add("banner", grupo.imagen_banner);
                     return resultado;
                 }
                 resultado.Add("resultado", "false");
@@ -217,6 +220,25 @@ namespace Controlador
                 return null;
             }
         }
+
+        public static DataTable ObtenerGrupo(string id)
+        {
+            try
+            {
+                ModeloGrupo g = new ModeloGrupo();
+                DataTable grupo = g.ObtenerGrupo(Int32.Parse(id));
+                
+
+                return grupo;
+            }
+            catch (Exception e)
+            {
+                
+                Console.Write(e.Message);
+                throw new Exception("Error desconocido"+ e.Message.ToString());
+            }
+        }
+
 
         public static Dictionary<string, string> AgregarCuentaEnGrupo(string rol, string id_grupo, string id_cuenta)
         {

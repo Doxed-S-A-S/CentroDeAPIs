@@ -42,6 +42,35 @@ namespace ApiGrupos.Controllers
         }
 
 
+        [Route("ApiGrupos/grupo/{id_grupo:int}")]
+        [HttpGet]
+        public GrupoModel GetGrupo(int id_grupo)
+        {
+            try
+            {
+                
+                DataTable grupo = ControlGrupo.ObtenerGrupo(id_grupo.ToString());
+
+                GrupoModel g = new GrupoModel();
+
+                DataRow row = grupo.Rows[0];
+                g.nombre_grupo = row["nombre_grupo"].ToString();
+                g.nombre_grupo = row["nombre_grupo"].ToString();
+                g.descripcion = row["descripcion"].ToString();
+                g.url_imagen = row["url_imagen"].ToString();
+                g.imagen_banner = row["imagen_banner"].ToString();
+
+                return g;
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+                return null;
+                throw;
+            }
+        }
+
+
         [Route("ApiGrupos/grupo/{id_grupo:int}/integrantes")]
         [HttpGet]
         public List<GetIntegrantesDTO> GetIntegrantes(int id_grupo)
@@ -75,11 +104,11 @@ namespace ApiGrupos.Controllers
 
         [Route("ApiGrupos/grupo/crear/{idCuenta:int}")]
         [HttpPost]
-        public IHttpActionResult CrearGrupo(GrupoModel grupo,int idCuenta)
+        public IHttpActionResult CrearGrupo(GrupoModel grupo, int idCuenta)
         {
             try
             {
-                ControlGrupo.CrearGrupo(idCuenta.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.privacidad, grupo.banner);
+                ControlGrupo.CrearGrupo(idCuenta.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.privacidad, grupo.imagen_banner, grupo.url_imagen);
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
                 resultado.Add("mensaje", "grupo creado");
                 return Ok(resultado);
@@ -89,7 +118,7 @@ namespace ApiGrupos.Controllers
                 if (ex.Message == "DUPLICATE_ENTRY")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
                 if (ex.Message == "ACCESS_DENIED")
-                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized,"Acceso denegado"));
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
                 if (ex.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
                 if (ex.Message == "ERROR_CHILD_ROW")
@@ -105,7 +134,7 @@ namespace ApiGrupos.Controllers
 
         [Route("ApiGrupos/grupo/{idGrupo:int}/privacidad")]
         [HttpPut]
-        public IHttpActionResult ModificarPrivacidad(GrupoModel grupo,int idGrupo)
+        public IHttpActionResult ModificarPrivacidad(GrupoModel grupo, int idGrupo)
         {
             try
             {
@@ -175,7 +204,7 @@ namespace ApiGrupos.Controllers
         {
             try
             {
-                bool existe = ControlGrupo.ModificarGrupo(id_grupo.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.banner);
+                bool existe = ControlGrupo.ModificarGrupo(id_grupo.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.imagen_banner, grupo.url_imagen);
 
                 if (existe)
                 {
@@ -240,7 +269,7 @@ namespace ApiGrupos.Controllers
         }
 
 
-        
+
         [Route("ApiGrupos/grupo/{id_grupo:int}/eliminar")]
         [HttpDelete]
         public IHttpActionResult DeleteGrupo(int id_grupo)
