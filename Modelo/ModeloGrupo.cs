@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,8 @@ namespace Modelos
         public long id_grupo;
         public string nombre_grupo;
         public string descripcion;
-        public string banner;
+        public string imagen_banner;
+        public string url_imagen;
         public Boolean privacidad;
 
         public string rol;
@@ -35,11 +37,12 @@ namespace Modelos
         {
             try
             {
-                string sql = $"insert into grupos (nombre_grupo,descripcion,privacidad,banner) values(@nombre_grupo,@descripcion,{this.privacidad},@banner)";
+                string sql = $"insert into grupos (nombre_grupo,descripcion,privacidad,banner,url_imagen) values(@nombre_grupo,@descripcion,{this.privacidad},@banner,@url_imagen)";
                 this.Comando.CommandText = sql;
                 this.Comando.Parameters.AddWithValue("@nombre_grupo",this.nombre_grupo);
                 this.Comando.Parameters.AddWithValue("@descripcion",this.descripcion);
-                this.Comando.Parameters.AddWithValue("@banner",this.banner);
+                this.Comando.Parameters.AddWithValue("@banner",this.imagen_banner);
+                this.Comando.Parameters.AddWithValue("@url_imagen", this.url_imagen);
                 this.Comando.Prepare();
                 this.Comando.ExecuteNonQuery();
                 this.id_grupo = this.Comando.LastInsertedId;
@@ -61,7 +64,7 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.Parameters.AddWithValue("@nombre_grupo", this.nombre_grupo);
                 this.Comando.Parameters.AddWithValue("@descripcion", this.descripcion);
-                this.Comando.Parameters.AddWithValue("@banner", this.banner);
+                this.Comando.Parameters.AddWithValue("@banner", this.imagen_banner);
                 this.Comando.Prepare();
                 this.Comando.ExecuteNonQuery();
             }
@@ -136,7 +139,7 @@ namespace Modelos
             {
                 string sql = $"update grupos set banner = @banner where id_grupo = '{this.id_grupo}'";
                 this.Comando.CommandText = sql;
-                this.Comando.Parameters.AddWithValue("@banner", this.banner);
+                this.Comando.Parameters.AddWithValue("@banner", this.imagen_banner);
                 this.Comando.Prepare();
                 this.Comando.ExecuteNonQuery();
             }
@@ -198,6 +201,32 @@ namespace Modelos
             }
         }
 
+        public DataTable ObtenerGrupo(int id)
+        {
+            try
+            {
+                DataTable dataTable = new DataTable();
+                string sql = $"SELECT * FROM grupos WHERE eliminado = false AND id_grupo = {id}";
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                dataTable.Load(this.Lector);
+
+                return dataTable;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+
+
         public List<ModeloGrupo> ObtenerIntegrantesDeGrupo(int id)
         {
             try
@@ -248,7 +277,7 @@ namespace Modelos
                     this.id_grupo = Int32.Parse(this.Lector["id_grupo"].ToString());
                     this.nombre_grupo = this.Lector["nombre_grupo"].ToString();
                     this.descripcion = this.Lector["descripcion"].ToString();
-                    this.banner = this.Lector["banner"].ToString();
+                    this.imagen_banner = this.Lector["banner"].ToString();
                     this.Lector.Close();
                     return true;
 

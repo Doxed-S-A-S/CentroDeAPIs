@@ -3,21 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ApiGrupos.Models
+namespace ApiGrupos.DTO
 {
-    public class GrupoModel
+    public class GetGrupoDTO
     {
 
-        public int id_grupo;
         public string nombre_grupo;
         public string descripcion;
-        public string privacidad;
         public string url_imagen;
         public string imagen_banner;
-        public string rol;
-
-        public int id_cuenta;
-        public string nombre_usuario;
-
     }
 }
