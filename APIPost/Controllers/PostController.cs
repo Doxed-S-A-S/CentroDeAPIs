@@ -61,8 +61,13 @@ namespace APIPost.Controllers
                     p.contenido = post["contenido"].ToString();
                     p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
                     p.likes = Int32.Parse(post["Likes"].ToString());
-                    p.url_imagen = post["url_imagen"].ToString();
+                    //p.url_imagen = post["url_imagen"].ToString();
+                    // Obtén el servidor actual (host)
+                    string currentServer = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
 
+                    // Concatenar con el relative path de la imagen almacenada
+                    p.url_imagen = $"{currentServer}/{post["url_imagen"].ToString()}";
+                    Console.Write(p.url_imagen);
                     posts.Add(p);
                 }
                 return posts;
@@ -127,7 +132,7 @@ namespace APIPost.Controllers
                         postedFile.SaveAs(filePath);
                         HttpRequest request = HttpContext.Current.Request;
                         string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
-                        fileUrl = $"{baseUrl}Uploads/{fileName}";
+                        fileUrl = $"Uploads/{fileName}";
                     }
                     catch (Exception ex)
                     {

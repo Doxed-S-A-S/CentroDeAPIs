@@ -216,13 +216,11 @@ namespace Modelos
             }
             catch (MySqlException sqlx)
             {
-                Console.Write(sqlx);
                 MySqlErrorCatch(sqlx);
                 return null;
             }
             catch (Exception e)
             {
-                Console.Write(e);
                 throw new Exception("UNKNOWN_ERROR");
             }
         }
