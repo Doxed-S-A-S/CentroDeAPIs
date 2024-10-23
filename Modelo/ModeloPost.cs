@@ -53,6 +53,7 @@ namespace Modelos
                 string sql = $"insert into posts (contenido,url_contenido, url_imagen,tipo_contenido,id_cuenta) values('{this.contenido}','{this.url_contenido}','{this.url_imagen}','{this.tipo_contenido}',{this.id_cuenta})";
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
+                this.id_post = this.Comando.LastInsertedId;
             }
             catch (MySqlException sqlx)
             {
@@ -233,6 +234,7 @@ namespace Modelos
                     post.id_post = Int32.Parse(this.Lector["id_post"].ToString());
                     post.contenido = this.Lector["Contenido"].ToString();
                     post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                    post.url_imagen = this.Lector["Url_imagen"].ToString();
                     posts.Add(post);
                 }
                 this.Lector.Close();
@@ -248,7 +250,43 @@ namespace Modelos
                 throw new Exception("UNKNOWN_ERROR");
             }
         }
+        
+        public List<ModeloPost> ObtenerPostsDeGrupo(int id_grupo)
+        {
+            try
+            {
+                List<ModeloPost> posts = new List<ModeloPost>();
 
+                string sql = $"SELECT p.id_post, p.id_cuenta, p.url_contenido, p.tipo_contenido, p.fecha_creacion, p.contenido, p.reports, p.eliminado " +
+                $"FROM posts p " +
+                $"JOIN postea_grupos pg ON p.id_post = pg.id_post " +
+                $"WHERE pg.id_grupo = {id_grupo};";
+
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                while (this.Lector.Read())
+                {
+                    ModeloPost post = new ModeloPost();
+                    post.id_post = Int32.Parse(this.Lector["id_post"].ToString());
+                    post.contenido = this.Lector["Contenido"].ToString();
+                    post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                    post.url_imagen = this.Lector["Url_imagen"].ToString();
+                    posts.Add(post);
+                }
+                this.Lector.Close();
+                return posts;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
         public List<ModeloPost> ObtenerPosts()
         {
             try
@@ -325,9 +363,9 @@ namespace Modelos
 
         public string ObtenerCreadorDePost()
         {
-            string username = null; // Inicializar la variable
-            string sql = $"select nombre_usuario from cuenta where id_cuenta = ({this.id_cuenta})"; // Definir la consulta SQL
-            this.Comando.CommandText = sql; // Asignar la consulta al comando
+            string username = null; 
+            string sql = $"select nombre_usuario from cuenta where id_cuenta = ({this.id_cuenta})"; 
+            this.Comando.CommandText = sql; 
 
 
             this.Lector = this.Comando.ExecuteReader();
