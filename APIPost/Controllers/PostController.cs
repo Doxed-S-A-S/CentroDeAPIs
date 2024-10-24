@@ -15,23 +15,27 @@ namespace APIPost.Controllers
 
 
     {
-        [Route("ApiPost/post/obtener-posts/{id_cuenta:int}")]
+        [Route("ApiPost/post/obtener-posts-usuario/{id_cuenta:int}")]
         [HttpGet]
-        public List<PostDTO> ObtenerPostsDeUsuario(int id_cuenta)
+        public List<PostModel> ObtenerPostsDeUsuario(int id_cuenta)
         {
             try
             {
                 DataTable tablaPosts = ControlPosts.ListarPostDeCuenta(id_cuenta.ToString());
 
-                List<PostDTO> posts = new List<PostDTO>();
+                List<PostModel> posts = new List<PostModel>();
 
                 foreach (DataRow post in tablaPosts.Rows)
                 {
-                    PostDTO p = new PostDTO();
+                    PostModel p = new PostModel();
                     p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
                     p.contenido = post["contenido"].ToString();
                     p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
                     p.likes = Int32.Parse(post["Likes"].ToString());
+                    string currentServer = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
+
+                    p.url_imagen = $"{currentServer}/{post["url_imagen"].ToString()}";
+                    Console.Write(p.url_imagen);
 
                     posts.Add(p);
                 }
@@ -39,6 +43,40 @@ namespace APIPost.Controllers
             }
             catch (Exception)
             {
+                return null;
+                throw;
+            }
+        }
+
+        [Route("ApiPost/post/obtener-posts-grupo/{id_grupo:int}")]
+        [HttpGet]
+        public List<PostModel> ObtenerPostsDelGrupo(int id_grupo)
+        {
+            try
+            {
+                DataTable tablaPosts = ControlPosts.ListarPostDeGrupo(id_grupo.ToString());
+
+                List<PostModel> posts = new List<PostModel>();
+
+                foreach (DataRow post in tablaPosts.Rows)
+                {
+                    PostModel p = new PostModel();
+                    p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
+                    p.contenido = post["contenido"].ToString();
+                    p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+                    p.likes = Int32.Parse(post["Likes"].ToString());
+                    string currentServer = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
+
+                    p.url_imagen = $"{currentServer}/{post["url_imagen"].ToString()}";
+                    Console.Write(p.url_imagen);
+
+                    posts.Add(p);
+                }
+                return posts;
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
                 return null;
                 throw;
             }
@@ -61,11 +99,9 @@ namespace APIPost.Controllers
                     p.contenido = post["contenido"].ToString();
                     p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
                     p.likes = Int32.Parse(post["Likes"].ToString());
-                    //p.url_imagen = post["url_imagen"].ToString();
-                    // Obtén el servidor actual (host)
+
                     string currentServer = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
 
-                    // Concatenar con el relative path de la imagen almacenada
                     p.url_imagen = $"{currentServer}/{post["url_imagen"].ToString()}";
                     Console.Write(p.url_imagen);
                     posts.Add(p);
@@ -106,7 +142,6 @@ namespace APIPost.Controllers
             }
         }
 
-
         [Route("ApiPost/post/crear/")]
         [HttpPost]
         public IHttpActionResult CrearPost()
@@ -133,6 +168,7 @@ namespace APIPost.Controllers
                         HttpRequest request = HttpContext.Current.Request;
                         string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
                         fileUrl = $"Uploads/{fileName}";
+
                     }
                     catch (Exception ex)
                     {
