@@ -8,6 +8,6 @@ namespace APIAutenticar.Models
     public class AutenticarModel
     {
         public string nombre_usuario;
-        public string contrasena;
+        public string contraseña;
     }
 }

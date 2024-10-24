@@ -4,10 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Controlador;
 using System.Data;
 using System.Threading.Tasks;
+using Controlador;
 using APIAutenticar.Models;
+
 
 namespace APIAutenticar.Controllers
 {
@@ -18,7 +19,7 @@ namespace APIAutenticar.Controllers
         {
             Dictionary<string, bool> resultado = new Dictionary<string, bool>();
 
-            bool autenticacion = UsuarioController.Login(usuario.nombre_usuario, usuario.contrasena);
+            bool autenticacion = ControlCuenta.Login(usuario.nombre_usuario, usuario.contraseña);
             resultado.Add("Resultado", autenticacion);
 
             if (autenticacion)
