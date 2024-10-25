@@ -15,6 +15,10 @@ namespace Modelos
         public long id_muro;
         public long id_preferencia;
 
+        public long id_cuenta2;
+        public string vinculo;
+        public string nombre_usuario2;
+
         public string nombre_usuario;
         public string email;
         public string contraseña;
@@ -312,6 +316,43 @@ namespace Modelos
             }
         }
 
+
+        public List<ModeloCuenta> ObtenerRelacionados()
+        {
+            try
+            {
+                List<ModeloCuenta> cuentas = new List<ModeloCuenta>();
+
+                string sql = $"SELECT cuenta2.nombre_usuario AS nombre_usuario2, vinculados.tipo_vinculo, vinculados.id_cuenta2FROM cuenta " +
+                    $"JOIN vinculados ON cuenta.id_cuenta = vinculados.id_cuenta1 " +
+                    $"JOIN cuenta AS cuenta2 ON vinculados.id_cuenta2 = cuenta2.id_cuenta " +
+                    $"WHERE cuenta.id_cuenta = {this.id_cuenta}";
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                while (this.Lector.Read())
+                {
+                    ModeloCuenta cuenta = new ModeloCuenta();
+                    cuenta.nombre_usuario2 = this.Lector["nombre_usuario2"].ToString();
+                    cuenta.vinculo = this.Lector["tipo_vinculo"].ToString();
+                    cuenta.id_cuenta2 = Int32.Parse(this.Lector["id_cuenta2"].ToString());
+
+                    cuentas.Add(cuenta);
+                }
+                this.Lector.Close();
+                return cuentas;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
         /************************************* Usuario ********************************/
 
         public string nombre;
@@ -409,6 +450,8 @@ namespace Modelos
                 {
                     this.Lector.Read();
                     this.biografia = this.Lector["biografia"].ToString();
+                    this.detalles = this.Lector["detalles"].ToString();
+                    this.pub_destacada = Int32.Parse(this.Lector["pub_destacada"].ToString());
                     this.Lector.Close();
                     return true;
                 }
