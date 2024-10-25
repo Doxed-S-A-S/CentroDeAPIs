@@ -203,6 +203,89 @@ namespace Controlador
             }
         }
 
+        public static Dictionary<string,string> CargarMuro(string idMuro)
+        {
+            try
+            {
+                Dictionary<string, string> muro = new Dictionary<string, string>();
+                ModeloCuenta cuenta = new ModeloCuenta();
+                cuenta.id_muro = Int32.Parse(idMuro);
+                if (cuenta.BuscarMuro())
+                {
+                    muro.Add("resultado", "true");
+                    muro.Add("Detalles", cuenta.detalles);
+                    muro.Add("Biografia", cuenta.biografia);
+                    muro.Add("Publicacion destacada", cuenta.pub_destacada.ToString());
+                    
+                    return muro;
+                }
+                muro.Add("resultado", "true");
+                return muro;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
+
+        public static DataTable UsuariosRelacionados(string idCuenta)
+        {
+            try
+            {
+                DataTable Relacion = new DataTable();
+                Relacion.Columns.Add("Nombre", typeof(string));
+                Relacion.Columns.Add("vinculo", typeof(string));
+                Relacion.Columns.Add("ID vinculo", typeof(int));
+
+                ModeloCuenta cuenta = new ModeloCuenta();
+                cuenta.id_cuenta = Int32.Parse(idCuenta);
+                foreach (ModeloCuenta c in cuenta.ObtenerRelacionados())
+                {
+                    DataRow fila = Relacion.NewRow();
+                    fila["Nombre"] = c.nombre_usuario2;
+                    fila["vinculo"] = c.vinculo;
+                    fila["ID vinculo"] = c.id_cuenta2;
+                    Relacion.Rows.Add(fila);
+                }
+                return Relacion;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
+
+        public static Dictionary<string, string> CargarCuenta(string idCuenta)
+        {
+            try
+            {
+                Dictionary<string, string> muro = new Dictionary<string, string>();
+                ModeloCuenta cuenta = new ModeloCuenta();
+                if (cuenta.BuscarCuenta(Int32.Parse(idCuenta)))
+                {
+                    muro.Add("resultado", "true");
+                    muro.Add("ID cuenta", cuenta.id_cuenta.ToString());
+                    muro.Add("ID muro", cuenta.id_muro.ToString());
+                    muro.Add("ID preferencia", cuenta.id_preferencia.ToString());
+                    muro.Add("ID usuario", cuenta.id_usuario.ToString());
+                    muro.Add("Username", cuenta.nombre_usuario);
+                    muro.Add("Publicacion destacada", cuenta.pub_destacada.ToString());
+
+                    return muro;
+                }
+                muro.Add("resultado", "true");
+                return muro;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
+
+
         private static void ErrorHandle(Exception ex)
         {
             if (ex.Message == "DUPLICATE_ENTRY")
