@@ -36,12 +36,15 @@ namespace Modelos
         public void CrearGrupo()
         {
             try
-            {
-                string sql = $"insert into grupos (nombre_grupo,descripcion,privacidad,banner,url_imagen) values(@nombre_grupo,@descripcion,{this.privacidad},@banner,@url_imagen)";
+            { 
+                string sql = $"insert into grupos (nombre_grupo,descripcion,privacidad,imagen_banner,url_imagen) values(@nombre_grupo,@descripcion,@privacidad,@imagen_banner,@url_imagen)";
+                Console.Write(this.id_cuenta);
+                
                 this.Comando.CommandText = sql;
                 this.Comando.Parameters.AddWithValue("@nombre_grupo",this.nombre_grupo);
                 this.Comando.Parameters.AddWithValue("@descripcion",this.descripcion);
-                this.Comando.Parameters.AddWithValue("@banner",this.imagen_banner);
+                this.Comando.Parameters.AddWithValue("@privacidad", this.privacidad);
+                this.Comando.Parameters.AddWithValue("@imagen_banner", this.imagen_banner);
                 this.Comando.Parameters.AddWithValue("@url_imagen", this.url_imagen);
                 this.Comando.Prepare();
                 this.Comando.ExecuteNonQuery();
@@ -51,8 +54,9 @@ namespace Modelos
             catch (MySqlException sqlx)
             {
                 MySqlErrorCatch(sqlx);
-            }catch (Exception)
+            }catch (Exception e)
             {
+                Console.Write(e.Message);
                 throw new Exception("UNKNOWN_ERROR");
             }
         }

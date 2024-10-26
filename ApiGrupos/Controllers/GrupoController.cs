@@ -8,6 +8,7 @@ using Controlador;
 using System.Data;
 using ApiGrupos.Models;
 using ApiGrupos.DTO;
+using System.Web;
 
 namespace ApiGrupos.Controllers
 {
@@ -111,17 +112,44 @@ namespace ApiGrupos.Controllers
 
         [Route("ApiGrupos/grupo/crear/{idCuenta:int}")]
         [HttpPost]
-        public IHttpActionResult CrearGrupo(GrupoModel grupo, int idCuenta)
+        public IHttpActionResult CrearGrupo(int idCuenta)
         {
+            string filePath = "";
+            string imagenPerfilURL = "";
+            string imagenBannerlURL = "";
+            HttpRequest request = HttpContext.Current.Request;
+            string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
             try
             {
-                ControlGrupo.CrearGrupo(idCuenta.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.privacidad, grupo.imagen_banner, grupo.url_imagen);
+                HttpRequest httpRequest = HttpContext.Current.Request;
+
+                string nombre_grupo = httpRequest.Form["nombre_grupo"];
+                string descripcion = httpRequest.Form["descripcion"];
+                string privacidad = httpRequest.Form["privacidad"];
+
+                HttpPostedFile url_imagen_file = httpRequest.Files["url_imagen"];
+                HttpPostedFile imagen_banner_file = httpRequest.Files["imagen_banner"];
+
+                string url_imagen = url_imagen_file.FileName;
+                filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{url_imagen}");
+                url_imagen_file.SaveAs(filePath);
+                imagenPerfilURL = $"Uploads/{url_imagen_file}";
+
+
+                string imagen_banner = imagen_banner_file.FileName;
+                filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{imagen_banner}");
+                imagen_banner_file.SaveAs(filePath);
+                imagenBannerlURL = $"Uploads/{imagen_banner_file}";
+
+                ControlGrupo.CrearGrupo(idCuenta.ToString(), nombre_grupo, descripcion, privacidad, imagenBannerlURL, imagenPerfilURL);
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
                 resultado.Add("mensaje", "grupo creado");
                 return Ok(resultado);
             }
             catch (Exception ex)
             {
+                Console.Write(ex.Message);
+
                 if (ex.Message == "DUPLICATE_ENTRY")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
                 if (ex.Message == "ACCESS_DENIED")

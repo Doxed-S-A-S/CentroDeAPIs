@@ -18,7 +18,7 @@ namespace Controlador
                 ModeloGrupo grupo = new ModeloGrupo();
                 grupo.nombre_grupo = nombreGrupo;
                 grupo.descripcion = descripcion;
-                grupo.privacidad = bool.Parse(privacidad);
+                grupo.privacidad = Boolean.Parse(privacidad);
                 grupo.imagen_banner = imagen_banner;
                 grupo.id_cuenta = Int32.Parse(id_cuenta);
                 grupo.url_imagen = url_iamgen;
@@ -27,6 +27,7 @@ namespace Controlador
             }
             catch(Exception e)
             {
+                Console.Write(e.Message);
                 ErrorHandle(e);
             }
         }
@@ -94,7 +95,7 @@ namespace Controlador
             {
                 ModeloGrupo grupo = new Modelos.ModeloGrupo();
                 grupo.id_grupo = Int32.Parse(id_grupo);
-                grupo.privacidad = bool.Parse(privacidad);
+                grupo.privacidad = Boolean.Parse(privacidad);
 
                 grupo.ModificarPrivacidadGrupo();
             }
