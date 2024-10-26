@@ -50,6 +50,8 @@ namespace ApiGrupos.Controllers
             try
             {
                 DataTable grupo = ControlGrupo.ObtenerGrupo(id_grupo.ToString());
+                HttpRequest request = HttpContext.Current.Request;
+                string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
 
                 if (grupo.Rows.Count > 0)
                 {
@@ -59,8 +61,8 @@ namespace ApiGrupos.Controllers
                     {
                         nombre_grupo = row["nombre_grupo"].ToString(),
                         descripcion = row["descripcion"].ToString(),
-                        url_imagen = row["url_imagen"].ToString(),
-                        imagen_banner = row["imagen_banner"].ToString()
+                        url_imagen = baseUrl+row["url_imagen"].ToString(),
+                        imagen_banner = baseUrl+row["imagen_banner"].ToString()
 
                     };
                     return g;
@@ -133,13 +135,13 @@ namespace ApiGrupos.Controllers
                 string url_imagen = url_imagen_file.FileName;
                 filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{url_imagen}");
                 url_imagen_file.SaveAs(filePath);
-                imagenPerfilURL = $"Uploads/{url_imagen_file}";
+                imagenPerfilURL = $"Uploads/{url_imagen}";
 
 
                 string imagen_banner = imagen_banner_file.FileName;
                 filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{imagen_banner}");
                 imagen_banner_file.SaveAs(filePath);
-                imagenBannerlURL = $"Uploads/{imagen_banner_file}";
+                imagenBannerlURL = $"Uploads/{imagen_banner}";
 
                 ControlGrupo.CrearGrupo(idCuenta.ToString(), nombre_grupo, descripcion, privacidad, imagenBannerlURL, imagenPerfilURL);
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
