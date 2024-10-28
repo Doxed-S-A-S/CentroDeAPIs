@@ -63,7 +63,6 @@ namespace ApiGrupos.Controllers
                         descripcion = row["descripcion"].ToString(),
                         url_imagen = baseUrl+row["url_imagen"].ToString(),
                         imagen_banner = baseUrl+row["imagen_banner"].ToString()
-
                     };
                     return g;
                 }

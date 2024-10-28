@@ -106,7 +106,7 @@ namespace Modelos
             }
         }
 
-        
+
         public void ActualizarPost()
         {
             try
@@ -250,17 +250,19 @@ namespace Modelos
                 throw new Exception("UNKNOWN_ERROR");
             }
         }
-        
+
         public List<ModeloPost> ObtenerPostsDeGrupo(int id_grupo)
         {
             try
             {
                 List<ModeloPost> posts = new List<ModeloPost>();
 
-                string sql = $"SELECT p.id_post, p.id_cuenta, p.url_contenido, p.tipo_contenido, p.fecha_creacion, p.contenido, p.reports, p.eliminado " +
-                $"FROM posts p " +
-                $"JOIN postea_grupos pg ON p.id_post = pg.id_post " +
-                $"WHERE pg.id_grupo = {id_grupo};";
+                string sql = $"SELECT p.id_post, p.id_cuenta, p.url_contenido, p.tipo_contenido, p.fecha_creacion, p.contenido, p.reports, p.eliminado, g.url_imagen " +
+             $"FROM posts p " +
+             $"JOIN postea_grupos pg ON p.id_post = pg.id_post " +
+             $"JOIN grupos g ON pg.id_grupo = g.id_grupo " +
+             $"WHERE pg.id_grupo = {id_grupo};";
+                ;
 
                 this.Comando.CommandText = sql;
                 this.Lector = this.Comando.ExecuteReader();
@@ -329,7 +331,7 @@ namespace Modelos
                 List<ModeloPost> posts = new List<ModeloPost>();
 
                 string sql = $"SELECT * FROM posts " +
-                    $"where eliminado = false and reports < 5 ORDER BY RAND() LIMIT 5"; 
+                    $"where eliminado = false and reports < 5 ORDER BY RAND() LIMIT 5";
                 this.Comando.CommandText = sql;
                 this.Lector = this.Comando.ExecuteReader();
 
@@ -363,9 +365,9 @@ namespace Modelos
 
         public string ObtenerCreadorDePost()
         {
-            string username = null; 
-            string sql = $"select nombre_usuario from cuenta where id_cuenta = ({this.id_cuenta})"; 
-            this.Comando.CommandText = sql; 
+            string username = null;
+            string sql = $"select nombre_usuario from cuenta where id_cuenta = ({this.id_cuenta})";
+            this.Comando.CommandText = sql;
 
 
             this.Lector = this.Comando.ExecuteReader();

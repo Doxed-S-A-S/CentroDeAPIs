@@ -21,6 +21,7 @@ namespace APIAutenticar.Controllers
 
             bool autenticacion = ControlCuenta.Login(usuario.nombre_usuario, usuario.contraseña);
             resultado.Add("Resultado", autenticacion);
+            resultado.Add("id_cuenta", id_cuenta);
 
             if (autenticacion)
                 return Ok(resultado);
