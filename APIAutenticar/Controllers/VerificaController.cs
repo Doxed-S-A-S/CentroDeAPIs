@@ -15,16 +15,18 @@ namespace APIAutenticar.Controllers
     public class UsuarioController : ApiController
     {
         [Route("ApiAut/login")]
+        [HttpPost]
         public IHttpActionResult Login(AutenticarModel usuario)
         {
-            Dictionary<string, bool> resultado = new Dictionary<string, bool>();
+            AutenticarModel auth = new AutenticarModel();
+            Dictionary<string, string> resultado = ControlCuenta.Login(usuario.nombre_usuario, usuario.contraseña);
 
-            bool autenticacion = ControlCuenta.Login(usuario.nombre_usuario, usuario.contraseña);
-            resultado.Add("Resultado", autenticacion);
-
-            if (autenticacion)
+            if (resultado["resultado"] == "True")
+            {
+                auth.result = resultado["resultado"];
+                auth.ID = resultado["ID"];
                 return Ok(resultado);
-
+            }
             return NotFound();
         }
     }

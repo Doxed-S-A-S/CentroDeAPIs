@@ -242,9 +242,19 @@ namespace Modelos
                 this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
                 this.Comando.Prepare();
                 string resultado = this.Comando.ExecuteScalar().ToString();
+                this.Comando.Parameters.Clear();
 
                 if (resultado == "1")
+                {
+                    sql = $"select id_cuenta from registro where nombre_usuario = @nombre_usuario and contrasena = @contrasena";
+                    this.Comando.CommandText = sql;
+                    this.Comando.Parameters.AddWithValue("@nombre_usuario", this.nombre_usuario);
+                    this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
+                    this.Comando.Prepare();
+                    this.id_cuenta = Int32.Parse(this.Comando.ExecuteScalar().ToString());
                     return true;
+                }
+
                 return false;
             }
             catch (MySqlException sqlx)

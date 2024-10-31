@@ -28,21 +28,29 @@ namespace Controlador
                 ErrorHandle(e);
             }
         }
-        
-        public static bool Login (string nombre_usuario, string contraseña)
+
+        public static Dictionary<string, string> Login (string nombre_usuario, string contraseña)
         {
             try
             {
+                Dictionary<string, string> cuenta = new Dictionary<string, string>();
                 ModeloCuenta c = new ModeloCuenta();
                 c.nombre_usuario = nombre_usuario;
                 c.contraseña = contraseña;
-
-                return c.Autenticar();
+                bool auth = c.Autenticar();
+                if (auth)
+                {
+                    cuenta.Add("resultado", auth.ToString());
+                    cuenta.Add("ID", c.id_cuenta.ToString());
+                    return cuenta;
+                }
+                cuenta.Add("resultado", auth.ToString());
+                return cuenta;
             }
             catch (Exception e)
             {
                 ErrorHandle(e);
-                return false;
+                return null;
             }
         }
 
