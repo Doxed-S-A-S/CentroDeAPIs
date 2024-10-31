@@ -71,7 +71,7 @@ namespace ApiUsuario.Controllers
             }
         }
 
-        [Route("ApiUsuarios/Usuarios/verificar/")]
+        /*[Route("ApiUsuarios/Usuarios/verificar/")]
         [HttpPut]
         public IHttpActionResult VerificarUser(UsuarioModel usuario)
         {
@@ -103,7 +103,7 @@ namespace ApiUsuario.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
-        }
+        }*/
         
         
         
