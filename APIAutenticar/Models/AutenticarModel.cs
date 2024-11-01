@@ -9,5 +9,7 @@ namespace APIAutenticar.Models
     {
         public string nombre_usuario;
         public string contraseña;
+        public string ID;
+        public string result;
     }
 }
