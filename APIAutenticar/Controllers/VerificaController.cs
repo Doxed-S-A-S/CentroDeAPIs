@@ -21,6 +21,7 @@ namespace APIAutenticar.Controllers
             AutenticarModel auth = new AutenticarModel();
             Dictionary<string, string> resultado = ControlCuenta.Login(usuario.nombre_usuario, usuario.contraseña);
 
+
             if (resultado["resultado"] == "True")
             {
                 auth.result = resultado["resultado"];
