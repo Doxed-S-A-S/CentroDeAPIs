@@ -8,6 +8,7 @@ using Controlador;
 using System.Data;
 using ApiUsuarios.Models;
 using ApiUsuarios.DTO;
+using System.Web;
 
 namespace ApiUsuario.Controllers
 {
@@ -46,11 +47,43 @@ namespace ApiUsuario.Controllers
 
         [Route("ApiUsuarios/CrearCuenta/")]
         [HttpPost]
-        public IHttpActionResult CrearCuenta(UsuarioModel usuario)
+        public IHttpActionResult CrearCuenta()
         {
+            string filePath = "";
+            string fileUrl = "";
             try
             {
-                ControlCuenta.CrearCuenta(usuario.nombre_usuario,usuario.email,usuario.contraseña, usuario.nombre, usuario.apellido, usuario.apellido2, usuario.pais, usuario.idiomaHablado);
+                HttpRequest httpRequest = HttpContext.Current.Request;
+
+                string nombre_usuario = httpRequest.Form["nombre_usuario"];
+                string email = httpRequest.Form["email"];
+                string nombre = httpRequest.Form["nombre"];
+                string apellido = httpRequest.Form["apellido"];
+                string apellido2 = httpRequest.Form["apellido2"];
+                string pais = httpRequest.Form["pais"];
+                string idiomaHablado = httpRequest.Form["idiomaHablado"];
+                string contraseña = httpRequest.Form["contrasena"];
+
+                HttpPostedFile postedFile = httpRequest.Files["imagen_perfil"];
+
+                if (postedFile != null && postedFile.ContentLength > 0)
+                {
+                    try
+                    {
+                        string fileName = postedFile.FileName;
+                        filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{fileName}");
+                        postedFile.SaveAs(filePath);
+                        HttpRequest request = HttpContext.Current.Request;
+                        string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
+                        fileUrl = $"Uploads/{fileName}";
+                    }
+                    catch (Exception ex)
+                    {
+                        return InternalServerError(ex);
+                    }
+                }
+
+                ControlCuenta.CrearCuenta( nombre_usuario, email, contraseña, nombre, apellido, apellido2, pais, idiomaHablado, fileUrl);
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Cuenta Creada"));
             }
             catch (Exception ex)

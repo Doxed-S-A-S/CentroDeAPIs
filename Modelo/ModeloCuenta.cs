@@ -22,7 +22,7 @@ namespace Modelos
         public string nombre_usuario;
         public string email;
         public string contraseña;
-        public string imagen_perfil = "pic"; //placeholder
+        public string imagen_perfil; //placeholder
         public string rol_cuenta;
         public string miembro_desde;
        

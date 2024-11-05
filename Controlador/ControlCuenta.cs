@@ -12,7 +12,7 @@ namespace Controlador
 {
     public class ControlCuenta
     {
-        public static void CrearCuenta(string nombreUsuario, string email, string contraseña, string nombre, string apellido, string apellido2, string pais, string idiomaHablado)
+        public static void CrearCuenta(string nombreUsuario, string email, string contraseña, string nombre, string apellido, string apellido2, string pais, string idiomaHablado, string imagen_perfil)
         {
             try
             {
@@ -23,8 +23,9 @@ namespace Controlador
                 cuenta.nombre = nombre;
                 cuenta.apellido1 = apellido;
                 cuenta.apellido2 = apellido2;
-                cuenta.pais = pais; 
-                cuenta.idiomas_hablados = "eng";
+                cuenta.pais = pais;
+                cuenta.imagen_perfil = imagen_perfil;
+                cuenta.idiomas_hablados = idiomaHablado;
 
                 cuenta.Registro();
             }

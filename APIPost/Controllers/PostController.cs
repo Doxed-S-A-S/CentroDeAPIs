@@ -157,7 +157,7 @@ namespace APIPost.Controllers
                 string contenido = httpRequest.Form["contenido"];
                 int id_cuenta = Convert.ToInt32(httpRequest.Form["id_cuenta"]);
 
-                HttpPostedFile postedFile = httpRequest.Files["imagencita"];
+                HttpPostedFile postedFile = httpRequest.Files["imagen_perfil"];
                 if (postedFile != null && postedFile.ContentLength > 0)
                 {
                     try
@@ -168,7 +168,6 @@ namespace APIPost.Controllers
                         HttpRequest request = HttpContext.Current.Request;
                         string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
                         fileUrl = $"Uploads/{fileName}";
-
                     }
                     catch (Exception ex)
                     {
