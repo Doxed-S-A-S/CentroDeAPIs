@@ -44,19 +44,19 @@ namespace ApiUsuario.Controllers
             }
         }
 
-        [Route("ApiUsuarios/CrearUsuario/")]
+        [Route("ApiUsuarios/CrearCuenta/")]
         [HttpPost]
-        public IHttpActionResult CrearUsuario(UsuarioModel usuario)
+        public IHttpActionResult CrearCuenta(UsuarioModel usuario)
         {
             try
             {
-                ControlCuenta.CrearCuenta(usuario.nombre_usuario, usuario.email, usuario.contraseña);
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "usuario creado"));
+                ControlCuenta.CrearCuenta(usuario.nombre_usuario,usuario.email,usuario.contraseña, usuario.nombre, usuario.apellido, usuario.apellido2, usuario.pais, usuario.idiomaHablado);
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Cuenta Creada"));
             }
             catch (Exception ex)
             {
                 if (ex.Message == "DUPLICATE_ENTRY")
-                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "La cuenta ya existe"));
                 if (ex.Message == "ACCESS_DENIED")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
                 if (ex.Message == "UNKNOWN_COLUMN")
@@ -104,9 +104,27 @@ namespace ApiUsuario.Controllers
                 throw;
             }
         }*/
-        
-        
-        
+        [Route("ApiUsuarios/usuarios/usernameCheck/{username}")]
+        [HttpGet]
+        public IHttpActionResult PreferenciasGet(string username)
+        {
+            try
+            {
+                UsuarioModel usuario = new UsuarioModel();
+                Dictionary<string, string> resultado = ControlCuenta.UsernameExiste(username);
+
+                if (resultado["resultado"] == "true")
+                {
+                    return Ok("El username ya esta en uso");
+                }
+                return NotFound();
+
+            }
+            catch(Exception ex)
+            {
+                return NotFound();
+            }
+        }
         [Route("ApiUsuarios/usuarios/preferencias/{idCuenta:int}")]
         [HttpGet]
         public IHttpActionResult PreferenciasGet(int idCuenta)
@@ -187,10 +205,10 @@ namespace ApiUsuario.Controllers
             }
         }
 
-         [Route("ApiUsuarios/usuarios/Pass/{id:int}")]
-         [HttpPost]
-         public IHttpActionResult ModificarContraseña(int id, UsuarioModel usuario)
-         {
+        [Route("ApiUsuarios/usuarios/Pass/{id:int}")]
+        [HttpPost]
+        public IHttpActionResult ModificarContraseña(int id, UsuarioModel usuario)
+        {
             try
             {
                 Dictionary<string, string> resultado = new Dictionary<string, string>();

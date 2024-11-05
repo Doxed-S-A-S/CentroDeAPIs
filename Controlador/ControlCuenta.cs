@@ -12,7 +12,7 @@ namespace Controlador
 {
     public class ControlCuenta
     {
-        public static void CrearCuenta(string nombreUsuario, string email, string contraseña)
+        public static void CrearCuenta(string nombreUsuario, string email, string contraseña, string nombre, string apellido, string apellido2, string pais, string idiomaHablado)
         {
             try
             {
@@ -20,6 +20,11 @@ namespace Controlador
                 cuenta.nombre_usuario = nombreUsuario;
                 cuenta.email = email;
                 cuenta.contraseña = contraseña;
+                cuenta.nombre = nombre;
+                cuenta.apellido1 = apellido;
+                cuenta.apellido2 = apellido2;
+                cuenta.pais = pais; 
+                cuenta.idiomas_hablados = "eng";
 
                 cuenta.Registro();
             }
@@ -29,7 +34,7 @@ namespace Controlador
             }
         }
 
-        public static Dictionary<string, string> Login (string nombre_usuario, string contraseña)
+        public static Dictionary<string, string> Login(string nombre_usuario, string contraseña)
         {
             try
             {
@@ -54,7 +59,7 @@ namespace Controlador
             }
         }
 
-        public static bool ModificarContraseña(string id_Cuenta, string contraseña,string contraseñaAntigua)
+        public static bool ModificarContraseña(string id_Cuenta, string contraseña, string contraseñaAntigua)
         {
             try
             {
@@ -155,7 +160,7 @@ namespace Controlador
             }
         }
 
-            public static DataTable ListarCuentas()
+        public static DataTable ListarCuentas()
         {
             try
             {
@@ -184,7 +189,7 @@ namespace Controlador
             }
         }
 
-        public static Dictionary<string,string> BuscarPreferencia(string idCuenta)
+        public static Dictionary<string, string> BuscarPreferencia(string idCuenta)
         {
             try
             {
@@ -211,7 +216,7 @@ namespace Controlador
             }
         }
 
-        public static Dictionary<string,string> CargarMuro(string idMuro)
+        public static Dictionary<string, string> CargarMuro(string idMuro)
         {
             try
             {
@@ -224,7 +229,7 @@ namespace Controlador
                     muro.Add("Detalles", cuenta.detalles);
                     muro.Add("Biografia", cuenta.biografia);
                     muro.Add("Publicacion destacada", cuenta.pub_destacada.ToString());
-                    
+
                     return muro;
                 }
                 muro.Add("resultado", "true");
@@ -293,6 +298,28 @@ namespace Controlador
             }
         }
 
+        public static Dictionary<string, string> UsernameExiste(string username)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            ModeloCuenta cuenta = new ModeloCuenta();
+            try
+            {
+                if (cuenta.UsernameExiste(username))
+                {
+                    resultado.Add("resultado", "true");
+                    return resultado;
+                }
+                resultado.Add("resultado", "false");
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                ErrorHandle(ex);
+                resultado.Add("resultado", "false");
+                return resultado;
+            }
+
+        }
 
         private static void ErrorHandle(Exception ex)
         {

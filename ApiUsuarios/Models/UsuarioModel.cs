@@ -12,5 +12,11 @@ namespace ApiUsuarios.Models
         public string contraseña;
         public string contraseñaAntigua;
         public string rol_cuenta;
+
+        public string nombre;
+        public string apellido;
+        public string apellido2;
+        public string idiomaHablado;
+        public string pais;
     }
 }
