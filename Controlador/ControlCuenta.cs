@@ -190,6 +190,24 @@ namespace Controlador
             }
         }
 
+        public static DataTable ObtenerInfoDeCuenta(string id)
+        {
+            try
+            {
+                ModeloCuenta c = new ModeloCuenta();
+                DataTable cuenta = c.ObtenerInfoDeCuenta(Int32.Parse(id));
+
+
+                return cuenta;
+            }
+            catch (Exception e)
+            {
+
+                Console.Write(e.Message);
+                throw new Exception("Error desconocido" + e.Message.ToString());
+            }
+        }
+
         public static Dictionary<string, string> BuscarPreferencia(string idCuenta)
         {
             try

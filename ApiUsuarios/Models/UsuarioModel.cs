@@ -18,5 +18,9 @@ namespace ApiUsuarios.Models
         public string apellido2;
         public string idiomaHablado;
         public string pais;
+        public string imagen_perfil;
+
+        public int id_muro;
+        public int id_preferencia;
     }
 }

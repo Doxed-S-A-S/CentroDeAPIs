@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,10 +23,10 @@ namespace Modelos
         public string nombre_usuario;
         public string email;
         public string contraseña;
-        public string imagen_perfil; //placeholder
+        public string imagen_perfil;
         public string rol_cuenta;
         public string miembro_desde;
-       
+
         public int reports;
 
 
@@ -186,7 +187,7 @@ namespace Modelos
                     this.Lector.Read();
                     this.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
                     this.nombre_usuario = this.Lector["nombre_usuario"].ToString();
-                    //this.imagen_perfil = this.Lector["imagen_perfil"].ToString();
+                    this.imagen_perfil = this.Lector["imagen_perfil"].ToString();
                     this.reports = Int32.Parse(this.Lector["reports"].ToString());
                     this.id_usuario = Int32.Parse(this.Lector["id_usuario"].ToString());
                     this.id_muro = Int32.Parse(this.Lector["id_muro"].ToString());
@@ -268,7 +269,7 @@ namespace Modelos
             }
         }
 
-        public bool ContraseñaExiste(int id,string ContraseñaAntigua)
+        public bool ContraseñaExiste(int id, string ContraseñaAntigua)
         {
             try
             {
@@ -412,6 +413,30 @@ namespace Modelos
                 MySqlErrorCatch(sqlx);
             }
             catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+        public DataTable ObtenerInfoDeCuenta(int id)
+        {
+            try
+            {
+                DataTable dataTable = new DataTable();
+                string sql = $"SELECT * FROM cuenta WHERE eliminado = false AND id_cuenta = {id}";
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                dataTable.Load(this.Lector);
+
+                return dataTable;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
+            }
+            catch (Exception e)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }

@@ -15,6 +15,42 @@ namespace ApiUsuario.Controllers
     public class UsuarioController : ApiController
     {
 
+        [Route("ApiUsuarios/cuenta/ObtenerInformacion/{id_cuenta:int}")]
+        [HttpGet]
+        public UsuarioModel GetInfoCuenta(int id_cuenta)
+        {
+            try
+            {
+                DataTable cuenta = ControlCuenta.ObtenerInfoDeCuenta(id_cuenta.ToString());
+                HttpRequest request = HttpContext.Current.Request;
+                string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
+
+                if (cuenta.Rows.Count > 0)
+                {
+                    DataRow row = cuenta.Rows[0];
+
+                    UsuarioModel g = new UsuarioModel
+                    {
+                        nombre_usuario = row["nombre_usuario"].ToString(),
+                        imagen_perfil = baseUrl + row["imagen_perfil"].ToString(),
+                        rol_cuenta = row["rol_cuenta"].ToString(),
+                        id_muro = Convert.ToInt32(row["id_muro"]),
+                        id_preferencia = Convert.ToInt32(row["id_preferencia"].ToString()),
+                };
+                    return g;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+
         [Route("ApiUsuarios/ListarUsuarios")]
         [HttpGet]
         public List<ListarCuentasDto> ListarUsuarios()
