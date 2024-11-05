@@ -12,7 +12,7 @@ namespace Controlador
 {
     public class ControlCuenta
     {
-        public static void CrearCuenta(string nombreUsuario, string email, string contraseña)
+        public static void CrearCuenta(string nombreUsuario, string email, string contraseña, string nombre, string apellido, string apellido2, string pais, string idiomaHablado)
         {
             try
             {
@@ -20,6 +20,11 @@ namespace Controlador
                 cuenta.nombre_usuario = nombreUsuario;
                 cuenta.email = email;
                 cuenta.contraseña = contraseña;
+                cuenta.nombre = nombre;
+                cuenta.apellido1 = apellido;
+                cuenta.apellido2 = apellido2;
+                cuenta.pais = pais; 
+                cuenta.idiomas_hablados = "eng";
 
                 cuenta.Registro();
             }
@@ -28,8 +33,13 @@ namespace Controlador
                 ErrorHandle(e);
             }
         }
+<<<<<<< Updated upstream
         
         public static bool Login (string nombre_usuario, string contraseña)
+=======
+
+        public static Dictionary<string, string> Login(string nombre_usuario, string contraseña)
+>>>>>>> Stashed changes
         {
             try
             {
@@ -46,7 +56,7 @@ namespace Controlador
             }
         }
 
-        public static bool ModificarContraseña(string id_Cuenta, string contraseña,string contraseñaAntigua)
+        public static bool ModificarContraseña(string id_Cuenta, string contraseña, string contraseñaAntigua)
         {
             try
             {
@@ -147,7 +157,7 @@ namespace Controlador
             }
         }
 
-            public static DataTable ListarCuentas()
+        public static DataTable ListarCuentas()
         {
             try
             {
@@ -176,7 +186,7 @@ namespace Controlador
             }
         }
 
-        public static Dictionary<string,string> BuscarPreferencia(string idCuenta)
+        public static Dictionary<string, string> BuscarPreferencia(string idCuenta)
         {
             try
             {
@@ -203,6 +213,114 @@ namespace Controlador
             }
         }
 
+<<<<<<< Updated upstream
+=======
+        public static Dictionary<string, string> CargarMuro(string idMuro)
+        {
+            try
+            {
+                Dictionary<string, string> muro = new Dictionary<string, string>();
+                ModeloCuenta cuenta = new ModeloCuenta();
+                cuenta.id_muro = Int32.Parse(idMuro);
+                if (cuenta.BuscarMuro())
+                {
+                    muro.Add("resultado", "true");
+                    muro.Add("Detalles", cuenta.detalles);
+                    muro.Add("Biografia", cuenta.biografia);
+                    muro.Add("Publicacion destacada", cuenta.pub_destacada.ToString());
+
+                    return muro;
+                }
+                muro.Add("resultado", "true");
+                return muro;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
+
+        public static DataTable UsuariosRelacionados(string idCuenta)
+        {
+            try
+            {
+                DataTable Relacion = new DataTable();
+                Relacion.Columns.Add("Nombre", typeof(string));
+                Relacion.Columns.Add("vinculo", typeof(string));
+                Relacion.Columns.Add("ID vinculo", typeof(int));
+
+                ModeloCuenta cuenta = new ModeloCuenta();
+                cuenta.id_cuenta = Int32.Parse(idCuenta);
+                foreach (ModeloCuenta c in cuenta.ObtenerRelacionados())
+                {
+                    DataRow fila = Relacion.NewRow();
+                    fila["Nombre"] = c.nombre_usuario2;
+                    fila["vinculo"] = c.vinculo;
+                    fila["ID vinculo"] = c.id_cuenta2;
+                    Relacion.Rows.Add(fila);
+                }
+                return Relacion;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
+
+        public static Dictionary<string, string> CargarCuenta(string idCuenta)
+        {
+            try
+            {
+                Dictionary<string, string> muro = new Dictionary<string, string>();
+                ModeloCuenta cuenta = new ModeloCuenta();
+                if (cuenta.BuscarCuenta(Int32.Parse(idCuenta)))
+                {
+                    muro.Add("resultado", "true");
+                    muro.Add("ID cuenta", cuenta.id_cuenta.ToString());
+                    muro.Add("ID muro", cuenta.id_muro.ToString());
+                    muro.Add("ID preferencia", cuenta.id_preferencia.ToString());
+                    muro.Add("ID usuario", cuenta.id_usuario.ToString());
+                    muro.Add("Username", cuenta.nombre_usuario);
+                    muro.Add("Publicacion destacada", cuenta.pub_destacada.ToString());
+
+                    return muro;
+                }
+                muro.Add("resultado", "true");
+                return muro;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
+
+        public static Dictionary<string, string> UsernameExiste(string username)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            ModeloCuenta cuenta = new ModeloCuenta();
+            try
+            {
+                if (cuenta.UsernameExiste(username))
+                {
+                    resultado.Add("resultado", "true");
+                    return resultado;
+                }
+                resultado.Add("resultado", "false");
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                ErrorHandle(ex);
+                resultado.Add("resultado", "false");
+                return resultado;
+            }
+
+        }
+
+>>>>>>> Stashed changes
         private static void ErrorHandle(Exception ex)
         {
             if (ex.Message == "DUPLICATE_ENTRY")

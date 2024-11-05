@@ -48,10 +48,10 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception)
+            /*catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
-            }
+            }*/
         }
         public void CrearCuenta()
         {
@@ -279,6 +279,31 @@ namespace Modelos
             }
         }
 
+        public bool UsernameExiste(string username)
+        {
+            try
+            {
+                string sql = $"select count(*) from registro where nombre_usuario = '{username}'";
+                this.Comando.CommandText = sql;
+                this.Comando.Parameters.AddWithValue("@username", username);
+                this.Comando.Prepare();
+                string resultado = this.Comando.ExecuteScalar().ToString();
+
+                if (resultado == "1")
+                    return true;
+                return false;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return false;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
         public List<ModeloCuenta> ObtenerCuentas()
         {
             try
@@ -317,8 +342,8 @@ namespace Modelos
         public string nombre;
         public string apellido1;
         public string apellido2;
-        public string pais = "SU";
-        public string idiomas_hablados = "spa";
+        public string pais;
+        public string idiomas_hablados;
 
         public void CrearUsuario()
         {
