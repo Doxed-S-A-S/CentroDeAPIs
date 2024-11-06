@@ -157,7 +157,7 @@ namespace APIPost.Controllers
                 string contenido = httpRequest.Form["contenido"];
                 int id_cuenta = Convert.ToInt32(httpRequest.Form["id_cuenta"]);
 
-                HttpPostedFile postedFile = httpRequest.Files["imagen_perfil"];
+                HttpPostedFile postedFile = httpRequest.Files["imagencita"];
                 if (postedFile != null && postedFile.ContentLength > 0)
                 {
                     try
@@ -338,7 +338,7 @@ namespace APIPost.Controllers
             }
         }
 
-        [Route("ApiPost/post/compartir-en-muro/{id_post:int}/{id_muro:int}")]
+        [Route("ApiPost/post/compartir-en-muro/{id_post:int}/{id_grupo:int}")]
         [HttpPost]
         public IHttpActionResult CompartirPostEnGrupo(int id_post, int id_grupo)
         {

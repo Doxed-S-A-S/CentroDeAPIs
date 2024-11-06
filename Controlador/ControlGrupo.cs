@@ -11,7 +11,7 @@ namespace Controlador
 {
     public class ControlGrupo
     {
-        public static void CrearGrupo(string id_cuenta, string nombreGrupo, string descripcion,string privacidad, string imagen_banner, string url_iamgen)
+        public static void CrearGrupo(string id_cuenta, string nombreGrupo, string descripcion, string privacidad, string imagen_banner, string url_iamgen)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace Controlador
 
                 grupo.CrearGrupo();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.Write(e.Message);
                 ErrorHandle(e);
@@ -89,7 +89,7 @@ namespace Controlador
             }
         }
 
-        public static void ModificarPrivacidadGrupo(string id_grupo,string privacidad)
+        public static void ModificarPrivacidadGrupo(string id_grupo, string privacidad)
         {
             try
             {
@@ -168,6 +168,32 @@ namespace Controlador
             }
         }
 
+        public static DataTable ObtenerGruposQueConformaUsuario(string id_cuenta)
+        {
+            try
+            {
+                DataTable tabla = new DataTable();
+                tabla.Columns.Add("id_grupo", typeof(int));
+                tabla.Columns.Add("nombre_grupo", typeof(string));
+
+
+                ModeloGrupo grupo = new ModeloGrupo();
+                foreach (ModeloGrupo p in grupo.ObtenerGruposQueConformaUsuario(Int32.Parse(id_cuenta)))
+                {
+                    DataRow fila = tabla.NewRow();
+                    fila["id_grupo"] = p.id_grupo;
+                    fila["nombre_grupo"] = p.nombre_grupo;
+                    tabla.Rows.Add(fila);
+                }
+
+                return tabla;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
         public static DataTable ObtenerIntegrantesDeGrupo(string id_grupo)
         {
             try
@@ -228,15 +254,15 @@ namespace Controlador
             {
                 ModeloGrupo g = new ModeloGrupo();
                 DataTable grupo = g.ObtenerGrupo(Int32.Parse(id));
-                
+
 
                 return grupo;
             }
             catch (Exception e)
             {
-                
+
                 Console.Write(e.Message);
-                throw new Exception("Error desconocido"+ e.Message.ToString());
+                throw new Exception("Error desconocido" + e.Message.ToString());
             }
         }
 

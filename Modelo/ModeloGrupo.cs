@@ -205,12 +205,47 @@ namespace Modelos
             }
         }
 
-        public DataTable ObtenerGrupo(int id)
+        public List<ModeloGrupo> ObtenerGruposQueConformaUsuario(int id_usuario)
+        {
+            List<ModeloGrupo> grupos = new List<ModeloGrupo>();
+            try
+            {
+                string sql = $"SELECT g.id_grupo, g.nombre_grupo " +
+               $"FROM grupos g " +
+               $"JOIN conforma c ON g.id_grupo = c.id_grupo " +
+               $"JOIN cuenta cu ON c.id_cuenta = cu.id_cuenta " +
+               $"WHERE cu.id_usuario = '{id_usuario}' AND cu.eliminado = false;";
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+                while (this.Lector.Read())
+                {
+                    ModeloGrupo grupo = new ModeloGrupo();
+                    grupo.id_grupo = Int32.Parse(this.Lector["id_grupo"].ToString());
+                    grupo.nombre_grupo = this.Lector["nombre_grupo"].ToString();
+                    grupos.Add(grupo);
+                }
+                this.Lector.Close();
+
+                return grupos;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+
+        }
+
+        public DataTable ObtenerGrupo(int id_grupo)
         {
             try
             {
                 DataTable dataTable = new DataTable();
-                string sql = $"SELECT * FROM grupos WHERE eliminado = false AND id_grupo = {id}";
+                string sql = $"SELECT * FROM grupos WHERE eliminado = false AND id_grupo = {id_grupo}";
                 this.Comando.CommandText = sql;
                 this.Lector = this.Comando.ExecuteReader();
 

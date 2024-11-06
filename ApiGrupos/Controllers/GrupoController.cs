@@ -42,6 +42,33 @@ namespace ApiGrupos.Controllers
             }
         }
 
+        [Route("ApiGrupos/conforma_grupos/{id_cuenta:int}")]
+        [HttpGet]
+        public List<GetGruposDTO> GetGruposConformadosPorUsuario(int id_cuenta)
+        {
+            try
+            {
+                DataTable grupos = ControlGrupo.ObtenerGruposQueConformaUsuario(id_cuenta.ToString());
+
+                List<GetGruposDTO> ListaDeGrupos = new List<GetGruposDTO>();
+
+                foreach (DataRow grupo in grupos.Rows)
+                {
+                    GetGruposDTO g = new GetGruposDTO();
+                    g.id_grupo = Int32.Parse(grupo["id_grupo"].ToString());
+                    g.nombre_grupo = grupo["nombre_grupo"].ToString();
+
+                    ListaDeGrupos.Add(g);
+                }
+                return ListaDeGrupos;
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
+        }
+
 
         [Route("ApiGrupos/grupo/{id_grupo:int}")]
         [HttpGet]
