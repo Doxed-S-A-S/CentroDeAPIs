@@ -338,14 +338,14 @@ namespace APIPost.Controllers
             }
         }
 
-        [Route("ApiPost/post/compartir-en-muro/{id_post:int}/{id_grupo:int}")]
+        [Route("ApiPost/post/compartir-en-grupo/{id_post:int}/{id_grupo:int}")]
         [HttpPost]
         public IHttpActionResult CompartirPostEnGrupo(int id_post, int id_grupo)
         {
             try
             {
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
-                ControlPosts.CompartirPostEnMuro(id_post.ToString(), id_grupo.ToString());
+                ControlPosts.CompartirPostEnGrupo(id_post.ToString(), id_grupo.ToString());
                 resultado.Add("Resultado", "Post compartido");
                 return Ok(resultado);
             }

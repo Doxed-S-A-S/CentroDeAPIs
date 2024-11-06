@@ -203,7 +203,7 @@ namespace Modelos
         {
             try
             {
-                string sql = $"insert into postea_grupos (id_muro,id_post) values({this.id_grupo},{this.id_post})";
+                string sql = $"insert into postea_grupos (id_grupo,id_post) values({this.id_grupo},{this.id_post})";
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
             }

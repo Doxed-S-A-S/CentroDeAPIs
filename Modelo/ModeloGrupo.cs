@@ -214,7 +214,7 @@ namespace Modelos
                $"FROM grupos g " +
                $"JOIN conforma c ON g.id_grupo = c.id_grupo " +
                $"JOIN cuenta cu ON c.id_cuenta = cu.id_cuenta " +
-               $"WHERE cu.id_usuario = '{id_usuario}' AND cu.eliminado = false;";
+               $"WHERE cu.id_cuenta = '{id_usuario}' AND cu.eliminado = false;";
                 this.Comando.CommandText = sql;
                 this.Lector = this.Comando.ExecuteReader();
                 while (this.Lector.Read())

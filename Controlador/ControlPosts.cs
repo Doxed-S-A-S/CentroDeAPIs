@@ -150,7 +150,7 @@ namespace Controlador
                 ModeloPost post = new ModeloPost();
 
                 post.id_post = Int32.Parse(id_post);
-                post.id_muro = Int32.Parse(id_grupo);
+                post.id_grupo = Int32.Parse(id_grupo);
 
                 post.CompartirPostEnGrupo();
             }
