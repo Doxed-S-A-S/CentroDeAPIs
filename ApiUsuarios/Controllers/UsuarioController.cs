@@ -274,17 +274,13 @@ namespace ApiUsuario.Controllers
             }
         }
 
-        [Route("ApiUsuarios/usuario/pass{id:int}")]
-        [HttpPut]
+        [Route("ApiUsuarios/usuarios/Pass/{id:int}")]
+        [HttpPost]
         public IHttpActionResult ModificarContraseña(int id, PassModel usuario)
         {
             try
             {
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
-                if (usuario == null)
-                {
-                    Console.Write("gay");
-                }
                     
                 bool existe = ControlCuenta.ModificarContraseña(id.ToString(), usuario.contraseña , usuario.contraseñaAntigua);
 
@@ -311,7 +307,6 @@ namespace ApiUsuario.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
-
         }
 
 
