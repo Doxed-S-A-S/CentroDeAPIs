@@ -45,7 +45,8 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.Parameters.AddWithValue("@username", this.nombre_usuario);
                 this.Comando.Parameters.AddWithValue("@email", this.email);
-                this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(this.contraseña));
+                //this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(this.contraseña));
+                this.Comando.Parameters.AddWithValue("@contrasena",this.contraseña);
                 this.Comando.Parameters.AddWithValue("@id_cuenta", this.id_cuenta);
                 this.Comando.Prepare();
                 this.Comando.ExecuteNonQuery();
@@ -90,8 +91,9 @@ namespace Modelos
             {
                 if (VerificarRegistro(id))
                 {
-                    string sql = $"update registro set contrasena ='{this.contraseña}'where id_cuenta ='{this.id_cuenta}'";
+                    string sql = $"update registro set contrasena = @contra where id_cuenta ={this.id_cuenta}";
                     this.Comando.CommandText = sql;
+                    this.Comando.Parameters.AddWithValue("@contra", this.contraseña);
                     this.Comando.ExecuteNonQuery();
                     return true;
                 }
@@ -241,7 +243,9 @@ namespace Modelos
                 string sql = $"select count(*) from registro where nombre_usuario = @nombre_usuario and contrasena = @contrasena";
                 this.Comando.CommandText = sql;
                 this.Comando.Parameters.AddWithValue("@nombre_usuario", this.nombre_usuario);
-                this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(this.contraseña));
+                //this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(this.contraseña));
+                this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
+
                 this.Comando.Prepare();
                 string resultado = this.Comando.ExecuteScalar().ToString();
                 this.Comando.Parameters.Clear();
@@ -251,7 +255,8 @@ namespace Modelos
                     sql = $"select id_cuenta from registro where nombre_usuario = @nombre_usuario and contrasena = @contrasena";
                     this.Comando.CommandText = sql;
                     this.Comando.Parameters.AddWithValue("@nombre_usuario", this.nombre_usuario);
-                    this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(this.contraseña));
+                    //this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(this.contraseña));
+                    this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
                     this.Comando.Prepare();
                     this.id_cuenta = Int32.Parse(this.Comando.ExecuteScalar().ToString());
                     return true;
@@ -276,6 +281,7 @@ namespace Modelos
             {
                 string sql = $"select count(*) from registro where id_cuenta = '{id}' and contrasena = @contrasena";
                 this.Comando.CommandText = sql;
+                //this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(ContraseñaAntigua));
                 this.Comando.Parameters.AddWithValue("@contrasena", ContraseñaAntigua);
                 this.Comando.Prepare();
                 string resultado = this.Comando.ExecuteScalar().ToString();

@@ -274,14 +274,19 @@ namespace ApiUsuario.Controllers
             }
         }
 
-        [Route("ApiUsuarios/usuarios/Pass/{id:int}")]
-        [HttpPost]
-        public IHttpActionResult ModificarContraseña(int id, UsuarioModel usuario)
+        [Route("ApiUsuarios/usuario/pass{id:int}")]
+        [HttpPut]
+        public IHttpActionResult ModificarContraseña(int id, PassModel usuario)
         {
             try
             {
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
-                bool existe = ControlCuenta.ModificarContraseña(id.ToString(), usuario.contraseña, usuario.contraseñaAntigua);
+                if (usuario == null)
+                {
+                    Console.Write("gay");
+                }
+                    
+                bool existe = ControlCuenta.ModificarContraseña(id.ToString(), usuario.contraseña , usuario.contraseñaAntigua);
 
                 if (existe)
                 {
