@@ -91,7 +91,7 @@ namespace Modelos
             {
                 if (VerificarRegistro(id))
                 {
-                    string sql = $"update registro set contrasena = @contra where id_cuenta ={this.id_cuenta}";
+                    string sql = $"update registro set contrasena = @contra where id_cuenta = {this.id_cuenta}";
                     this.Comando.CommandText = sql;
                     this.Comando.Parameters.AddWithValue("@contra", this.contraseña);
                     this.Comando.ExecuteNonQuery();
@@ -279,7 +279,7 @@ namespace Modelos
         {
             try
             {
-                string sql = $"select count(*) from registro where id_cuenta = '{id}' and contrasena = @contrasena";
+                string sql = $"select count(*) from registro where id_cuenta = {id} and contrasena = @contrasena";
                 this.Comando.CommandText = sql;
                 //this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(ContraseñaAntigua));
                 this.Comando.Parameters.AddWithValue("@contrasena", ContraseñaAntigua);
