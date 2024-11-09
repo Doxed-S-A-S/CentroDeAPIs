@@ -367,8 +367,6 @@ namespace APIPost.Controllers
             }
         }
 
-
-
         [Route("ApiPost/post/modificar-post/{idPost:int}")]
         [HttpPut]
         public IHttpActionResult ModificarPost(int idPost, PostModel post)
@@ -497,6 +495,9 @@ namespace APIPost.Controllers
                 throw;
             }
         }
+
+
+
 
         [Route("ApiPost/MostrarAlgoritmo")]
         [HttpGet]
