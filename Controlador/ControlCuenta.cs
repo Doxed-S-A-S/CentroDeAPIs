@@ -65,7 +65,7 @@ namespace Controlador
             try
             {
                 ModeloCuenta c = new ModeloCuenta();
-                if (c.ModificarContraseña(Int32.Parse(id_Cuenta)) && (c.ContraseñaExiste(Int32.Parse(id_Cuenta), contraseñaAntigua)))
+                if (c.ContraseñaExiste(Int32.Parse(id_Cuenta), contraseñaAntigua))
                 {
                     c.id_cuenta = Int32.Parse(id_Cuenta);
                     c.contraseña = contraseña;
