@@ -90,6 +90,35 @@ namespace Controlador
             }
         }
 
+        public static DataTable obtenerCreadorComentarioYSuFoto(string id_comentario)
+        {
+            try
+            {
+                DataTable tabla = new DataTable();
+                tabla.Columns.Add("id_cuenta", typeof(int));
+                tabla.Columns.Add("nombre_usuario", typeof(string));
+                tabla.Columns.Add("imagen_perfil", typeof(string));
+                
+
+                ModeloComentario cuenta = new ModeloComentario();
+                foreach (ModeloCuenta c in cuenta.obtenerCreadorComentarioYSuFoto(Int32.Parse(id_comentario)))
+                {
+                    DataRow fila = tabla.NewRow();
+                    fila["id_cuenta"] = c.id_cuenta;
+                    fila["nombre_usuario"] = c.nombre_usuario;
+                    fila["imagen_perfil"] = c.imagen_perfil;
+                    
+                    tabla.Rows.Add(fila);
+                }
+                return tabla;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
+
         public static void AñadirLikeComentario(string id_comentario,string id_post)
         {
             try

@@ -82,6 +82,71 @@ namespace APIPost.Controllers
             }
         }
 
+        /*[Route("ApiPost/post/obtenerComentadores/{id_comentario:int}")]
+        [HttpGet]
+        public List<CuentaForCommentModel> obtenerCreadorComentarioYSuFoto(int id_comentario)
+        {
+            try
+            {
+                DataTable cuentas = ControlComentarios.obtenerCreadorComentarioYSuFoto(id_comentario.ToString());
+
+                HttpRequest request = HttpContext.Current.Request;
+                string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
+
+                List<CuentaForCommentModel> ListaDeCuentas = new List<CuentaForCommentModel>();
+
+                foreach (DataRow cuenta in cuentas.Rows)
+                {
+                    CuentaForCommentModel u = new CuentaForCommentModel();
+
+                    u.id_cuenta = cuenta["id_cuenta"].ToString();
+                    u.nombre_usuario = cuenta["nombre_usuario"].ToString();
+                    u.imagen_perfil = baseUrl + cuenta["imagen_perfil"].ToString();
+
+                    ListaDeCuentas.Add(u);
+                }
+                return ListaDeCuentas;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }*/
+
+        /*[Route("ApiPost/post/obtenerComentadores/{id_comentario:int}")]
+        [HttpGet]
+        public CuentaForCommentModel obtenerCreadorComentarioYSuFoto(int id_comentario)
+        {
+            try
+            {
+                DataTable cuentas = ControlComentarios.obtenerCreadorComentarioYSuFoto(id_comentario.ToString());
+
+                if (cuentas.Rows.Count == 0)
+                {
+                    return null; // Si no hay resultados, retorna null
+                }
+
+                DataRow cuenta = cuentas.Rows[0]; // Tomar solo la primera fila
+
+                HttpRequest request = HttpContext.Current.Request;
+                string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
+
+                CuentaForCommentModel u = new CuentaForCommentModel
+                {
+                    id_cuenta = cuenta["id_cuenta"].ToString(),
+                    nombre_usuario = cuenta["nombre_usuario"].ToString(),
+                    imagen_perfil = baseUrl + cuenta["imagen_perfil"].ToString()
+                };
+
+                return u;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }*/
+
+
         [Route("ApiPost/post/obtener-posts")]
         [HttpGet]
         public List<PostModel> ObtenerPosts()
@@ -216,7 +281,7 @@ namespace APIPost.Controllers
             }
         }
 
-        [Route("ApiPost/post/{idPost:int}/comentario")]
+        [Route("ApiPost/post/{idPost:int}/CrearComentario")]
         [HttpPost]
         public IHttpActionResult CrearComentario(int idPost, PostModel post)
         {
@@ -244,7 +309,7 @@ namespace APIPost.Controllers
         }
 
 
-        [Route("ApiPost/post/{idPost:int}/comentario")]
+        [Route("ApiPost/post/{idPost:int}/obtenerComentarios")]
         [HttpGet]
         public List<ComentarioDTO> ObtenerComentarios(int idPost)
         {
@@ -259,7 +324,7 @@ namespace APIPost.Controllers
                     ComentarioDTO c = new ComentarioDTO();
                     c.id_Post = Int32.Parse(coment["IdPost"].ToString());
                     c.id_comentario = Int32.Parse(coment["IdComentario"].ToString());
-                    c.comentario = coment["Comentario"].ToString();
+                    c.contenido = coment["Comentario"].ToString();
                     c.fecha = coment["Fecha de creacion"].ToString();
                     c.likes = Int32.Parse(coment["Likes"].ToString());
 

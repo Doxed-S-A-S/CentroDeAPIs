@@ -9,6 +9,7 @@ using System.Data;
 using ApiUsuarios.Models;
 using ApiUsuarios.DTO;
 using System.Web;
+using APIPost.Models;
 
 namespace ApiUsuario.Controllers
 {
@@ -70,10 +71,42 @@ namespace ApiUsuario.Controllers
                     u.rol_cuenta = usuario["Rol"].ToString();
                     u.miembro_desde = usuario["Miembro desde"].ToString();
 
-
                     ListaDeGrupos.Add(u);
                 }
                 return ListaDeGrupos;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        [Route("ApiUsuarios/obtenerDatosComentadores/{id_comentario:int}")]
+        [HttpGet]
+        public CuentaForCommentModel obtenerCreadorComentarioYSuFoto(int id_comentario)
+        {
+            try
+            {
+                DataTable cuentas = ControlComentarios.obtenerCreadorComentarioYSuFoto(id_comentario.ToString());
+
+                if (cuentas.Rows.Count == 0)
+                {
+                    return null; 
+                }
+
+                DataRow cuenta = cuentas.Rows[0]; 
+
+                HttpRequest request = HttpContext.Current.Request;
+                string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
+
+                CuentaForCommentModel u = new CuentaForCommentModel
+                {
+                    id_cuenta = cuenta["id_cuenta"].ToString(),
+                    nombre_usuario = cuenta["nombre_usuario"].ToString(),
+                    imagen_perfil = baseUrl + cuenta["imagen_perfil"].ToString()
+                };
+
+                return u;
             }
             catch (Exception)
             {

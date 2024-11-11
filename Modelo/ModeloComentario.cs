@@ -198,11 +198,11 @@ namespace Modelos
             }
         }
 
-        public int NumeroLikesComentario(long idComentaro)
+        public int NumeroLikesComentario(long id_comentario)
         {
             try
             {
-                string sql = $"select count(*) from like_coment where id_comentario = {idComentaro}";
+                string sql = $"select count(*) from like_coment where id_comentario = {id_comentario}";
                 this.Comando.CommandText = sql;
                 string likes = this.Comando.ExecuteScalar().ToString();
                 return Int32.Parse(likes);
@@ -211,6 +211,39 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
                 return 0;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+        public List<ModeloCuenta> obtenerCreadorComentarioYSuFoto(int id_comentario)
+        {
+            try
+            {
+                List<ModeloCuenta> cuentas = new List<ModeloCuenta>();
+                string sql = $"SELECT c.id_cuenta, c.nombre_usuario, c.imagen_perfil FROM hace h JOIN cuenta c ON h.id_cuenta = c.id_cuenta WHERE h.id_comentario = {id_comentario};";
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                while (this.Lector.Read())
+                {
+                    ModeloCuenta cuenta = new ModeloCuenta();
+                    cuenta.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                    cuenta.nombre_usuario = this.Lector["nombre_usuario"].ToString();
+                    cuenta.imagen_perfil = this.Lector["imagen_perfil"].ToString();
+
+                    cuentas.Add(cuenta);
+                }
+                this.Lector.Close();
+                return cuentas;
+
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
             }
             catch (Exception)
             {
