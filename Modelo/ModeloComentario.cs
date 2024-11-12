@@ -66,8 +66,6 @@ namespace Modelos
                 throw new Exception("UNKNOWN_ERROR");
             }
         }
-
-
         public void EliminarComentario()
         {
             try
@@ -250,8 +248,6 @@ namespace Modelos
                 throw new Exception("UNKNOWN_ERROR");
             }
         }
-
-
 
         private void MySqlErrorCatch(MySqlException sqlx)
         {

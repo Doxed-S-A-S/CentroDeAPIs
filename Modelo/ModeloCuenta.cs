@@ -242,11 +242,6 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.Parameters.AddWithValue("@nombre_usuario", this.nombre_usuario);
                 this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(this.contraseña));
-<<<<<<< Updated upstream
-=======
-                //this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
-
->>>>>>> Stashed changes
                 this.Comando.Prepare();
                 string resultado = this.Comando.ExecuteScalar().ToString();
                 this.Comando.Parameters.Clear();
@@ -257,10 +252,6 @@ namespace Modelos
                     this.Comando.CommandText = sql;
                     this.Comando.Parameters.AddWithValue("@nombre_usuario", this.nombre_usuario);
                     this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(this.contraseña));
-<<<<<<< Updated upstream
-=======
-                    //this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
->>>>>>> Stashed changes
                     this.Comando.Prepare();
                     this.id_cuenta = Int32.Parse(this.Comando.ExecuteScalar().ToString());
                     return true;
