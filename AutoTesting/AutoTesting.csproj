@@ -52,6 +52,7 @@
     <Compile Include="TestControlCuenta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestGrupos.cs" />
+    <Compile Include="TestPost.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
