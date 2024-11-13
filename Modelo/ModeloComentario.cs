@@ -224,6 +224,34 @@ namespace Modelos
                 string sql = $"SELECT c.id_cuenta, c.nombre_usuario, c.imagen_perfil FROM hace h JOIN cuenta c ON h.id_cuenta = c.id_cuenta WHERE h.id_comentario = {id_comentario};";
                 this.Comando.CommandText = sql;
                 this.Lector = this.Comando.ExecuteReader();
+<<<<<<< Updated upstream
+=======
+
+                while (this.Lector.Read())
+                {
+                    ModeloCuenta cuenta = new ModeloCuenta();
+                    cuenta.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                    cuenta.nombre_usuario = this.Lector["nombre_usuario"].ToString();
+                    cuenta.imagen_perfil = this.Lector["imagen_perfil"].ToString();
+
+                    cuentas.Add(cuenta);
+                }
+                this.Lector.Close();
+                return cuentas;
+
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+>>>>>>> Stashed changes
 
                 while (this.Lector.Read())
                 {
