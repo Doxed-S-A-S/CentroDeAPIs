@@ -115,6 +115,59 @@ namespace PruebaAutomatica
             Assert.IsTrue(resultado);
         }
 
+        [TestMethod]
+        public void TestListarPostsDeCuentaInexistente()
+        {
+            bool resultado;
+            try
+            {
+                DataTable TablaPost = ControlPosts.ListarPostDeCuenta("-1");
+                resultado = TablaPost.Rows.Count > 0;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsNotNull(resultado);
+            Assert.IsTrue(resultado);
+        }
+
+        [TestMethod]
+        public void TestAñadirLike()
+        {
+            bool resultado;
+
+            try
+            {
+                ControlPosts.AñadirLike("1", "1");
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsTrue(resultado);
+        }
+
+        [TestMethod]
+        public void TestAñadirLikeCuentaInexistente()
+        {
+            bool resultado;
+
+            try
+            {
+                ControlPosts.AñadirLike("-1", "1");
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsTrue(resultado);
+        }
 
     }
 }
