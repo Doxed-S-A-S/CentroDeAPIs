@@ -1,69 +1,198 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Data;
+using Controlador;
 
-namespace AutoTesting
+namespace PruebaAutomatica
 {
-    /// <summary>
-    /// Descripción resumida de UnitTest1
-    /// </summary>
     [TestClass]
-    public class UnitTest1
+    public class ControlComentariosTest
     {
-        public UnitTest1()
+        private string GenerarStringRandom()
         {
-            //
-            // TODO: Agregar aquí la lógica del constructor
-            //
+            return DateTime.Now.Ticks.ToString();
         }
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Obtiene o establece el contexto de las pruebas que proporciona
-        ///información y funcionalidad para la serie de pruebas actual.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Atributos de prueba adicionales
-        //
-        // Puede usar los siguientes atributos adicionales conforme escribe las pruebas:
-        //
-        // Use ClassInitialize para ejecutar el código antes de ejecutar la primera prueba en la clase
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup para ejecutar el código una vez ejecutadas todas las pruebas en una clase
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Usar TestInitialize para ejecutar el código antes de ejecutar cada prueba 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup para ejecutar el código una vez ejecutadas todas las pruebas
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void TestCrearComentario()
         {
-            //
-            // TODO: Agregar aquí la lógica de las pruebas
-            //
+            bool resultado;
+
+            try
+            {
+                ControlComentarios.CrearComentario("1", "1", GenerarStringRandom());
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsTrue(resultado);
+        }
+
+        [TestMethod]
+        public void TestCrearComentarioSinDatos()
+        {
+            bool resultado;
+
+            try
+            {
+                ControlComentarios.CrearComentario("", "", "");
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsFalse(resultado);
+        }
+
+        [TestMethod]
+        public void TestEliminarComentario()
+        {
+            bool resultado;
+
+            try
+            {
+                ControlComentarios.EliminarComentario("1");
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsTrue(resultado);
+        }
+
+        [TestMethod]
+        public void TestEliminarComentarioNoExistente()
+        {
+            bool resultado;
+
+            try
+            {
+                ControlComentarios.EliminarComentario("-1");
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsTrue(resultado);
+        }
+
+        [TestMethod]
+        public void TestListarComentarios()
+        {
+            bool resultado;
+
+            try
+            {
+                DataTable tablaComentarios = ControlComentarios.ListarComentarios("1");
+                resultado = tablaComentarios.Rows.Count > 0;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsNotNull(resultado);
+            Assert.IsTrue(resultado);
+        }
+
+        [TestMethod]
+        public void TestListarComentariosDePostInexistente()
+        {
+            bool resultado;
+
+            try
+            {
+                DataTable tablaComentarios = ControlComentarios.ListarComentarios("-1");
+                resultado = tablaComentarios.Rows.Count == 0;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsNotNull(resultado);
+            Assert.IsTrue(resultado);
+        }
+
+        [TestMethod]
+        public void TestAñadirLikeComentario()
+        {
+            bool resultado;
+
+            try
+            {
+                ControlComentarios.AñadirLikeComentario("1", "1");
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsTrue(resultado);
+        }
+
+        [TestMethod]
+        public void TestAñadirLikeComentarioInexistente()
+        {
+            bool resultado;
+
+            try
+            {
+                ControlComentarios.AñadirLikeComentario("-1", "1");
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsTrue(resultado);
+        }
+
+        [TestMethod]
+        public void TestEliminarLikeComentario()
+        {
+            bool resultado;
+
+            try
+            {
+                ControlComentarios.EliminarLikeComent("1", "1", "1");
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsTrue(resultado);
+        }
+
+        [TestMethod]
+        public void TestEliminarLikeComentarioNoExistente()
+        {
+            bool resultado;
+
+            try
+            {
+                ControlComentarios.EliminarLikeComent("-1", "1", "-1");
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                resultado = false;
+            }
+
+            Assert.IsTrue(resultado);
         }
     }
 }
