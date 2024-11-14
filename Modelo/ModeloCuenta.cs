@@ -477,13 +477,13 @@ namespace Modelos
 
         public string detalles = "";
         public int pub_destacada = 0;
-        public string biografia = "";
-
+        public string biografia;
+        public string imagen_banner;
         public void CrearMuro()
         {
             try
             {
-                string sql = $"insert into muro (detalles,pub_destacada,biografia) values ('{this.detalles}',{this.pub_destacada},'{this.biografia}')";
+                string sql = $"insert into muro (detalles,pub_destacada,biografia,imagen_banner) values ('{this.detalles}',{this.pub_destacada},'{this.biografia}','{this.imagen_banner}')";
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
                 PrintDesktop(sql);
@@ -524,6 +524,29 @@ namespace Modelos
                 return false;
             }
             catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+        public DataTable obtenerDatosDelMuro(int id)
+        {
+            try
+            {
+                DataTable dataTable = new DataTable();
+                string sql = $"SELECT * FROM muro WHERE id_muro = {id}";
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                dataTable.Load(this.Lector);
+
+                return dataTable;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
+            }
+            catch (Exception e)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }

@@ -273,6 +273,44 @@ namespace Modelos
                     post.id_post = Int32.Parse(this.Lector["id_post"].ToString());
                     post.contenido = this.Lector["Contenido"].ToString();
                     post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
+                    post.url_imagen = this.Lector["url_imagen"].ToString();
+                    posts.Add(post);
+                }
+                this.Lector.Close();
+                return posts;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+        public List<ModeloPost> ObtenerPostsDeMuro(int id_muro)
+        {
+            try
+            {
+                List<ModeloPost> posts = new List<ModeloPost>();
+
+                string sql = $"SELECT p.id_post, p.id_cuenta, p.url_contenido, p.tipo_contenido, p.fecha_creacion, p.contenido, p.reports, p.eliminado, p.url_imagen " +
+             $"FROM posts p " +
+             $"JOIN postea_muro pm ON p.id_post = pm.id_post " +
+             $"WHERE pm.id_muro = {id_muro};";
+
+
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                while (this.Lector.Read())
+                {
+                    ModeloPost post = new ModeloPost();
+                    post.id_post = Int32.Parse(this.Lector["id_post"].ToString());
+                    post.contenido = this.Lector["Contenido"].ToString();
+                    post.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
                     post.url_imagen = this.Lector["Url_imagen"].ToString();
                     posts.Add(post);
                 }
@@ -381,11 +419,49 @@ namespace Modelos
             return username;
         }
 
-        public void AñadirLike()
+        public bool usuario_ya_dio_like()
         {
             try
             {
-                string sql = $"insert into upvote (id_post,id_upvote) values ({this.id_post}";
+                string query = "SELECT COUNT(*) AS usuario_ya_dio_like " +
+                               "FROM da_upvote AS du " +
+                               "JOIN upvote AS u ON du.id_upvote = u.id_upvote " +
+                               "WHERE du.id_cuenta = @IdCuenta AND u.id_post = @IdPost;";
+
+                // Limpia los parámetros para evitar duplicación.
+                this.Comando.Parameters.Clear();
+
+                // Agrega los parámetros con el tipo correcto.
+                this.Comando.Parameters.Add("@IdCuenta", MySqlDbType.Int32).Value = this.id_cuenta;
+                this.Comando.Parameters.Add("@IdPost", MySqlDbType.Int32).Value = this.id_post;
+
+                // Asigna el comando y ejecuta la consulta.
+                this.Comando.CommandText = query;
+                int count = Convert.ToInt32(this.Comando.ExecuteScalar());
+
+                return count > 0;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("UNKNOWN_ERROR", ex);
+            }
+        }
+
+        public void AñadirLike()
+        {
+            if (usuario_ya_dio_like())
+            {
+                throw new Exception("Ya le dio like");
+                EliminarLike();
+            }
+            try
+            {
+                string sql = $"insert into upvote (id_post) values ({this.id_post})";
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
                 this.id_upvote = this.Comando.LastInsertedId;
@@ -395,9 +471,9 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("UNKNOWN_ERROR");
+                throw new Exception(ex.Message);
             }
         }
 

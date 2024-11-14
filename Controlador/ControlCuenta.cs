@@ -12,7 +12,7 @@ namespace Controlador
 {
     public class ControlCuenta
     {
-        public static void CrearCuenta(string nombreUsuario, string email, string contraseña, string nombre, string apellido, string apellido2, string pais, string idiomaHablado, string imagen_perfil)
+        public static void CrearCuenta(string nombreUsuario, string email, string contraseña, string nombre, string apellido, string apellido2, string pais, string idiomaHablado, string imagen_perfil, string imagen_banner, string biografia)
         {
             try
             {
@@ -26,6 +26,9 @@ namespace Controlador
                 cuenta.pais = pais;
                 cuenta.imagen_perfil = imagen_perfil;
                 cuenta.idiomas_hablados = idiomaHablado;
+                cuenta.imagen_banner = imagen_banner;
+                //cuenta.detalles = detalles;
+                cuenta.biografia = biografia;
 
                 cuenta.Registro();
             }
@@ -187,6 +190,23 @@ namespace Controlador
             {
                 ErrorHandle(e);
                 return null;
+            }
+        }
+
+        public static DataTable obtenerDatosDelMuro(string id)
+        {
+            try
+            {
+                ModeloCuenta c = new ModeloCuenta();
+                DataTable cuenta = c.obtenerDatosDelMuro(Int32.Parse(id));
+
+                return cuenta;
+            }
+            catch (Exception e)
+            {
+
+                Console.Write(e.Message);
+                throw new Exception("Error desconocido" + e.Message.ToString());
             }
         }
 

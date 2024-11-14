@@ -263,9 +263,6 @@ namespace Modelos
                 throw new Exception("UNKNOWN_ERROR");
             }
         }
-
-
-
         public List<ModeloGrupo> ObtenerIntegrantesDeGrupo(int id)
         {
             try

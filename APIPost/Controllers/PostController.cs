@@ -82,70 +82,39 @@ namespace APIPost.Controllers
             }
         }
 
-        /*[Route("ApiPost/post/obtenerComentadores/{id_comentario:int}")]
+        [Route("ApiPost/post/obtener-posts-muro/{id_muro:int}")]
         [HttpGet]
-        public List<CuentaForCommentModel> obtenerCreadorComentarioYSuFoto(int id_comentario)
+        public List<PostModel> ObtenerPostsDelMuro(int id_muro)
         {
             try
             {
-                DataTable cuentas = ControlComentarios.obtenerCreadorComentarioYSuFoto(id_comentario.ToString());
+                DataTable tablaPosts = ControlPosts.ListarPostDeMuro(id_muro.ToString());
 
-                HttpRequest request = HttpContext.Current.Request;
-                string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
+                List<PostModel> posts = new List<PostModel>();
 
-                List<CuentaForCommentModel> ListaDeCuentas = new List<CuentaForCommentModel>();
-
-                foreach (DataRow cuenta in cuentas.Rows)
+                foreach (DataRow post in tablaPosts.Rows)
                 {
-                    CuentaForCommentModel u = new CuentaForCommentModel();
+                    PostModel p = new PostModel();
+                    p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
+                    p.contenido = post["contenido"].ToString();
+                    p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+                    p.likes = Int32.Parse(post["Likes"].ToString());
+                    string currentServer = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
 
-                    u.id_cuenta = cuenta["id_cuenta"].ToString();
-                    u.nombre_usuario = cuenta["nombre_usuario"].ToString();
-                    u.imagen_perfil = baseUrl + cuenta["imagen_perfil"].ToString();
+                    p.url_imagen = $"{currentServer}/{post["url_imagen"].ToString()}";
+                    Console.Write(p.url_imagen);
 
-                    ListaDeCuentas.Add(u);
+                    posts.Add(p);
                 }
-                return ListaDeCuentas;
+                return posts;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.Write(e.Message);
                 return null;
+                throw;
             }
-        }*/
-
-        /*[Route("ApiPost/post/obtenerComentadores/{id_comentario:int}")]
-        [HttpGet]
-        public CuentaForCommentModel obtenerCreadorComentarioYSuFoto(int id_comentario)
-        {
-            try
-            {
-                DataTable cuentas = ControlComentarios.obtenerCreadorComentarioYSuFoto(id_comentario.ToString());
-
-                if (cuentas.Rows.Count == 0)
-                {
-                    return null; // Si no hay resultados, retorna null
-                }
-
-                DataRow cuenta = cuentas.Rows[0]; // Tomar solo la primera fila
-
-                HttpRequest request = HttpContext.Current.Request;
-                string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
-
-                CuentaForCommentModel u = new CuentaForCommentModel
-                {
-                    id_cuenta = cuenta["id_cuenta"].ToString(),
-                    nombre_usuario = cuenta["nombre_usuario"].ToString(),
-                    imagen_perfil = baseUrl + cuenta["imagen_perfil"].ToString()
-                };
-
-                return u;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }*/
-
+        }
 
         [Route("ApiPost/post/obtener-posts")]
         [HttpGet]
@@ -183,6 +152,33 @@ namespace APIPost.Controllers
         [Route("ApiPost/post/obtener-creador/{id_cuenta:int}")]
         [HttpGet]
         public IHttpActionResult ObtenerCreadorDePost(int id_cuenta)
+        {
+            try
+            {
+                string username = ControlPosts.ObtenerCreadorDePost(id_cuenta.ToString());
+                return Ok(username);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
+        }
+
+        [Route("ApiPost/post/obtener-creador/foto/{id_cuenta:int}")]
+        [HttpGet]
+        public IHttpActionResult ObtenerFotoDeCreadorDePost(int id_cuenta)
         {
             try
             {
@@ -431,8 +427,36 @@ namespace APIPost.Controllers
                 throw;
             }
         }
-
-
+        
+        [Route("ApiPost/post/añadir-like/{id_post:int}/{id_cuenta:int}")]
+        [HttpPost]
+        public IHttpActionResult AñadirLike(int id_post, int id_cuenta)
+        {
+            try
+            {
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                ControlPosts.AñadirLike(id_cuenta.ToString(), id_post.ToString());
+               
+                resultado.Add("Resultado", "Like dado");
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Ya le dio like")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "Ya le diste like"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
+        }
 
         [Route("ApiPost/post/modificar-post/{idPost:int}")]
         [HttpPut]

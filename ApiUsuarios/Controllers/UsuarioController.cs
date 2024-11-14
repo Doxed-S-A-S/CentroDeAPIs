@@ -1,15 +1,14 @@
-﻿using System;
+﻿using APIPost.Models;
+using ApiUsuarios.DTO;
+using ApiUsuarios.Models;
+using Controlador;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
-using Controlador;
-using System.Data;
-using ApiUsuarios.Models;
-using ApiUsuarios.DTO;
 using System.Web;
-using APIPost.Models;
+using System.Web.Http;
 
 namespace ApiUsuario.Controllers
 {
@@ -37,7 +36,7 @@ namespace ApiUsuario.Controllers
                         rol_cuenta = row["rol_cuenta"].ToString(),
                         id_muro = Convert.ToInt32(row["id_muro"]),
                         id_preferencia = Convert.ToInt32(row["id_preferencia"].ToString()),
-                };
+                    };
                     return g;
                 }
                 else
@@ -51,6 +50,39 @@ namespace ApiUsuario.Controllers
             }
         }
 
+        [Route("ApiUsuarios/cuenta/ObtenerInformacion/Muro/{id_muro:int}")]
+        [HttpGet]
+        public UsuarioModel GetInfoMuro(int id_muro)
+        {
+            try
+            {
+                DataTable muro = ControlCuenta.obtenerDatosDelMuro(id_muro.ToString());
+                HttpRequest request = HttpContext.Current.Request;
+                string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
+
+                if (muro.Rows.Count > 0)
+                {
+                    DataRow row = muro.Rows[0];
+
+                    UsuarioModel g = new UsuarioModel
+                    {
+                        detalles = row["detalles"].ToString(),
+                        pub_destacada = Convert.ToInt32(row["pub_destacada"]),
+                        biografia = row["biografia"].ToString(),
+                        imagen_banner = baseUrl + row["imagen_banner"],
+                    };
+                    return g;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
 
         [Route("ApiUsuarios/ListarUsuarios")]
         [HttpGet]
@@ -91,10 +123,10 @@ namespace ApiUsuario.Controllers
 
                 if (cuentas.Rows.Count == 0)
                 {
-                    return null; 
+                    return null;
                 }
 
-                DataRow cuenta = cuentas.Rows[0]; 
+                DataRow cuenta = cuentas.Rows[0];
 
                 HttpRequest request = HttpContext.Current.Request;
                 string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
@@ -119,7 +151,8 @@ namespace ApiUsuario.Controllers
         public IHttpActionResult CrearCuenta()
         {
             string filePath = "";
-            string fileUrl = "";
+            string fileUrl_imagenperfil = "";
+            string fileUrl_imagenbanner = "";
             try
             {
                 HttpRequest httpRequest = HttpContext.Current.Request;
@@ -132,19 +165,27 @@ namespace ApiUsuario.Controllers
                 string pais = httpRequest.Form["pais"];
                 string idiomaHablado = httpRequest.Form["idiomaHablado"];
                 string contraseña = httpRequest.Form["contrasena"];
+                //string detalles = httpRequest.Form["detalles"];
+                string biografia = httpRequest.Form["biografia"];
 
-                HttpPostedFile postedFile = httpRequest.Files["imagen_perfil"];
+                HttpPostedFile imagen_perfil = httpRequest.Files["imagen_perfil"];
+                HttpPostedFile imagen_banner = httpRequest.Files["imagen_banner"];
 
-                if (postedFile != null && postedFile.ContentLength > 0)
+                if (imagen_perfil != null && imagen_perfil.ContentLength > 0)
                 {
                     try
                     {
-                        string fileName = postedFile.FileName;
-                        filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{fileName}");
-                        postedFile.SaveAs(filePath);
+                        string file_imagenperfil = imagen_perfil.FileName;
+                        filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{file_imagenperfil}");
+                        imagen_perfil.SaveAs(filePath);
                         HttpRequest request = HttpContext.Current.Request;
                         string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
-                        fileUrl = $"Uploads/{fileName}";
+                        fileUrl_imagenperfil = $"Uploads/{file_imagenperfil}";
+
+                        string file_imagenbanner = imagen_banner.FileName;
+                        filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{file_imagenbanner}");
+                        imagen_perfil.SaveAs(filePath);
+                        fileUrl_imagenbanner = $"Uploads/{file_imagenbanner}";
                     }
                     catch (Exception ex)
                     {
@@ -152,7 +193,7 @@ namespace ApiUsuario.Controllers
                     }
                 }
 
-                ControlCuenta.CrearCuenta( nombre_usuario, email, contraseña, nombre, apellido, apellido2, pais, idiomaHablado, fileUrl);
+                ControlCuenta.CrearCuenta(nombre_usuario, email, contraseña, nombre, apellido, apellido2, pais, idiomaHablado, fileUrl_imagenperfil, fileUrl_imagenbanner, biografia);
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Cuenta Creada"));
             }
             catch (Exception ex)
@@ -222,7 +263,7 @@ namespace ApiUsuario.Controllers
                 return NotFound();
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return NotFound();
             }

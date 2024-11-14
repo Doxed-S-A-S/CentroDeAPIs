@@ -104,7 +104,6 @@ namespace ApiGrupos.Controllers
             }
         }
 
-
         [Route("ApiGrupos/grupo/{id_grupo:int}/integrantes")]
         [HttpGet]
         public List<GetIntegrantesDTO> GetIntegrantes(int id_grupo)
@@ -133,8 +132,6 @@ namespace ApiGrupos.Controllers
                 throw;
             }
         }
-
-
 
         [Route("ApiGrupos/grupo/crear/{idCuenta:int}")]
         [HttpPost]
