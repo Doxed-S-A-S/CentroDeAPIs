@@ -246,33 +246,34 @@ namespace ApiUsuario.Controllers
 
         [Route("ApiUsuarios/cuenta/GetRelacionados/{id_cuenta:int}")]
         [HttpGet]
-        public VinculadoDTO GetRelacinoados(int id_cuenta)
+        public List<VinculadoDTO> GetRelacionados(int id_cuenta)
         {
+            List<VinculadoDTO> usuariosRelacionados = new List<VinculadoDTO>();
+
             try
             {
                 DataTable cuenta = ControlCuenta.UsuariosRelacionados(id_cuenta.ToString());
 
-                if (cuenta.Rows.Count > 0)
+                foreach (DataRow row in cuenta.Rows)
                 {
-                    DataRow row = cuenta.Rows[0];
                     VinculadoDTO v = new VinculadoDTO
                     {
                         nombre_usuario2 = row["Nombre"].ToString(),
                         vinculo = row["vinculo"].ToString(),
                         id_cuenta2 = Convert.ToInt32(row["ID vinculo"].ToString())
                     };
-                    return v;
+                    usuariosRelacionados.Add(v);
                 }
-                else
-                {
-                    return null;
-                }
+
+                return usuariosRelacionados;
             }
             catch (Exception e)
             {
-                return null;
+                // En caso de error, devolver una lista vacía en lugar de null
+                return new List<VinculadoDTO>();
             }
         }
+
 
 
         [Route("ApiUsuarios/usuarios/usernameCheck/{username}")]
