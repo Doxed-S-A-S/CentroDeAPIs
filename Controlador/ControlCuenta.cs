@@ -12,7 +12,7 @@ namespace Controlador
 {
     public class ControlCuenta
     {
-        public static void CrearCuenta(string nombreUsuario, string email, string contraseña)
+        public static void CrearCuenta(string nombreUsuario, string email, string contraseña, string nombre, string apellido, string apellido2, string pais, string idiomaHablado, string imagen_perfil, string imagen_banner, string biografia)
         {
             try
             {
@@ -20,6 +20,15 @@ namespace Controlador
                 cuenta.nombre_usuario = nombreUsuario;
                 cuenta.email = email;
                 cuenta.contraseña = contraseña;
+                cuenta.nombre = nombre;
+                cuenta.apellido1 = apellido;
+                cuenta.apellido2 = apellido2;
+                cuenta.pais = pais;
+                cuenta.imagen_perfil = imagen_perfil;
+                cuenta.idiomas_hablados = idiomaHablado;
+                cuenta.imagen_banner = imagen_banner;
+                //cuenta.detalles = detalles;
+                cuenta.biografia = biografia;
 
                 cuenta.Registro();
             }
@@ -28,30 +37,55 @@ namespace Controlador
                 ErrorHandle(e);
             }
         }
-        
-        public static bool Login (string nombre_usuario, string contraseña)
+
+        public static void AñadirAmigo(string id_cuenta, string id_cuenta2, string vinculo)
         {
             try
             {
-                ModeloCuenta c = new ModeloCuenta();
-                c.nombre_usuario = nombre_usuario;
-                c.contraseña = contraseña;
+                ModeloCuenta cuenta = new ModeloCuenta();
+                cuenta.id_cuenta = Int32.Parse(id_cuenta);
+                cuenta.id_cuenta2 = Int32.Parse(id_cuenta2);
+                cuenta.vinculo = vinculo;
 
-                return c.Autenticar();
+                cuenta.AñadirAmigo();
             }
             catch (Exception e)
             {
                 ErrorHandle(e);
-                return false;
             }
         }
 
-        public static bool ModificarContraseña(string id_Cuenta, string contraseña,string contraseñaAntigua)
+        public static Dictionary<string, string> Login(string nombre_usuario, string contraseña)
+        {
+            try
+            {
+                Dictionary<string, string> cuenta = new Dictionary<string, string>();
+                ModeloCuenta c = new ModeloCuenta();
+                c.nombre_usuario = nombre_usuario;
+                c.contraseña = contraseña;
+                bool auth = c.Autenticar();
+                if (auth)
+                {
+                    cuenta.Add("resultado", auth.ToString());
+                    cuenta.Add("ID", c.id_cuenta.ToString());
+                    return cuenta;
+                }
+                cuenta.Add("resultado", auth.ToString());
+                return cuenta;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
+
+        public static bool ModificarContraseña(string id_Cuenta, string contraseña, string contraseñaAntigua)
         {
             try
             {
                 ModeloCuenta c = new ModeloCuenta();
-                if (c.ModificarContraseña(Int32.Parse(id_Cuenta)) && (c.ContraseñaExiste(Int32.Parse(id_Cuenta), contraseñaAntigua)))
+                if (c.ContraseñaExiste(Int32.Parse(id_Cuenta), contraseñaAntigua))
                 {
                     c.id_cuenta = Int32.Parse(id_Cuenta);
                     c.contraseña = contraseña;
@@ -147,7 +181,7 @@ namespace Controlador
             }
         }
 
-            public static DataTable ListarCuentas()
+        public static DataTable ListarCuentas()
         {
             try
             {
@@ -176,7 +210,42 @@ namespace Controlador
             }
         }
 
-        public static Dictionary<string,string> BuscarPreferencia(string idCuenta)
+        public static DataTable obtenerDatosDelMuro(string id)
+        {
+            try
+            {
+                ModeloCuenta c = new ModeloCuenta();
+                DataTable cuenta = c.obtenerDatosDelMuro(Int32.Parse(id));
+
+                return cuenta;
+            }
+            catch (Exception e)
+            {
+
+                Console.Write(e.Message);
+                throw new Exception("Error desconocido" + e.Message.ToString());
+            }
+        }
+
+        public static DataTable ObtenerInfoDeCuenta(string id)
+        {
+            try
+            {
+                ModeloCuenta c = new ModeloCuenta();
+                DataTable cuenta = c.ObtenerInfoDeCuenta(Int32.Parse(id));
+
+
+                return cuenta;
+            }
+            catch (Exception e)
+            {
+
+                Console.Write(e.Message);
+                throw new Exception("Error desconocido" + e.Message.ToString());
+            }
+        }
+
+        public static Dictionary<string, string> BuscarPreferencia(string idCuenta)
         {
             try
             {
@@ -201,6 +270,113 @@ namespace Controlador
                 ErrorHandle(e);
                 return null;
             }
+        }
+
+        public static Dictionary<string, string> CargarMuro(string idMuro)
+        {
+            try
+            {
+                Dictionary<string, string> muro = new Dictionary<string, string>();
+                ModeloCuenta cuenta = new ModeloCuenta();
+                cuenta.id_muro = Int32.Parse(idMuro);
+                if (cuenta.BuscarMuro())
+                {
+                    muro.Add("resultado", "true");
+                    muro.Add("Detalles", cuenta.detalles);
+                    muro.Add("Biografia", cuenta.biografia);
+                    muro.Add("Publicacion destacada", cuenta.pub_destacada.ToString());
+
+                    return muro;
+                }
+                muro.Add("resultado", "true");
+                return muro;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
+
+
+
+        public static DataTable UsuariosRelacionados(string idCuenta)
+        {
+            try
+            {
+                DataTable Relacion = new DataTable();
+                Relacion.Columns.Add("Nombre", typeof(string));
+                Relacion.Columns.Add("vinculo", typeof(string));
+                Relacion.Columns.Add("ID vinculo", typeof(int));
+
+                ModeloCuenta cuenta = new ModeloCuenta();
+                cuenta.id_cuenta = Int32.Parse(idCuenta);
+                foreach (ModeloCuenta c in cuenta.ObtenerRelacionados())
+                {
+                    DataRow fila = Relacion.NewRow();
+                    fila["Nombre"] = c.nombre_usuario2;
+                    fila["vinculo"] = c.vinculo;
+                    fila["ID vinculo"] = c.id_cuenta2;
+                    Relacion.Rows.Add(fila);
+                }
+                return Relacion;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
+
+        public static Dictionary<string, string> CargarCuenta(string idCuenta)
+        {
+            try
+            {
+                Dictionary<string, string> muro = new Dictionary<string, string>();
+                ModeloCuenta cuenta = new ModeloCuenta();
+                if (cuenta.BuscarCuenta(Int32.Parse(idCuenta)))
+                {
+                    muro.Add("resultado", "true");
+                    muro.Add("ID cuenta", cuenta.id_cuenta.ToString());
+                    muro.Add("ID muro", cuenta.id_muro.ToString());
+                    muro.Add("ID preferencia", cuenta.id_preferencia.ToString());
+                    muro.Add("ID usuario", cuenta.id_usuario.ToString());
+                    muro.Add("Username", cuenta.nombre_usuario);
+                    muro.Add("Publicacion destacada", cuenta.pub_destacada.ToString());
+
+                    return muro;
+                }
+                muro.Add("resultado", "true");
+                return muro;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
+
+        public static Dictionary<string, string> UsernameExiste(string username)
+        {
+            Dictionary<string, string> resultado = new Dictionary<string, string>();
+            ModeloCuenta cuenta = new ModeloCuenta();
+            try
+            {
+                if (cuenta.UsernameExiste(username))
+                {
+                    resultado.Add("resultado", "true");
+                    return resultado;
+                }
+                resultado.Add("resultado", "false");
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                ErrorHandle(ex);
+                resultado.Add("resultado", "false");
+                return resultado;
+            }
+
         }
 
         private static void ErrorHandle(Exception ex)

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using MD5Hash;
 
 namespace Modelos
 {
@@ -15,13 +17,17 @@ namespace Modelos
         public long id_muro;
         public long id_preferencia;
 
+        public long id_cuenta2;
+        public string vinculo;
+        public string nombre_usuario2;
+
         public string nombre_usuario;
         public string email;
         public string contraseña;
-        public string imagen_perfil = "pic"; //placeholder
+        public string imagen_perfil;
         public string rol_cuenta;
         public string miembro_desde;
-       
+
         public int reports;
 
 
@@ -39,7 +45,8 @@ namespace Modelos
                 this.Comando.CommandText = sql;
                 this.Comando.Parameters.AddWithValue("@username", this.nombre_usuario);
                 this.Comando.Parameters.AddWithValue("@email", this.email);
-                this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
+                //this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(this.contraseña));
+                this.Comando.Parameters.AddWithValue("@contrasena",this.contraseña);
                 this.Comando.Parameters.AddWithValue("@id_cuenta", this.id_cuenta);
                 this.Comando.Prepare();
                 this.Comando.ExecuteNonQuery();
@@ -48,10 +55,10 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
             }
-            catch (Exception)
+            /*catch (Exception)
             {
                 throw new Exception("UNKNOWN_ERROR");
-            }
+            }*/
         }
         public void CrearCuenta()
         {
@@ -84,8 +91,9 @@ namespace Modelos
             {
                 if (VerificarRegistro(id))
                 {
-                    string sql = $"update registro set contrasena ='{this.contraseña}'where id_cuenta ='{this.id_cuenta}'";
+                    string sql = $"update registro set contrasena = @contra where id_cuenta = {this.id_cuenta}";
                     this.Comando.CommandText = sql;
+                    this.Comando.Parameters.AddWithValue("@contra", this.contraseña);
                     this.Comando.ExecuteNonQuery();
                     return true;
                 }
@@ -182,7 +190,7 @@ namespace Modelos
                     this.Lector.Read();
                     this.id_cuenta = Int32.Parse(this.Lector["id_cuenta"].ToString());
                     this.nombre_usuario = this.Lector["nombre_usuario"].ToString();
-                    //this.imagen_perfil = this.Lector["imagen_perfil"].ToString();
+                    this.imagen_perfil = this.Lector["imagen_perfil"].ToString();
                     this.reports = Int32.Parse(this.Lector["reports"].ToString());
                     this.id_usuario = Int32.Parse(this.Lector["id_usuario"].ToString());
                     this.id_muro = Int32.Parse(this.Lector["id_muro"].ToString());
@@ -235,7 +243,46 @@ namespace Modelos
                 string sql = $"select count(*) from registro where nombre_usuario = @nombre_usuario and contrasena = @contrasena";
                 this.Comando.CommandText = sql;
                 this.Comando.Parameters.AddWithValue("@nombre_usuario", this.nombre_usuario);
+                //this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(this.contraseña));
                 this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
+
+                this.Comando.Prepare();
+                string resultado = this.Comando.ExecuteScalar().ToString();
+                this.Comando.Parameters.Clear();
+
+                if (resultado == "1")
+                {
+                    sql = $"select id_cuenta from registro where nombre_usuario = @nombre_usuario and contrasena = @contrasena";
+                    this.Comando.CommandText = sql;
+                    this.Comando.Parameters.AddWithValue("@nombre_usuario", this.nombre_usuario);
+                    //this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(this.contraseña));
+                    this.Comando.Parameters.AddWithValue("@contrasena", this.contraseña);
+                    this.Comando.Prepare();
+                    this.id_cuenta = Int32.Parse(this.Comando.ExecuteScalar().ToString());
+                    return true;
+                }
+
+                return false;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return false;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+        public bool ContraseñaExiste(int id, string ContraseñaAntigua)
+        {
+            try
+            {
+                string sql = $"select count(*) from registro where id_cuenta = {id} and contrasena = @contrasena";
+                this.Comando.CommandText = sql;
+                //this.Comando.Parameters.AddWithValue("@contrasena", Hash.Content(ContraseñaAntigua));
+                this.Comando.Parameters.AddWithValue("@contrasena", ContraseñaAntigua);
                 this.Comando.Prepare();
                 string resultado = this.Comando.ExecuteScalar().ToString();
 
@@ -254,13 +301,13 @@ namespace Modelos
             }
         }
 
-        public bool ContraseñaExiste(int id,string ContraseñaAntigua)
+        public bool UsernameExiste(string username)
         {
             try
             {
-                string sql = $"select count(*) from registro where id_cuenta = '{id}' and contrasena = @contrasena";
+                string sql = $"select count(*) from registro where nombre_usuario = '{username}'";
                 this.Comando.CommandText = sql;
-                this.Comando.Parameters.AddWithValue("@contrasena", ContraseñaAntigua);
+                this.Comando.Parameters.AddWithValue("@username", username);
                 this.Comando.Prepare();
                 string resultado = this.Comando.ExecuteScalar().ToString();
 
@@ -312,13 +359,75 @@ namespace Modelos
             }
         }
 
+
+        public List<ModeloCuenta> ObtenerRelacionados()
+        {
+            try
+            {
+                List<ModeloCuenta> cuentas = new List<ModeloCuenta>();
+
+                string sql = $"SELECT cuenta2.nombre_usuario AS nombre_usuario2, vinculados.tipo_vinculo, vinculados.id_cuenta2 " +
+               $"FROM cuenta " +
+               $"JOIN vinculados ON cuenta.id_cuenta = vinculados.id_cuenta1 " +
+               $"JOIN cuenta AS cuenta2 ON vinculados.id_cuenta2 = cuenta2.id_cuenta " +
+               $"WHERE cuenta.id_cuenta = {this.id_cuenta}";
+
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                while (this.Lector.Read())
+                {
+                    ModeloCuenta cuenta = new ModeloCuenta();
+                    cuenta.nombre_usuario2 = this.Lector["nombre_usuario2"].ToString();
+                    cuenta.vinculo = this.Lector["tipo_vinculo"].ToString();
+                    cuenta.id_cuenta2 = Int32.Parse(this.Lector["id_cuenta2"].ToString());
+
+                    cuentas.Add(cuenta);
+                }
+                this.Lector.Close();
+                return cuentas;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+        public void AñadirAmigo()
+        {
+            try
+            {
+                string sql = "INSERT INTO vinculados (id_cuenta1, id_cuenta2, tipo_vinculo) VALUES (@id_cuenta, @id_cuenta2, @vinculo)";
+
+                this.Comando.Parameters.AddWithValue("@id_cuenta", id_cuenta);
+                this.Comando.Parameters.AddWithValue("@id_cuenta2", id_cuenta2);
+                this.Comando.Parameters.AddWithValue("@vinculo", vinculo);
+
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
         /************************************* Usuario ********************************/
 
         public string nombre;
         public string apellido1;
         public string apellido2;
-        public string pais = "SU";
-        public string idiomas_hablados = "spa";
+        public string pais;
+        public string idiomas_hablados;
 
         public void CrearUsuario()
         {
@@ -336,6 +445,30 @@ namespace Modelos
                 MySqlErrorCatch(sqlx);
             }
             catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+        public DataTable ObtenerInfoDeCuenta(int id)
+        {
+            try
+            {
+                DataTable dataTable = new DataTable();
+                string sql = $"SELECT * FROM cuenta WHERE eliminado = false AND id_cuenta = {id}";
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                dataTable.Load(this.Lector);
+
+                return dataTable;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
+            }
+            catch (Exception e)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }
@@ -375,13 +508,13 @@ namespace Modelos
 
         public string detalles = "";
         public int pub_destacada = 0;
-        public string biografia = "";
-
+        public string biografia;
+        public string imagen_banner;
         public void CrearMuro()
         {
             try
             {
-                string sql = $"insert into muro (detalles,pub_destacada,biografia) values ('{this.detalles}',{this.pub_destacada},'{this.biografia}')";
+                string sql = $"insert into muro (detalles,pub_destacada,biografia,imagen_banner) values ('{this.detalles}',{this.pub_destacada},'{this.biografia}','{this.imagen_banner}')";
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
                 PrintDesktop(sql);
@@ -409,6 +542,8 @@ namespace Modelos
                 {
                     this.Lector.Read();
                     this.biografia = this.Lector["biografia"].ToString();
+                    this.detalles = this.Lector["detalles"].ToString();
+                    this.pub_destacada = Int32.Parse(this.Lector["pub_destacada"].ToString());
                     this.Lector.Close();
                     return true;
                 }
@@ -420,6 +555,29 @@ namespace Modelos
                 return false;
             }
             catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+        public DataTable obtenerDatosDelMuro(int id)
+        {
+            try
+            {
+                DataTable dataTable = new DataTable();
+                string sql = $"SELECT * FROM muro WHERE id_muro = {id}";
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                dataTable.Load(this.Lector);
+
+                return dataTable;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
+            }
+            catch (Exception e)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }

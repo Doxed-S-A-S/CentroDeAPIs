@@ -192,6 +192,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ComentaroDTO.cs" />
+    <Compile Include="Models\PostDTO.cs" />
     <Compile Include="Models\PostModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -249,6 +251,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="DTO\" />
+    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

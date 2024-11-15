@@ -159,6 +159,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DTO\AgregarCuentaDto.cs" />
+    <Compile Include="DTO\GetGrupoDTO.cs" />
     <Compile Include="DTO\EventoSenderDTO.cs" />
     <Compile Include="DTO\ModificarRolDeCuentaEnGrupoDTO.cs" />
     <Compile Include="DTO\GetGruposDTO.cs" />
@@ -222,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

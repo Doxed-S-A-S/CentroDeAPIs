@@ -11,26 +11,28 @@ namespace Controlador
 {
     public class ControlGrupo
     {
-        public static void CrearGrupo(string id_cuenta, string nombreGrupo, string descripcion,string privacidad, string banner)
+        public static void CrearGrupo(string id_cuenta, string nombreGrupo, string descripcion, string privacidad, string imagen_banner, string url_iamgen)
         {
             try
             {
                 ModeloGrupo grupo = new ModeloGrupo();
                 grupo.nombre_grupo = nombreGrupo;
                 grupo.descripcion = descripcion;
-                grupo.privacidad = bool.Parse(privacidad);
-                grupo.banner = banner;
+                grupo.privacidad = Boolean.Parse(privacidad);
+                grupo.imagen_banner = imagen_banner;
                 grupo.id_cuenta = Int32.Parse(id_cuenta);
+                grupo.url_imagen = url_iamgen;
 
                 grupo.CrearGrupo();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
+                Console.Write(e.Message);
                 ErrorHandle(e);
             }
         }
 
-        public static bool ModificarGrupo(string id, string nombre, string descripcion, string banner)
+        public static bool ModificarGrupo(string id, string nombre, string descripcion, string imagen_banner, string url_imagen)
         {
             try
             {
@@ -39,7 +41,9 @@ namespace Controlador
                 {
                     grupo.nombre_grupo = nombre;
                     grupo.descripcion = descripcion;
-                    grupo.banner = banner;
+                    grupo.imagen_banner = imagen_banner;
+                    grupo.url_imagen = url_imagen;
+
 
                     grupo.Guardar();
                     return true;
@@ -85,13 +89,13 @@ namespace Controlador
             }
         }
 
-        public static void ModificarPrivacidadGrupo(string id_grupo,string privacidad)
+        public static void ModificarPrivacidadGrupo(string id_grupo, string privacidad)
         {
             try
             {
                 ModeloGrupo grupo = new Modelos.ModeloGrupo();
                 grupo.id_grupo = Int32.Parse(id_grupo);
-                grupo.privacidad = bool.Parse(privacidad);
+                grupo.privacidad = Boolean.Parse(privacidad);
 
                 grupo.ModificarPrivacidadGrupo();
             }
@@ -164,6 +168,32 @@ namespace Controlador
             }
         }
 
+        public static DataTable ObtenerGruposQueConformaUsuario(string id_cuenta)
+        {
+            try
+            {
+                DataTable tabla = new DataTable();
+                tabla.Columns.Add("id_grupo", typeof(int));
+                tabla.Columns.Add("nombre_grupo", typeof(string));
+
+
+                ModeloGrupo grupo = new ModeloGrupo();
+                foreach (ModeloGrupo p in grupo.ObtenerGruposQueConformaUsuario(Int32.Parse(id_cuenta)))
+                {
+                    DataRow fila = tabla.NewRow();
+                    fila["id_grupo"] = p.id_grupo;
+                    fila["nombre_grupo"] = p.nombre_grupo;
+                    tabla.Rows.Add(fila);
+                }
+
+                return tabla;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+        }
         public static DataTable ObtenerIntegrantesDeGrupo(string id_grupo)
         {
             try
@@ -205,7 +235,7 @@ namespace Controlador
                     resultado.Add("id", grupo.id_grupo.ToString());
                     resultado.Add("nombre_grupo", grupo.nombre_grupo);
                     resultado.Add("descripcion", grupo.descripcion);
-                    resultado.Add("banner", grupo.banner);
+                    resultado.Add("banner", grupo.imagen_banner);
                     return resultado;
                 }
                 resultado.Add("resultado", "false");
@@ -217,6 +247,25 @@ namespace Controlador
                 return null;
             }
         }
+
+        public static DataTable ObtenerGrupo(string id)
+        {
+            try
+            {
+                ModeloGrupo g = new ModeloGrupo();
+                DataTable grupo = g.ObtenerGrupo(Int32.Parse(id));
+
+
+                return grupo;
+            }
+            catch (Exception e)
+            {
+
+                Console.Write(e.Message);
+                throw new Exception("Error desconocido" + e.Message.ToString());
+            }
+        }
+
 
         public static Dictionary<string, string> AgregarCuentaEnGrupo(string rol, string id_grupo, string id_cuenta)
         {

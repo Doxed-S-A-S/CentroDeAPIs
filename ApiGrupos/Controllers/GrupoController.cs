@@ -8,6 +8,7 @@ using Controlador;
 using System.Data;
 using ApiGrupos.Models;
 using ApiGrupos.DTO;
+using System.Web;
 
 namespace ApiGrupos.Controllers
 {
@@ -41,6 +42,67 @@ namespace ApiGrupos.Controllers
             }
         }
 
+        [Route("ApiGrupos/conforma_grupos/{id_cuenta:int}")]
+        [HttpGet]
+        public List<GetGruposDTO> GetGruposConformadosPorUsuario(int id_cuenta)
+        {
+            try
+            {
+                DataTable grupos = ControlGrupo.ObtenerGruposQueConformaUsuario(id_cuenta.ToString());
+
+                List<GetGruposDTO> ListaDeGrupos = new List<GetGruposDTO>();
+
+                foreach (DataRow grupo in grupos.Rows)
+                {
+                    GetGruposDTO g = new GetGruposDTO();
+                    g.id_grupo = Int32.Parse(grupo["id_grupo"].ToString());
+                    g.nombre_grupo = grupo["nombre_grupo"].ToString();
+
+                    ListaDeGrupos.Add(g);
+                }
+                return ListaDeGrupos;
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
+        }
+
+
+        [Route("ApiGrupos/grupo/{id_grupo:int}")]
+        [HttpGet]
+        public GetGrupoDTO GetGrupo(int id_grupo)
+        {
+            try
+            {
+                DataTable grupo = ControlGrupo.ObtenerGrupo(id_grupo.ToString());
+                HttpRequest request = HttpContext.Current.Request;
+                string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
+
+                if (grupo.Rows.Count > 0)
+                {
+                    DataRow row = grupo.Rows[0];
+
+                    GetGrupoDTO g = new GetGrupoDTO
+                    {
+                        nombre_grupo = row["nombre_grupo"].ToString(),
+                        descripcion = row["descripcion"].ToString(),
+                        url_imagen = baseUrl+row["url_imagen"].ToString(),
+                        imagen_banner = baseUrl+row["imagen_banner"].ToString()
+                    };
+                    return g;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
 
         [Route("ApiGrupos/grupo/{id_grupo:int}/integrantes")]
         [HttpGet]
@@ -71,25 +133,50 @@ namespace ApiGrupos.Controllers
             }
         }
 
-
-
         [Route("ApiGrupos/grupo/crear/{idCuenta:int}")]
         [HttpPost]
-        public IHttpActionResult CrearGrupo(GrupoModel grupo,int idCuenta)
+        public IHttpActionResult CrearGrupo(int idCuenta)
         {
+            string filePath = "";
+            string imagenPerfilURL = "";
+            string imagenBannerlURL = "";
+            HttpRequest request = HttpContext.Current.Request;
+            string baseUrl = $"{request.Url.Scheme}://{request.Url.Authority}{request.ApplicationPath.TrimEnd('/')}/";
             try
             {
-                ControlGrupo.CrearGrupo(idCuenta.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.privacidad, grupo.banner);
+                HttpRequest httpRequest = HttpContext.Current.Request;
+
+                string nombre_grupo = httpRequest.Form["nombre_grupo"];
+                string descripcion = httpRequest.Form["descripcion"];
+                string privacidad = httpRequest.Form["privacidad"];
+
+                HttpPostedFile url_imagen_file = httpRequest.Files["url_imagen"];
+                HttpPostedFile imagen_banner_file = httpRequest.Files["imagen_banner"];
+
+                string url_imagen = url_imagen_file.FileName;
+                filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{url_imagen}");
+                url_imagen_file.SaveAs(filePath);
+                imagenPerfilURL = $"Uploads/{url_imagen}";
+
+
+                string imagen_banner = imagen_banner_file.FileName;
+                filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{imagen_banner}");
+                imagen_banner_file.SaveAs(filePath);
+                imagenBannerlURL = $"Uploads/{imagen_banner}";
+
+                ControlGrupo.CrearGrupo(idCuenta.ToString(), nombre_grupo, descripcion, privacidad, imagenBannerlURL, imagenPerfilURL);
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
                 resultado.Add("mensaje", "grupo creado");
                 return Ok(resultado);
             }
             catch (Exception ex)
             {
+                Console.Write(ex.Message);
+
                 if (ex.Message == "DUPLICATE_ENTRY")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
                 if (ex.Message == "ACCESS_DENIED")
-                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized,"Acceso denegado"));
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
                 if (ex.Message == "UNKNOWN_COLUMN")
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
                 if (ex.Message == "ERROR_CHILD_ROW")
@@ -105,7 +192,7 @@ namespace ApiGrupos.Controllers
 
         [Route("ApiGrupos/grupo/{idGrupo:int}/privacidad")]
         [HttpPut]
-        public IHttpActionResult ModificarPrivacidad(GrupoModel grupo,int idGrupo)
+        public IHttpActionResult ModificarPrivacidad(GrupoModel grupo, int idGrupo)
         {
             try
             {
@@ -175,7 +262,7 @@ namespace ApiGrupos.Controllers
         {
             try
             {
-                bool existe = ControlGrupo.ModificarGrupo(id_grupo.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.banner);
+                bool existe = ControlGrupo.ModificarGrupo(id_grupo.ToString(), grupo.nombre_grupo, grupo.descripcion, grupo.imagen_banner, grupo.url_imagen);
 
                 if (existe)
                 {
@@ -240,7 +327,7 @@ namespace ApiGrupos.Controllers
         }
 
 
-        
+
         [Route("ApiGrupos/grupo/{id_grupo:int}/eliminar")]
         [HttpDelete]
         public IHttpActionResult DeleteGrupo(int id_grupo)

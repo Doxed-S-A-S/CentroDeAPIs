@@ -12,7 +12,8 @@ namespace ApiGrupos.Models
         public string nombre_grupo;
         public string descripcion;
         public string privacidad;
-        public string banner;
+        public string url_imagen;
+        public string imagen_banner;
         public string rol;
 
         public int id_cuenta;
