@@ -366,10 +366,12 @@ namespace Modelos
             {
                 List<ModeloCuenta> cuentas = new List<ModeloCuenta>();
 
-                string sql = $"SELECT cuenta2.nombre_usuario AS nombre_usuario2, vinculados.tipo_vinculo, vinculados.id_cuenta2FROM cuenta " +
-                    $"JOIN vinculados ON cuenta.id_cuenta = vinculados.id_cuenta1 " +
-                    $"JOIN cuenta AS cuenta2 ON vinculados.id_cuenta2 = cuenta2.id_cuenta " +
-                    $"WHERE cuenta.id_cuenta = {this.id_cuenta}";
+                string sql = $"SELECT cuenta2.nombre_usuario AS nombre_usuario2, vinculados.tipo_vinculo, vinculados.id_cuenta2 " +
+               $"FROM cuenta " +
+               $"JOIN vinculados ON cuenta.id_cuenta = vinculados.id_cuenta1 " +
+               $"JOIN cuenta AS cuenta2 ON vinculados.id_cuenta2 = cuenta2.id_cuenta " +
+               $"WHERE cuenta.id_cuenta = {this.id_cuenta}";
+
                 this.Comando.CommandText = sql;
                 this.Lector = this.Comando.ExecuteReader();
 
@@ -389,6 +391,29 @@ namespace Modelos
             {
                 MySqlErrorCatch(sqlx);
                 return null;
+            }
+            catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+
+        public void AñadirAmigo()
+        {
+            try
+            {
+                string sql = "INSERT INTO vinculados (id_cuenta1, id_cuenta2, tipo_vinculo) VALUES (@id_cuenta, @id_cuenta2, @vinculo)";
+
+                this.Comando.Parameters.AddWithValue("@id_cuenta", id_cuenta);
+                this.Comando.Parameters.AddWithValue("@id_cuenta2", id_cuenta2);
+                this.Comando.Parameters.AddWithValue("@vinculo", vinculo);
+
+                this.Comando.CommandText = sql;
+                this.Comando.ExecuteNonQuery();
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
             }
             catch (Exception)
             {
@@ -483,13 +508,13 @@ namespace Modelos
 
         public string detalles = "";
         public int pub_destacada = 0;
-        public string biografia = "";
-
+        public string biografia;
+        public string imagen_banner;
         public void CrearMuro()
         {
             try
             {
-                string sql = $"insert into muro (detalles,pub_destacada,biografia) values ('{this.detalles}',{this.pub_destacada},'{this.biografia}')";
+                string sql = $"insert into muro (detalles,pub_destacada,biografia,imagen_banner) values ('{this.detalles}',{this.pub_destacada},'{this.biografia}','{this.imagen_banner}')";
                 this.Comando.CommandText = sql;
                 this.Comando.ExecuteNonQuery();
                 PrintDesktop(sql);
@@ -530,6 +555,29 @@ namespace Modelos
                 return false;
             }
             catch (Exception)
+            {
+                throw new Exception("UNKNOWN_ERROR");
+            }
+        }
+        public DataTable obtenerDatosDelMuro(int id)
+        {
+            try
+            {
+                DataTable dataTable = new DataTable();
+                string sql = $"SELECT * FROM muro WHERE id_muro = {id}";
+                this.Comando.CommandText = sql;
+                this.Lector = this.Comando.ExecuteReader();
+
+                dataTable.Load(this.Lector);
+
+                return dataTable;
+            }
+            catch (MySqlException sqlx)
+            {
+                MySqlErrorCatch(sqlx);
+                return null;
+            }
+            catch (Exception e)
             {
                 throw new Exception("UNKNOWN_ERROR");
             }

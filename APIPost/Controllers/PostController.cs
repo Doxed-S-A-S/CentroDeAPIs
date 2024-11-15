@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -82,6 +82,40 @@ namespace APIPost.Controllers
             }
         }
 
+        [Route("ApiPost/post/obtener-posts-muro/{id_muro:int}")]
+        [HttpGet]
+        public List<PostModel> ObtenerPostsDelMuro(int id_muro)
+        {
+            try
+            {
+                DataTable tablaPosts = ControlPosts.ListarPostDeMuro(id_muro.ToString());
+
+                List<PostModel> posts = new List<PostModel>();
+
+                foreach (DataRow post in tablaPosts.Rows)
+                {
+                    PostModel p = new PostModel();
+                    p.Id_Post = Int32.Parse(post["Id_Post"].ToString());
+                    p.contenido = post["contenido"].ToString();
+                    p.id_cuenta = Int32.Parse(post["id_cuenta"].ToString());
+                    p.likes = Int32.Parse(post["Likes"].ToString());
+                    string currentServer = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
+
+                    p.url_imagen = $"{currentServer}/{post["url_imagen"].ToString()}";
+                    Console.Write(p.url_imagen);
+
+                    posts.Add(p);
+                }
+                return posts;
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+                return null;
+                throw;
+            }
+        }
+
         [Route("ApiPost/post/obtener-posts")]
         [HttpGet]
         public List<PostModel> ObtenerPosts()
@@ -118,6 +152,33 @@ namespace APIPost.Controllers
         [Route("ApiPost/post/obtener-creador/{id_cuenta:int}")]
         [HttpGet]
         public IHttpActionResult ObtenerCreadorDePost(int id_cuenta)
+        {
+            try
+            {
+                string username = ControlPosts.ObtenerCreadorDePost(id_cuenta.ToString());
+                return Ok(username);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "DUPLICATE_ENTRY")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "El grupo ya existe"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
+        }
+
+        [Route("ApiPost/post/obtener-creador/foto/{id_cuenta:int}")]
+        [HttpGet]
+        public IHttpActionResult ObtenerFotoDeCreadorDePost(int id_cuenta)
         {
             try
             {
@@ -216,7 +277,7 @@ namespace APIPost.Controllers
             }
         }
 
-        [Route("ApiPost/post/{idPost:int}/comentario")]
+        [Route("ApiPost/post/{idPost:int}/CrearComentario")]
         [HttpPost]
         public IHttpActionResult CrearComentario(int idPost, PostModel post)
         {
@@ -244,7 +305,7 @@ namespace APIPost.Controllers
         }
 
 
-        [Route("ApiPost/post/{idPost:int}/comentario")]
+        [Route("ApiPost/post/{idPost:int}/obtenerComentarios")]
         [HttpGet]
         public List<ComentarioDTO> ObtenerComentarios(int idPost)
         {
@@ -366,6 +427,37 @@ namespace APIPost.Controllers
                 throw;
             }
         }
+        
+        [Route("ApiPost/post/añadir-like/{id_post:int}/{id_cuenta:int}")]
+        [HttpPost]
+        public IHttpActionResult AñadirLike(int id_post, int id_cuenta)
+        {
+            try
+            {
+                Dictionary<string, string> resultado = new Dictionary<string, string>();
+                ControlPosts.AñadirLike(id_cuenta.ToString(), id_post.ToString());
+               
+                resultado.Add("Resultado", "Like dado");
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Ya le dio like")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Conflict, "Ya le diste like"));
+                if (ex.Message == "ACCESS_DENIED")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Acceso denegado"));
+                if (ex.Message == "UNKNOWN_COLUMN")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Datos incorrectos"));
+                if (ex.Message == "ERROR_CHILD_ROW")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al insertar id's"));
+                if (ex.Message == "UNKNOWN_DB_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas con la base de datos"));
+                if (ex.Message == "UNKNOWN_ERROR")
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
+                throw;
+            }
+        }
+
 
         [Route("ApiPost/post/modificar-post/{idPost:int}")]
         [HttpPut]

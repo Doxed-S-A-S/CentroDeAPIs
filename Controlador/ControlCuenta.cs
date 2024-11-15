@@ -12,7 +12,7 @@ namespace Controlador
 {
     public class ControlCuenta
     {
-        public static void CrearCuenta(string nombreUsuario, string email, string contraseña, string nombre, string apellido, string apellido2, string pais, string idiomaHablado, string imagen_perfil)
+        public static void CrearCuenta(string nombreUsuario, string email, string contraseña, string nombre, string apellido, string apellido2, string pais, string idiomaHablado, string imagen_perfil, string imagen_banner, string biografia)
         {
             try
             {
@@ -26,8 +26,28 @@ namespace Controlador
                 cuenta.pais = pais;
                 cuenta.imagen_perfil = imagen_perfil;
                 cuenta.idiomas_hablados = idiomaHablado;
+                cuenta.imagen_banner = imagen_banner;
+                //cuenta.detalles = detalles;
+                cuenta.biografia = biografia;
 
                 cuenta.Registro();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
+        }
+
+        public static void AñadirAmigo(string id_cuenta, string id_cuenta2, string vinculo)
+        {
+            try
+            {
+                ModeloCuenta cuenta = new ModeloCuenta();
+                cuenta.id_cuenta = Int32.Parse(id_cuenta);
+                cuenta.id_cuenta2 = Int32.Parse(id_cuenta2);
+                cuenta.vinculo = vinculo;
+
+                cuenta.AñadirAmigo();
             }
             catch (Exception e)
             {
@@ -190,6 +210,23 @@ namespace Controlador
             }
         }
 
+        public static DataTable obtenerDatosDelMuro(string id)
+        {
+            try
+            {
+                ModeloCuenta c = new ModeloCuenta();
+                DataTable cuenta = c.obtenerDatosDelMuro(Int32.Parse(id));
+
+                return cuenta;
+            }
+            catch (Exception e)
+            {
+
+                Console.Write(e.Message);
+                throw new Exception("Error desconocido" + e.Message.ToString());
+            }
+        }
+
         public static DataTable ObtenerInfoDeCuenta(string id)
         {
             try
@@ -260,6 +297,8 @@ namespace Controlador
                 return null;
             }
         }
+
+
 
         public static DataTable UsuariosRelacionados(string idCuenta)
         {

@@ -13,7 +13,7 @@ namespace Controlador
     {
 
 
-        public static void CrearPost(string contenido,string url_contenido, string url_imagen,string tipo_contenido, string idCuenta)
+        public static void CrearPost(string contenido, string url_contenido, string url_imagen, string tipo_contenido, string idCuenta)
         {
             try
             {
@@ -48,13 +48,13 @@ namespace Controlador
                 evento.GuardarEvento();
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if (e.Message == "DUPLICATE_ENTRY")
                     throw new Exception("El evento ya existe");
                 return false;
             }
-            
+
         }
 
         public static void ElimiarPost(string id)
@@ -86,7 +86,7 @@ namespace Controlador
             }
         }
 
-        public static void ModificarPost(string id, string contenido,string url,string tipo_contenido)
+        public static void ModificarPost(string id, string contenido, string url, string tipo_contenido)
         {
             try
             {
@@ -161,7 +161,7 @@ namespace Controlador
         }
 
 
-        public static DataTable ListarPostDeCuenta(string idCuenta)  
+        public static DataTable ListarPostDeCuenta(string idCuenta)
         {
             try
             {
@@ -227,7 +227,38 @@ namespace Controlador
             }
 
         }
+        public static DataTable ListarPostDeMuro(string id_muro)
+        {
+            try
+            {
+                DataTable tabla = new DataTable();
+                tabla.Columns.Add("id_post", typeof(int));
+                tabla.Columns.Add("Contenido", typeof(string));
+                tabla.Columns.Add("id_cuenta", typeof(string));
+                tabla.Columns.Add("Likes", typeof(int));
+                tabla.Columns.Add("Url_imagen", typeof(string));
 
+                ModeloPost post = new ModeloPost();
+                foreach (ModeloPost p in post.ObtenerPostsDeMuro(Int32.Parse(id_muro)))
+                {
+                    DataRow fila = tabla.NewRow();
+                    fila["Id_post"] = p.id_post;
+                    fila["Contenido"] = p.contenido;
+                    fila["id_cuenta"] = p.id_cuenta;
+                    fila["Likes"] = p.NumeroDeLikes(p.id_post);
+                    fila["Url_imagen"] = p.url_imagen;
+                    tabla.Rows.Add(fila);
+                }
+
+                return tabla;
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+                return null;
+            }
+
+        }
         public static DataTable ListarTodosLosPost()
         {
             try
@@ -289,7 +320,6 @@ namespace Controlador
             }
             return tabla;
         }
-        
 
         public static string ObtenerCreadorDePost(string id_cuenta)
         {
@@ -306,7 +336,7 @@ namespace Controlador
             }
         }
 
-        public static void AñadirLike(string id_cuenta,string id_post)
+        public static void AñadirLike(string id_cuenta, string id_post)
         {
             try
             {
@@ -316,9 +346,9 @@ namespace Controlador
 
                 post.AñadirLike();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                ErrorHandle(e);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -340,7 +370,7 @@ namespace Controlador
         }
 
 
-                private static void ErrorHandle(Exception ex)
+        private static void ErrorHandle(Exception ex)
         {
             if (ex.Message == "DUPLICATE_ENTRY")
                 throw new Exception("DUPLICATE_ENTRY");
