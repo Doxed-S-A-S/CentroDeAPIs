@@ -38,6 +38,23 @@ namespace Controlador
             }
         }
 
+        public static void AñadirAmigo(string id_cuenta, string id_cuenta2, string vinculo)
+        {
+            try
+            {
+                ModeloCuenta cuenta = new ModeloCuenta();
+                cuenta.id_cuenta = Int32.Parse(id_cuenta);
+                cuenta.id_cuenta2 = Int32.Parse(id_cuenta2);
+                cuenta.vinculo = vinculo;
+
+                cuenta.AñadirAmigo();
+            }
+            catch (Exception e)
+            {
+                ErrorHandle(e);
+            }
+        }
+
         public static Dictionary<string, string> Login(string nombre_usuario, string contraseña)
         {
             try
@@ -280,6 +297,8 @@ namespace Controlador
                 return null;
             }
         }
+
+
 
         public static DataTable UsuariosRelacionados(string idCuenta)
         {

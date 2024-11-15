@@ -1,4 +1,5 @@
 ﻿using APIPost.Models;
+using ApiUsuarios.Controllers;
 using ApiUsuarios.DTO;
 using ApiUsuarios.Models;
 using Controlador;
@@ -213,22 +214,16 @@ namespace ApiUsuario.Controllers
                 throw;
             }
         }
-
-        /*[Route("ApiUsuarios/Usuarios/verificar/")]
-        [HttpPut]
-        public IHttpActionResult VerificarUser(UsuarioModel usuario)
+        [Route("ApiUsuarios/AnadirAmigoo/{id_cuenta:int}/{id_cuenta2:int}/{vinculo}")]
+        [HttpPost]
+        public IHttpActionResult AñadirAmigo(int id_cuenta, int id_cuenta2, string vinculo)
         {
             try
             {
-                bool existe = ControlCuenta.Login(usuario.nombre_usuario, usuario.contraseña);
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
-
-                if (existe)
-                {
-                    resultado.Add("Mensaje", "Login aprobado");
-                    return Ok(resultado);
-                }
-                return NotFound();
+                ControlCuenta.AñadirAmigo(id_cuenta.ToString(),id_cuenta2.ToString(),vinculo);
+                resultado.Add("mensaje", "Amigo añadido");
+                return Ok(resultado);
             }
             catch (Exception ex)
             {
@@ -246,7 +241,40 @@ namespace ApiUsuario.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
-        }*/
+
+        }
+
+        [Route("ApiUsuarios/cuenta/GetRelacionados/{id_cuenta:int}")]
+        [HttpGet]
+        public VinculadoDTO GetRelacinoados(int id_cuenta)
+        {
+            try
+            {
+                DataTable cuenta = ControlCuenta.UsuariosRelacionados(id_cuenta.ToString());
+
+                if (cuenta.Rows.Count > 0)
+                {
+                    DataRow row = cuenta.Rows[0];
+                    VinculadoDTO v = new VinculadoDTO
+                    {
+                        nombre_usuario2 = row["Nombre"].ToString(),
+                        vinculo = row["vinculo"].ToString(),
+                        id_cuenta2 = Convert.ToInt32(row["ID vinculo"].ToString())
+                    };
+                    return v;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+
         [Route("ApiUsuarios/usuarios/usernameCheck/{username}")]
         [HttpGet]
         public IHttpActionResult PreferenciasGet(string username)

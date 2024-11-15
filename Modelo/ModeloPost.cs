@@ -428,14 +428,12 @@ namespace Modelos
                                "JOIN upvote AS u ON du.id_upvote = u.id_upvote " +
                                "WHERE du.id_cuenta = @IdCuenta AND u.id_post = @IdPost;";
 
-                // Limpia los parámetros para evitar duplicación.
+                
                 this.Comando.Parameters.Clear();
-
-                // Agrega los parámetros con el tipo correcto.
+                
                 this.Comando.Parameters.Add("@IdCuenta", MySqlDbType.Int32).Value = this.id_cuenta;
                 this.Comando.Parameters.Add("@IdPost", MySqlDbType.Int32).Value = this.id_post;
 
-                // Asigna el comando y ejecuta la consulta.
                 this.Comando.CommandText = query;
                 int count = Convert.ToInt32(this.Comando.ExecuteScalar());
 
@@ -452,12 +450,30 @@ namespace Modelos
             }
         }
 
+        public void ObtenerIdUpvote()
+        {
+            string sql = @"SELECT u.id_upvote
+                     FROM da_upvote du
+                     JOIN upvote u ON du.id_upvote = u.id_upvote
+                     WHERE du.id_cuenta = @idCuenta AND u.id_post = @idPost;";
+
+            this.Comando.Parameters.Clear();
+            this.Comando.Parameters.AddWithValue("@idCuenta", this.id_cuenta);
+            this.Comando.Parameters.AddWithValue("@idPost", this.id_post);
+
+            this.Comando.CommandText = sql;
+            this.Comando.ExecuteNonQuery();
+            string id_upvote = this.Comando.ExecuteScalar().ToString();
+            this.id_upvote = Int32.Parse(id_upvote);
+        }
+
         public void AñadirLike()
         {
             if (usuario_ya_dio_like())
             {
-                throw new Exception("Ya le dio like");
+                ObtenerIdUpvote();
                 EliminarLike();
+                throw new Exception("Ya le dio like");
             }
             try
             {
