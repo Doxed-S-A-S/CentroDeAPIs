@@ -62,25 +62,25 @@ namespace PruebaAutomatica
             {
                 ControlCuenta.CrearCuenta(
                     nombreUsuario,
-                    "emailDuplicado@gmail.com",
+                    "rasing@gmail.com",
                     "Qq123456789",
-                    "juan",
-                    "Algo",
-                    "Algo2",
-                    "China",
-                    "Español",
+                    "Pepe",
+                    "Argento",
+                    "YoQueSe",
+                    "sa",
+                    "esp",
                     "ImagenPerfilDuplicado"
                 );
 
                 ControlCuenta.CrearCuenta(
                     nombreUsuario,
-                    "otroEmail@gmail.com",
+                    "rasing@gmail.com",
                     "Qq123456789",
                     "Pepe",
                     "Argento",
                     "YoQueSe",
-                    "Argentina",
-                    "Español",
+                    "sa",
+                    "esp",
                     "OtraImagenPerfil"
                 );
 
