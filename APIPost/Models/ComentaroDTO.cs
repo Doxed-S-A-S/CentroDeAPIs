@@ -9,7 +9,7 @@ namespace APIPost.Models
     {
         public int id_comentario;
         public int id_Post;
-        public string comentario;
+        public string contenido;
         public int likes;
         public string fecha;
 

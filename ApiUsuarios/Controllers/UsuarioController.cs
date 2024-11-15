@@ -379,12 +379,13 @@ namespace ApiUsuario.Controllers
 
         [Route("ApiUsuarios/usuarios/Pass/{id:int}")]
         [HttpPost]
-        public IHttpActionResult ModificarContraseña(int id, UsuarioModel usuario)
+        public IHttpActionResult ModificarContraseña(int id, PassModel usuario)
         {
             try
             {
                 Dictionary<string, string> resultado = new Dictionary<string, string>();
-                bool existe = ControlCuenta.ModificarContraseña(id.ToString(), usuario.contraseña, usuario.contraseñaAntigua);
+                    
+                bool existe = ControlCuenta.ModificarContraseña(id.ToString(), usuario.contraseña , usuario.contraseñaAntigua);
 
                 if (existe)
                 {
@@ -409,7 +410,6 @@ namespace ApiUsuario.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Problemas durante la ejecucion"));
                 throw;
             }
-
         }
 
 

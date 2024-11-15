@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -458,6 +458,7 @@ namespace APIPost.Controllers
             }
         }
 
+
         [Route("ApiPost/post/modificar-post/{idPost:int}")]
         [HttpPut]
         public IHttpActionResult ModificarPost(int idPost, PostModel post)
@@ -586,6 +587,9 @@ namespace APIPost.Controllers
                 throw;
             }
         }
+
+
+
 
         [Route("ApiPost/MostrarAlgoritmo")]
         [HttpGet]
