@@ -76,7 +76,6 @@ namespace APIPost.Controllers
             }
             catch (Exception e)
             {
-                Console.Write(e.Message);
                 return null;
                 throw;
             }
