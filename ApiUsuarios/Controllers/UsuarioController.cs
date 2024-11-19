@@ -187,15 +187,16 @@ namespace ApiUsuario.Controllers
                         filePath = HttpContext.Current.Server.MapPath($"~/Uploads/{file_imagenbanner}");
                         imagen_perfil.SaveAs(filePath);
                         fileUrl_imagenbanner = $"Uploads/{file_imagenbanner}";
+                        ControlCuenta.CrearCuenta(nombre_usuario, email, contraseña, nombre, apellido, apellido2, pais, idiomaHablado, fileUrl_imagenperfil, fileUrl_imagenbanner, biografia);
+                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Cuenta Creada"));
                     }
                     catch (Exception ex)
                     {
                         return InternalServerError(ex);
                     }
                 }
-
-                ControlCuenta.CrearCuenta(nombre_usuario, email, contraseña, nombre, apellido, apellido2, pais, idiomaHablado, fileUrl_imagenperfil, fileUrl_imagenbanner, biografia);
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "Cuenta Creada"));
+                return null;
+                
             }
             catch (Exception ex)
             {

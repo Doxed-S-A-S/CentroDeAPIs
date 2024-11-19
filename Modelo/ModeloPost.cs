@@ -257,7 +257,7 @@ namespace Modelos
             {
                 List<ModeloPost> posts = new List<ModeloPost>();
 
-                string sql = $"SELECT p.id_post, p.id_cuenta, p.url_contenido, p.tipo_contenido, p.fecha_creacion, p.contenido, p.reports, p.eliminado, g.url_imagen " +
+                string sql = $"SELECT p.id_post, p.id_cuenta, p.url_contenido, p.tipo_contenido, p.fecha_creacion, p.contenido, p.reports, p.eliminado, p.url_imagen " +
              $"FROM posts p " +
              $"JOIN postea_grupos pg ON p.id_post = pg.id_post " +
              $"JOIN grupos g ON pg.id_grupo = g.id_grupo " +
