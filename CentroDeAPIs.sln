@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAutenticar", "APIAutenti
 		{01107451-8512-419B-AAD7-CE6A7C422A5A} = {01107451-8512-419B-AAD7-CE6A7C422A5A}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTesting", "AutoTesting\AutoTesting.csproj", "{984B6FC6-6D68-4269-8A3E-DEE161FECBA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,10 @@ Global
 		{291DA869-E2FA-4F0C-A115-095133AE9BA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{291DA869-E2FA-4F0C-A115-095133AE9BA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{291DA869-E2FA-4F0C-A115-095133AE9BA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{984B6FC6-6D68-4269-8A3E-DEE161FECBA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{984B6FC6-6D68-4269-8A3E-DEE161FECBA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{984B6FC6-6D68-4269-8A3E-DEE161FECBA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{984B6FC6-6D68-4269-8A3E-DEE161FECBA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
